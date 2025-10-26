@@ -85,58 +85,60 @@ function DashboardContent() {
           marginBottom: '2rem',
         }}>
           {/* Journal Card */}
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow-sm)',
-            transition: 'all var(--transition-base)',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-          }}>
+          <Link href="/journals" style={{ textDecoration: 'none' }}>
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '1rem',
+              backgroundColor: 'var(--bg-elevated)',
+              borderRadius: 'var(--radius-2xl)',
+              padding: '2rem',
+              boxShadow: 'var(--shadow-sm)',
+              transition: 'all var(--transition-base)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
             }}>
               <div style={{
-                padding: '0.75rem',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                borderRadius: 'var(--radius-lg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}>
-                <svg style={{ width: '1.5rem', height: '1.5rem', color: '#3b82f6' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
+                <div style={{
+                  padding: '0.75rem',
+                  backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                  borderRadius: 'var(--radius-lg)',
+                }}>
+                  <svg style={{ width: '1.5rem', height: '1.5rem', color: '#3b82f6' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <span style={{
+                  fontSize: 'var(--text-3xl)',
+                  fontWeight: '700',
+                  color: 'var(--text-primary)',
+                }}>0</span>
               </div>
-              <span style={{
-                fontSize: 'var(--text-3xl)',
-                fontWeight: '700',
+              <h3 style={{
+                fontSize: 'var(--text-lg)',
+                fontWeight: '600',
                 color: 'var(--text-primary)',
-              }}>0</span>
+                marginBottom: '0.5rem',
+              }}>
+                Journals
+              </h3>
+              <p style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
+              }}>
+                Start writing your thoughts
+              </p>
             </div>
-            <h3 style={{
-              fontSize: 'var(--text-lg)',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '0.5rem',
-            }}>
-              Journals
-            </h3>
-            <p style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-tertiary)',
-            }}>
-              Start writing your thoughts
-            </p>
-          </div>
+          </Link>
 
           {/* Expenses Card */}
           <div style={{

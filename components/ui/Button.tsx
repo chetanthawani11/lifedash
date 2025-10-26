@@ -18,6 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   className = '',
   disabled,
+  style,
   ...props
 }) => {
   const sizes = {
@@ -74,8 +75,9 @@ export const Button: React.FC<ButtonProps> = ({
       case 'danger':
         return {
           ...base,
-          backgroundColor: 'var(--error)',
+          backgroundColor: '#ef4444',
           color: '#ffffff',
+          boxShadow: 'var(--shadow-sm)',
         };
       default:
         return base;
@@ -99,6 +101,8 @@ export const Button: React.FC<ButtonProps> = ({
         break;
       case 'danger':
         e.currentTarget.style.backgroundColor = '#dc2626';
+        e.currentTarget.style.transform = 'translateY(-1px)';
+        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
         break;
     }
   };
@@ -119,7 +123,9 @@ export const Button: React.FC<ButtonProps> = ({
         e.currentTarget.style.backgroundColor = 'transparent';
         break;
       case 'danger':
-        e.currentTarget.style.backgroundColor = 'var(--error)';
+        e.currentTarget.style.backgroundColor = '#ef4444';
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
         break;
     }
   };
@@ -129,6 +135,7 @@ export const Button: React.FC<ButtonProps> = ({
       style={{
         ...getVariantStyles(),
         width: fullWidth ? '100%' : 'auto',
+        ...style, // Merge custom styles AFTER base styles
       }}
       disabled={disabled || loading}
       onMouseEnter={handleMouseEnter}

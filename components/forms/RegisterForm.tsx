@@ -108,7 +108,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Display Name */}
       <Input
         label="Display Name (Optional)"
@@ -118,7 +118,6 @@ export const RegisterForm = () => {
         helperText="This is how you'll appear in the app"
         {...register('displayName')}
       />
-
 
       {/* Email */}
       <Input

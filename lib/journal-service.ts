@@ -452,3 +452,53 @@ export const getAllTags = async (userId: string): Promise<string[]> => {
 
   return Array.from(tagsSet).sort();
 };
+
+/**
+ * Get ALL entries across ALL journals for a user
+ * Used for the "All Entries" search/filter page
+ */
+export const getAllUserEntries = async (
+  userId: string,
+  maxEntries: number = 500
+): Promise<JournalEntry[]> => {
+  return getDocuments<JournalEntry>(
+    userId,
+    JOURNAL_ENTRIES_COLLECTION,
+    [
+      orderBy('createdAt', 'desc'),
+      limit(maxEntries),
+    ]
+  );
+};
+
+/**
+ * Get ALL journals for a user (without ordering for simple fetches)
+ * Used when you just need the list of journals
+ */
+export const getAllUserJournals = async (
+  userId: string
+): Promise<Journal[]> => {
+  return getDocuments<Journal>(
+    userId,
+    JOURNALS_COLLECTION,
+    [orderBy('name', 'asc')]
+  );
+};
+
+/**
+ * Subscribe to ALL entries across ALL journals (real-time!)
+ * Used for the "All Entries" page with search/filter
+ */
+export const subscribeToAllUserEntries = (
+  userId: string,
+  onUpdate: (entries: JournalEntry[]) => void,
+  onError?: (error: any) => void
+): Unsubscribe => {
+  return subscribeToCollection<JournalEntry>(
+    userId,
+    JOURNAL_ENTRIES_COLLECTION,
+    [orderBy('createdAt', 'desc')],
+    onUpdate,
+    onError
+  );
+};
