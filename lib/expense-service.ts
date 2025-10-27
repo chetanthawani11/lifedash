@@ -306,9 +306,15 @@ export const updateExpense = async (
   const validatedUpdates = updateExpenseSchema.parse(updates);
 
   // Convert date if provided
-  const updateData = validatedUpdates.date
+  let updateData: any = validatedUpdates.date
     ? { ...validatedUpdates, date: dateToTimestamp(validatedUpdates.date) }
     : validatedUpdates;
+
+  // Remove undefined values - Firebase doesn't allow undefined
+  // Convert undefined to null for optional fields
+  if (updateData.notes === undefined) {
+    updateData.notes = null;
+  }
 
   await updateDocument(userId, EXPENSES_COLLECTION, expenseId, updateData);
 };

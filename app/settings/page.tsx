@@ -34,7 +34,7 @@ const themeOptions: SelectOption[] = [
 ];
 
 function SettingsContent() {
-  const { user } = useAuth();
+  const { user, refreshPreferences } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [displayName, setDisplayName] = useState('');
@@ -96,6 +96,9 @@ function SettingsContent() {
         theme,
         currency,
       });
+
+      // Refresh preferences in auth context and localStorage
+      await refreshPreferences();
 
       toast.success('Changes saved successfully! ✨');
       await loadProfile();
