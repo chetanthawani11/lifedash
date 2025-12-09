@@ -68,7 +68,7 @@ npm run dev
 - Journal page loads with:
   - Journal icon and name at top
   - "← Back to Journals" button
-  - "+ New Entry" button
+  - "New Entry" button
   - Empty state: "No Entries Yet" with ✍️ icon (if no entries)
 
 **Visual Check:**
@@ -80,7 +80,7 @@ npm run dev
 
 ### Step 3: Create Your First Entry
 
-1. **Click** "+ New Entry" button
+1. **Click** "New Entry" button
 
 **Modal Should Appear With:**
 - Title: "New Entry"
@@ -146,8 +146,8 @@ Here's some `code` example too!
   - Favorite star: ⭐
   - Preview of content (first 3 lines)
   - Tags: #learning #first-entry
-  - ✏️ Edit button
-  - 🗑️ Delete button
+  - Edit button
+  - Delete button
 
 ---
 
@@ -198,7 +198,7 @@ Links work too: [Google](https://google.com)
 
 ### Step 5: Edit an Entry
 
-1. **Click** the ✏️ Edit button on any entry
+1. **Click** the Edit button on any entry
 
 **Modal Should Appear With:**
 - Title: "Edit Entry"
@@ -231,7 +231,7 @@ Links work too: [Google](https://google.com)
 
 ### Step 6: Delete an Entry
 
-1. **Click** the 🗑️ Delete button on any entry
+1. **Click** the Delete button on any entry
 
 **Delete Confirmation Should Appear:**
 - Modal with title: "Delete Entry?"
@@ -339,7 +339,7 @@ This proves real-time sync works!
 **What to Check:**
 - Journal page is readable on mobile
 - Entry cards stack nicely
-- "+ New Entry" button accessible
+- "New Entry" button accessible
 - Entry form is usable on mobile
 - Mood selector fits on screen
 - Preview toggles work
@@ -355,7 +355,7 @@ This proves real-time sync works!
 □ Can navigate to individual journal
 □ Journal page loads correctly
 □ Empty state shows when no entries
-□ "+ New Entry" button opens modal
+□ "New Entry" button opens modal
 □ Entry form has all fields
 □ Title input works
 □ Mood selector works (all 5 moods)

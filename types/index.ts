@@ -13,6 +13,9 @@ export * from './expense';
 // Re-export flashcard types
 export * from './flashcard';
 
+// Re-export note types
+export * from './note';
+
 // Re-export task types
 export * from './task';
 

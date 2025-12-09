@@ -59,7 +59,7 @@ npm run dev
 **What You Should See:**
 - URL changes to: `http://localhost:3000/journals`
 - Beautiful page with title "📔 My Journals"
-- "+ New Journal" button in top right
+- "New Journal" button in top right
 - Since you have no journals yet, you'll see an empty state with:
   - Large 📔 icon
   - "No Journals Yet" message
@@ -75,7 +75,7 @@ npm run dev
 
 ### Step 3: Create Your First Journal
 
-1. **Click** "Create Your First Journal" button (or "+ New Journal")
+1. **Click** "Create Your First Journal" button (or "New Journal")
 
 **What Should Happen:**
 - A modal/popup appears with dark overlay
@@ -120,7 +120,7 @@ npm run dev
   - Journal name as heading
   - Description text
   - "📝 0 entries" (since we haven't created entries yet)
-  - ✏️ Edit and 🗑️ Delete buttons
+  - Edit and Delete buttons
 
 ---
 
@@ -128,7 +128,7 @@ npm run dev
 
 Let's create more journals to test the grid layout:
 
-1. **Click "+ New Journal"** again
+1. **Click "New Journal"** again
 2. **Create these journals** (one at a time):
 
    **Journal 2:**
@@ -164,7 +164,7 @@ Let's create more journals to test the grid layout:
 
 ### Step 5: Edit a Journal
 
-1. **Click the "✏️ Edit" button** on "Personal Journal"
+1. **Click the "Edit" button** on "Personal Journal"
 
 **What Should Happen:**
 - Modal opens with title "Edit Journal"
@@ -192,7 +192,7 @@ Let's create more journals to test the grid layout:
 
 ### Step 6: Delete a Journal
 
-1. **Click the "🗑️ Delete" button** on "Travel Log"
+1. **Click the "Delete" button** on "Travel Log"
 
 **What Should Happen:**
 - New modal appears with title "Delete Journal?"

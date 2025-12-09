@@ -59,8 +59,10 @@ export interface Flashcard {
   status: CardStatus;            // Learning status
   timesReviewed: number;         // How many times reviewed
   timesCorrect: number;          // How many times answered correctly
-  lastReviewed: Timestamp | null; // Last review date
-  nextReviewDate: Timestamp | null; // When to review next (spaced repetition)
+  lastReviewed: string | null;   // Last review date (ISO string)
+  nextReviewDate: string | null; // When to review next (ISO string - spaced repetition)
+  interval?: number;             // Days until next review (spaced repetition)
+  easinessFactor?: number;       // Easiness factor for spaced repetition (1.3 to 3.0)
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -73,13 +75,13 @@ export type Difficulty = 'easy' | 'medium' | 'hard';
 /**
  * Learning status of a flashcard
  */
-export type CardStatus = 'new' | 'learning' | 'reviewing' | 'mastered';
+export type CardStatus = 'new' | 'learning' | 'review' | 'mastered';
 
 // Status options for the UI
 export const CARD_STATUS_OPTIONS: { value: CardStatus; label: string; color: string }[] = [
   { value: 'new', label: 'New', color: '#3b82f6' },
   { value: 'learning', label: 'Learning', color: '#f59e0b' },
-  { value: 'reviewing', label: 'Reviewing', color: '#a855f7' },
+  { value: 'review', label: 'Review', color: '#a855f7' },
   { value: 'mastered', label: 'Mastered', color: '#22c55e' },
 ];
 
