@@ -26,16 +26,16 @@ import {
 import { FlashcardDeck, Flashcard } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { FlashcardForm } from '@/components/forms/FlashcardForm';
-// import {
-//   exportToCSV,
-//   exportToJSON,
-//   parseCSV,
-//   parseJSON,
-//   downloadFile,
-//   readFileAsText,
-//   getCSVTemplate,
-//   getJSONTemplate,
-// } from '@/lib/flashcard-import-export';
+import {
+  exportToCSV,
+  exportToJSON,
+  parseCSV,
+  parseJSON,
+  downloadFile,
+  readFileAsText,
+  getCSVTemplate,
+  getJSONTemplate,
+} from '@/lib/flashcard-import-export';
 import toast from 'react-hot-toast';
 
 export default function DeckViewPage() {
@@ -53,9 +53,9 @@ export default function DeckViewPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Flashcard | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  // const [showImportModal, setShowImportModal] = useState(false);
-  // const [importing, setImporting] = useState(false);
-  // const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load deck and flashcards
   useEffect(() => {
@@ -113,98 +113,98 @@ export default function DeckViewPage() {
     }
   };
 
-  // // Export to CSV
-  // const handleExportCSV = () => {
-  //   if (flashcards.length === 0) {
-  //     toast.error('No flashcards to export');
-  //     return;
-  //   }
+  // Export to CSV
+  const handleExportCSV = () => {
+    if (flashcards.length === 0) {
+      toast.error('No flashcards to export');
+      return;
+    }
 
-  //   const csv = exportToCSV(flashcards);
-  //   downloadFile(csv, `${deck?.name || 'flashcards'}_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
-  //   toast.success(`Exported ${flashcards.length} flashcards to CSV`);
-  // };
+    const csv = exportToCSV(flashcards);
+    downloadFile(csv, `${deck?.name || 'flashcards'}_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
+    toast.success(`Exported ${flashcards.length} flashcards to CSV`);
+  };
 
-  // // Export to JSON
-  // const handleExportJSON = () => {
-  //   if (flashcards.length === 0) {
-  //     toast.error('No flashcards to export');
-  //     return;
-  //   }
+  // Export to JSON
+  const handleExportJSON = () => {
+    if (flashcards.length === 0) {
+      toast.error('No flashcards to export');
+      return;
+    }
 
-  //   const json = exportToJSON(flashcards);
-  //   downloadFile(json, `${deck?.name || 'flashcards'}_${new Date().toISOString().split('T')[0]}.json`, 'application/json');
-  //   toast.success(`Exported ${flashcards.length} flashcards to JSON`);
-  // };
+    const json = exportToJSON(flashcards);
+    downloadFile(json, `${deck?.name || 'flashcards'}_${new Date().toISOString().split('T')[0]}.json`, 'application/json');
+    toast.success(`Exported ${flashcards.length} flashcards to JSON`);
+  };
 
-  // // Handle file import
-  // const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (!file || !user) return;
+  // Handle file import
+  const handleImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
 
-  //   setImporting(true);
+    setImporting(true);
 
-  //   try {
-  //     const text = await readFileAsText(file);
-  //     let flashcardsData;
+    try {
+      const text = await readFileAsText(file);
+      let flashcardsData;
 
-  //     // Determine file type by extension
-  //     if (file.name.endsWith('.csv')) {
-  //       flashcardsData = parseCSV(text);
-  //     } else if (file.name.endsWith('.json')) {
-  //       flashcardsData = parseJSON(text);
-  //     } else {
-  //       throw new Error('Unsupported file type. Please upload a .csv or .json file');
-  //     }
+      // Determine file type by extension
+      if (file.name.endsWith('.csv')) {
+        flashcardsData = parseCSV(text);
+      } else if (file.name.endsWith('.json')) {
+        flashcardsData = parseJSON(text);
+      } else {
+        throw new Error('Unsupported file type. Please upload a .csv or .json file');
+      }
 
-  //     if (flashcardsData.length === 0) {
-  //       throw new Error('No valid flashcards found in file');
-  //     }
+      if (flashcardsData.length === 0) {
+        throw new Error('No valid flashcards found in file');
+      }
 
-  //     // Import each flashcard
-  //     let successCount = 0;
-  //     let errorCount = 0;
+      // Import each flashcard
+      let successCount = 0;
+      let errorCount = 0;
 
-  //     for (const cardData of flashcardsData) {
-  //       try {
-  //         await createFlashcard(user.uid, {
-  //           ...cardData,
-  //           deckId,
-  //         });
-  //         successCount++;
-  //       } catch (error) {
-  //         console.error('Error importing flashcard:', error);
-  //         errorCount++;
-  //       }
-  //     }
+      for (const cardData of flashcardsData) {
+        try {
+          await createFlashcard(user.uid, {
+            ...cardData,
+            deckId,
+          });
+          successCount++;
+        } catch (error) {
+          console.error('Error importing flashcard:', error);
+          errorCount++;
+        }
+      }
 
-  //     toast.success(`Successfully imported ${successCount} flashcards${errorCount > 0 ? ` (${errorCount} failed)` : ''}`);
-  //     loadData();
-  //     setShowImportModal(false);
-  //   } catch (error) {
-  //     console.error('Error importing file:', error);
-  //     toast.error(error instanceof Error ? error.message : 'Failed to import file');
-  //   } finally {
-  //     setImporting(false);
-  //     // Reset file input
-  //     if (fileInputRef.current) {
-  //       fileInputRef.current.value = '';
-  //     }
-  //   }
-  // };
+      toast.success(`Successfully imported ${successCount} flashcards${errorCount > 0 ? ` (${errorCount} failed)` : ''}`);
+      loadData();
+      setShowImportModal(false);
+    } catch (error) {
+      console.error('Error importing file:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to import file');
+    } finally {
+      setImporting(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
-  // // Download template
-  // const handleDownloadTemplate = (format: 'csv' | 'json') => {
-  //   if (format === 'csv') {
-  //     const template = getCSVTemplate();
-  //     downloadFile(template, 'flashcard_template.csv', 'text/csv');
-  //     toast.success('Downloaded CSV template');
-  //   } else {
-  //     const template = getJSONTemplate();
-  //     downloadFile(template, 'flashcard_template.json', 'application/json');
-  //     toast.success('Downloaded JSON template');
-  //   }
-  // };
+  // Download template
+  const handleDownloadTemplate = (format: 'csv' | 'json') => {
+    if (format === 'csv') {
+      const template = getCSVTemplate();
+      downloadFile(template, 'flashcard_template.csv', 'text/csv');
+      toast.success('Downloaded CSV template');
+    } else {
+      const template = getJSONTemplate();
+      downloadFile(template, 'flashcard_template.json', 'application/json');
+      toast.success('Downloaded JSON template');
+    }
+  };
 
   // Filter flashcards by selected tag
   const filteredCards = selectedTag
@@ -318,7 +318,7 @@ export default function DeckViewPage() {
               </p>
             )}
           </div>
-          {/* <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
             <Button
               onClick={() => setShowImportModal(true)}
               variant="ghost"
@@ -341,15 +341,15 @@ export default function DeckViewPage() {
               >
                 Export
               </Button>
-          </div> */}
-          <Button
-            onClick={() => setShowCreateModal(true)}
-            variant="primary"
-            size="lg"
-          >
-            New Flashcard
-          </Button>
-          {/* </div> */}
+            </div>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              variant="primary"
+              size="lg"
+            >
+              + New Flashcard
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -820,7 +820,7 @@ export default function DeckViewPage() {
       )}
 
       {/* Import Modal */}
-      {/* {showImportModal && (
+      {showImportModal && (
         <div style={{
           position: 'fixed',
           top: 0,
@@ -863,6 +863,7 @@ export default function DeckViewPage() {
               Upload a CSV or JSON file to import flashcards into this deck.
             </p>
 
+            {/* File Input */}
             <input
               ref={fileInputRef}
               type="file"
@@ -895,6 +896,7 @@ export default function DeckViewPage() {
               </div>
             )}
 
+            {/* Template Downloads */}
             <div style={{
               backgroundColor: 'var(--bg-secondary)',
               borderRadius: 'var(--radius-lg)',
@@ -932,6 +934,7 @@ export default function DeckViewPage() {
               </div>
             </div>
 
+            {/* Format Info */}
             <div style={{
               fontSize: 'var(--text-sm)',
               color: 'var(--text-tertiary)',
@@ -942,6 +945,7 @@ export default function DeckViewPage() {
               <strong>JSON Format:</strong> Array of objects with front, back, notes, and tags fields
             </div>
 
+            {/* Close Button */}
             <Button
               onClick={() => setShowImportModal(false)}
               variant="ghost"
@@ -953,7 +957,7 @@ export default function DeckViewPage() {
             </Button>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }
