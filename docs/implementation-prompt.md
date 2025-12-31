@@ -86,7 +86,7 @@ For each step, provide:
 ```
 
 Remember: I'm a complete beginner, so please be extremely detailed and patient. I want to learn while building, not just copy-paste without understanding.
-
+Dont try to start the server youself just tell me the commands to run manually.
 ---
 
 ## 📋 How to Use This Prompt

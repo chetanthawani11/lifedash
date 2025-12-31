@@ -251,58 +251,60 @@ function DashboardContent() {
           </div>
 
           {/* Tasks Card */}
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow-sm)',
-            transition: 'all var(--transition-base)',
-            cursor: 'pointer',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-          }}>
+          <Link href="/tasks" style={{ textDecoration: 'none' }}>
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '1rem',
+              backgroundColor: 'var(--bg-elevated)',
+              borderRadius: 'var(--radius-2xl)',
+              padding: '2rem',
+              boxShadow: 'var(--shadow-sm)',
+              transition: 'all var(--transition-base)',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
             }}>
               <div style={{
-                padding: '0.75rem',
-                backgroundColor: 'rgba(242, 100, 25, 0.1)',
-                borderRadius: 'var(--radius-lg)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
               }}>
-                <svg style={{ width: '1.5rem', height: '1.5rem', color: 'var(--primary-500)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
+                <div style={{
+                  padding: '0.75rem',
+                  backgroundColor: 'rgba(242, 100, 25, 0.1)',
+                  borderRadius: 'var(--radius-lg)',
+                }}>
+                  <svg style={{ width: '1.5rem', height: '1.5rem', color: 'var(--primary-500)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                  </svg>
+                </div>
+                <span style={{
+                  fontSize: 'var(--text-3xl)',
+                  fontWeight: '700',
+                  color: 'var(--text-primary)',
+                }}>0</span>
               </div>
-              <span style={{
-                fontSize: 'var(--text-3xl)',
-                fontWeight: '700',
+              <h3 style={{
+                fontSize: 'var(--text-lg)',
+                fontWeight: '600',
                 color: 'var(--text-primary)',
-              }}>0</span>
+                marginBottom: '0.5rem',
+              }}>
+                Tasks
+              </h3>
+              <p style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
+              }}>
+                Stay organized
+              </p>
             </div>
-            <h3 style={{
-              fontSize: 'var(--text-lg)',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '0.5rem',
-            }}>
-              Tasks
-            </h3>
-            <p style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-tertiary)',
-            }}>
-              Stay organized
-            </p>
-          </div>
+          </Link>
         </div>
 
         {/* Welcome Message */}
