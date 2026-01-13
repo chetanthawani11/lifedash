@@ -19,6 +19,9 @@ export * from './note';
 // Re-export task types
 export * from './task';
 
+// Re-export dashboard types
+export * from './dashboard';
+
 /**
  * Common API Response Types
  * Used for consistent API responses across the app

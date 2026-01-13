@@ -1053,3 +1053,8 @@ export const getRecurringSeriesStats = async (
       : 0,
   };
 };
+
+/**
+ * Alias for subscribeToUserTasks for widget compatibility
+ */
+export const subscribeToTasks = subscribeToUserTasks;

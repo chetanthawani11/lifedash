@@ -502,3 +502,8 @@ export const subscribeToAllUserEntries = (
     onError
   );
 };
+
+/**
+ * Alias for subscribeToUserJournals for widget compatibility
+ */
+export const subscribeToJournals = subscribeToUserJournals;

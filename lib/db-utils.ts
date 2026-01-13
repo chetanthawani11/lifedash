@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -213,6 +214,33 @@ export const createDocument = async <T extends DocumentData>(
       updatedAt: now(),
     });
     return docRef.id;
+  });
+};
+
+/**
+ * Create or update a document with a specific ID
+ * Uses setDoc with merge option to create if not exists or update if exists
+ *
+ * @param userId - User ID who owns this data
+ * @param collectionName - Name of the collection
+ * @param docId - Specific document ID to use
+ * @param data - The data to save
+ * @param merge - If true, merges with existing data instead of overwriting (default: true)
+ */
+export const setDocument = async <T extends DocumentData>(
+  userId: string,
+  collectionName: string,
+  docId: string,
+  data: T,
+  merge: boolean = true
+): Promise<void> => {
+  return retryOperation(async () => {
+    const docRef = getDocumentRef(userId, collectionName, docId);
+    await setDoc(docRef, {
+      ...data,
+      userId,
+      updatedAt: now(),
+    }, { merge });
   });
 };
 

@@ -618,3 +618,8 @@ export const subscribeToUserDecks = (
     onError
   );
 };
+
+/**
+ * Alias for subscribeToUserDecks for widget compatibility
+ */
+export const subscribeToDecks = subscribeToUserDecks;

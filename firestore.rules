@@ -42,6 +42,11 @@ service cloud.firestore {
         allow read, write: if isOwner(userId);
       }
 
+      // Journal entries subcollection
+      match /journal_entries/{entryId} {
+        allow read, write: if isOwner(userId);
+      }
+
       // Expense categories subcollection
       match /expense_categories/{categoryId} {
         allow read, write: if isOwner(userId);
@@ -59,6 +64,21 @@ service cloud.firestore {
 
       // Notes subcollection - users can read/write their own notes
       match /notes/{noteId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Tasks subcollection
+      match /tasks/{taskId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Recurring task series subcollection
+      match /recurring_series/{seriesId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Dashboard settings subcollection
+      match /dashboard_settings/{docId} {
         allow read, write: if isOwner(userId);
       }
     }

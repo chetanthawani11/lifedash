@@ -174,6 +174,17 @@ export interface CategoryWithSpending extends ExpenseCategory {
 }
 
 /**
+ * Expense statistics for dashboard
+ */
+export interface ExpenseStats {
+  totalSpent: number;           // Total spending all time
+  thisMonth: number;            // This month's spending
+  lastMonth: number;            // Last month's spending
+  todaySpent: number;           // Today's spending
+  avgDaily: number;             // Average daily spending this month
+}
+
+/**
  * Firestore document data (without id)
  */
 export type ExpenseCategoryData = Omit<ExpenseCategory, 'id'>;

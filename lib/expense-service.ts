@@ -30,6 +30,7 @@ import {
   updateExpenseCategorySchema,
   ExpenseWithCategory,
   CategoryWithSpending,
+  ExpenseStats,
   DEFAULT_EXPENSE_CATEGORIES,
 } from '@/types';
 
@@ -476,3 +477,55 @@ export const getAllExpenseTags = async (userId: string): Promise<string[]> => {
 
   return Array.from(tagsSet).sort();
 };
+
+/**
+ * Get expense statistics for dashboard
+ */
+export const getExpenseStats = async (userId: string): Promise<ExpenseStats> => {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59, 999);
+
+  const allExpenses = await getDocuments<Expense>(userId, EXPENSES_COLLECTION, []);
+
+  let totalSpent = 0;
+  let thisMonth = 0;
+  let lastMonth = 0;
+  let todaySpent = 0;
+
+  allExpenses.forEach(expense => {
+    const expenseDate = expense.date instanceof Date ? expense.date : expense.date.toDate();
+    totalSpent += expense.amount;
+
+    if (expenseDate >= thisMonthStart) {
+      thisMonth += expense.amount;
+    }
+
+    if (expenseDate >= lastMonthStart && expenseDate <= lastMonthEnd) {
+      lastMonth += expense.amount;
+    }
+
+    if (expenseDate >= today) {
+      todaySpent += expense.amount;
+    }
+  });
+
+  // Calculate average daily spending this month
+  const daysInMonth = now.getDate();
+  const avgDaily = daysInMonth > 0 ? thisMonth / daysInMonth : 0;
+
+  return {
+    totalSpent,
+    thisMonth,
+    lastMonth,
+    todaySpent,
+    avgDaily,
+  };
+};
+
+/**
+ * Alias for subscribeToUserExpenses for widget compatibility
+ */
+export const subscribeToExpenses = subscribeToUserExpenses;
