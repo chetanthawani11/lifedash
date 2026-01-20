@@ -3,21 +3,62 @@
 /**
  * MAIN DASHBOARD PAGE
  *
- * Clean dashboard ready for analytics and goal tracking.
- * - 8.2 will add analytics widgets
- * - 8.3 will add goal tracking
+ * Dashboard with analytics widgets and goal tracking showing:
+ * - Journal activity and writing streaks
+ * - Expense tracking and spending patterns
+ * - Learning progress and study statistics
+ * - Task productivity and completion rates
+ * - Goal tracking with progress indicators
+ * - Achievement notifications
  */
 
+import { useState, useEffect } from 'react';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/Button';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
+import {
+  JournalActivityChart,
+  ExpenseChart,
+  LearningProgressChart,
+  TaskCompletionChart,
+} from '@/components/analytics';
+import {
+  GoalsSection,
+  AchievementNotifications,
+} from '@/components/goals';
+import {
+  getDashboardAnalytics,
+  DashboardAnalytics,
+} from '@/lib/analytics-service';
 
 function DashboardContent() {
   const { user, signOut } = useAuth();
   const router = useRouter();
+  const [analytics, setAnalytics] = useState<DashboardAnalytics | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch analytics data
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      if (!user?.uid) return;
+
+      try {
+        setLoading(true);
+        const data = await getDashboardAnalytics(user.uid);
+        setAnalytics(data);
+      } catch (error) {
+        console.error('Failed to fetch analytics:', error);
+        toast.error('Failed to load analytics');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, [user?.uid]);
 
   const handleSignOut = async () => {
     try {
@@ -39,6 +80,9 @@ function DashboardContent() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
       <Toaster position="top-right" />
+
+      {/* Achievement Notifications */}
+      <AchievementNotifications />
 
       {/* Header with Navigation */}
       <header
@@ -124,85 +168,91 @@ function DashboardContent() {
             {getGreeting()}, {user?.displayName || user?.email?.split('@')[0] || 'there'}
           </h1>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-tertiary)', marginTop: '0.25rem' }}>
-            Welcome to your dashboard
+            Here&apos;s your activity overview
           </p>
         </div>
 
-        {/* Placeholder for Analytics (8.2) and Goals (8.3) */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '1.5rem',
-          }}
-        >
-          {/* Analytics Section Placeholder */}
-          <div
-            style={{
-              gridColumn: 'span 2',
-              backgroundColor: 'var(--bg-elevated)',
-              borderRadius: '12px',
-              padding: '2rem',
-              textAlign: 'center',
-              border: '1px dashed var(--border-light)',
-            }}
-          >
-            <div style={{ marginBottom: '1rem' }}>
-              <svg
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--text-tertiary)"
-                strokeWidth="1.5"
-                style={{ margin: '0 auto' }}
-              >
-                <path d="M18 20V10M12 20V4M6 20v-6" />
-              </svg>
-            </div>
-            <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>
-              Analytics Coming Soon
-            </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginTop: '0.5rem' }}>
-              Track your journaling habits, spending patterns, study progress, and task completion
-            </p>
-          </div>
-
-          {/* Goals Section Placeholder */}
-          <div
-            style={{
-              gridColumn: 'span 2',
-              backgroundColor: 'var(--bg-elevated)',
-              borderRadius: '12px',
-              padding: '2rem',
-              textAlign: 'center',
-              border: '1px dashed var(--border-light)',
-            }}
-          >
-            <div style={{ marginBottom: '1rem' }}>
-              <svg
-                width="48"
-                height="48"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--text-tertiary)"
-                strokeWidth="1.5"
-                style={{ margin: '0 auto' }}
-              >
-                <circle cx="12" cy="12" r="10" />
-                <circle cx="12" cy="12" r="6" />
-                <circle cx="12" cy="12" r="2" />
-              </svg>
-            </div>
-            <h3 style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>
-              Goal Tracking Coming Soon
-            </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginTop: '0.5rem' }}>
-              Set goals, track your progress, and celebrate your achievements
-            </p>
-          </div>
+        {/* Goals Section */}
+        <div style={{ marginBottom: '2rem' }}>
+          <GoalsSection />
         </div>
+
+        {/* Loading State */}
+        {loading && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '1.5rem',
+            }}
+          >
+            {[1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                style={{
+                  backgroundColor: 'var(--bg-elevated)',
+                  borderRadius: '12px',
+                  padding: '1.5rem',
+                  height: '300px',
+                  animation: 'pulse 2s infinite',
+                }}
+              >
+                <div
+                  style={{
+                    height: '16px',
+                    width: '40%',
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: '4px',
+                    marginBottom: '1rem',
+                  }}
+                />
+                <div
+                  style={{
+                    height: '200px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: '8px',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Analytics Grid */}
+        {!loading && analytics && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '1.5rem',
+            }}
+          >
+            {/* Journal Activity */}
+            <JournalActivityChart data={analytics.journal} />
+
+            {/* Expense Tracking */}
+            <ExpenseChart data={analytics.expense} />
+
+            {/* Learning Progress */}
+            <LearningProgressChart data={analytics.learning} />
+
+            {/* Task Productivity */}
+            <TaskCompletionChart data={analytics.task} />
+          </div>
+        )}
       </main>
+
+      {/* CSS for loading animation */}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+      `}</style>
     </div>
   );
 }

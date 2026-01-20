@@ -81,6 +81,21 @@ service cloud.firestore {
       match /dashboard_settings/{docId} {
         allow read, write: if isOwner(userId);
       }
+
+      // Goals subcollection
+      match /goals/{goalId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Goal progress history subcollection
+      match /goal_progress/{progressId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Achievements subcollection
+      match /achievements/{achievementId} {
+        allow read, write: if isOwner(userId);
+      }
     }
 
     // Default deny all other access

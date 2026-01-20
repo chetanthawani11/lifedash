@@ -22,6 +22,9 @@ export * from './task';
 // Re-export dashboard types
 export * from './dashboard';
 
+// Re-export goal types
+export * from './goal';
+
 /**
  * Common API Response Types
  * Used for consistent API responses across the app
