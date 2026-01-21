@@ -31,6 +31,7 @@ import {
   formatMinutes,
 } from '@/types';
 import { Button } from '@/components/ui/Button';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import { TaskForm } from '@/components/forms/TaskForm';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -46,6 +47,7 @@ export default function TaskDetailPage() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // State for completion with time tracking
   const [showCompleteModal, setShowCompleteModal] = useState(false);
@@ -125,6 +127,7 @@ export default function TaskDetailPage() {
   const handleDelete = async () => {
     if (!user || !task) return;
 
+    setIsDeleting(true);
     try {
       await deleteTask(user.uid, task.id);
       toast.success('Task deleted');
@@ -132,8 +135,10 @@ export default function TaskDetailPage() {
     } catch (error) {
       console.error('Error deleting task:', error);
       toast.error('Failed to delete task');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
     }
-    setShowDeleteConfirm(false);
   };
 
   // Get display info
@@ -156,35 +161,16 @@ export default function TaskDetailPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          textAlign: 'center',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '3px solid var(--border-light)',
-            borderTopColor: 'var(--primary-500)',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem',
-          }} />
-          <style jsx>{`
-            @keyframes spin {
-              to { transform: rotate(360deg); }
-            }
-          `}</style>
-          <div style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--text-secondary)',
-          }}>
-            Loading task...
-          </div>
+          Loading task...
         </div>
       </div>
     );
@@ -193,26 +179,25 @@ export default function TaskDetailPage() {
   if (!task) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
           textAlign: 'center',
         }}>
           <div style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--text-secondary)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-tertiary)',
+            marginBottom: '1rem',
           }}>
             Task not found
           </div>
           <Button
             onClick={() => router.push('/tasks')}
             variant="primary"
-            size="lg"
-            style={{ marginTop: '1rem' }}
+            size="sm"
           >
             Back to Tasks
           </Button>
@@ -224,56 +209,37 @@ export default function TaskDetailPage() {
   const isCompleted = task.status === 'completed';
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       <Toaster position="top-right" />
 
-      {/* Page Content */}
+      {/* Main Card */}
       <div style={{
-        maxWidth: '800px',
-        margin: '0 auto',
+        backgroundColor: 'var(--bg-elevated)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '1.5rem',
+        border: '1px solid var(--border-light)',
       }}>
-        {/* Back Button */}
-        <Button
-          onClick={() => router.push('/tasks')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1.5rem' }}
-        >
-          ← Back to Tasks
-        </Button>
-
-        {/* Main Card */}
+        {/* Header with Title and Actions */}
         <div style={{
-          backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-2xl)',
-          padding: '2rem',
-          boxShadow: 'var(--shadow-md)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          gap: '1rem',
+          marginBottom: '1rem',
+          flexWrap: 'wrap',
         }}>
-          {/* Header with Title and Actions */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            gap: '1rem',
-            marginBottom: '1.5rem',
-            flexWrap: 'wrap',
-          }}>
-            <div style={{ flex: 1 }}>
-              {/* Title */}
-              <h1 style={{
-                fontSize: 'var(--text-3xl)',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-                marginBottom: '0.75rem',
-                textDecoration: isCompleted ? 'line-through' : 'none',
-                opacity: isCompleted ? 0.7 : 1,
-              }}>
-                {task.title}
-              </h1>
+          <div style={{ flex: 1 }}>
+            {/* Title */}
+            <h1 style={{
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              marginBottom: '0.5rem',
+              textDecoration: isCompleted ? 'line-through' : 'none',
+              opacity: isCompleted ? 0.7 : 1,
+            }}>
+              {task.title}
+            </h1>
 
               {/* Badges */}
               <div style={{
@@ -325,27 +291,27 @@ export default function TaskDetailPage() {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div style={{
-              display: 'flex',
-              gap: '0.5rem',
-            }}>
-              <Button
-                onClick={() => setShowEditModal(true)}
-                variant="ghost"
-                size="md"
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={() => setShowDeleteConfirm(true)}
-                variant="danger"
-                size="md"
-              >
-                Delete
-              </Button>
-            </div>
+          {/* Action Buttons */}
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+          }}>
+            <Button
+              onClick={() => setShowEditModal(true)}
+              variant="ghost"
+              size="sm"
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={() => setShowDeleteConfirm(true)}
+              variant="danger"
+              size="sm"
+            >
+              Delete
+            </Button>
           </div>
+        </div>
 
           {/* Description */}
           {task.description && (
@@ -547,33 +513,32 @@ export default function TaskDetailPage() {
             </div>
           )}
 
-          {/* Complete/Reopen Button */}
-          <div style={{
-            borderTop: '1px solid var(--border-light)',
-            paddingTop: '1.5rem',
-            display: 'flex',
-            gap: '1rem',
-          }}>
-            {isCompleted ? (
-              <Button
-                onClick={handleReopen}
-                variant="secondary"
-                size="lg"
-                disabled={isUpdating}
-              >
-                {isUpdating ? 'Reopening...' : 'Reopen Task'}
-              </Button>
-            ) : (
-              <Button
-                onClick={() => setShowCompleteModal(true)}
-                variant="primary"
-                size="lg"
-                disabled={isUpdating}
-              >
-                Mark as Complete
-              </Button>
-            )}
-          </div>
+        {/* Complete/Reopen Button */}
+        <div style={{
+          borderTop: '1px solid var(--border-light)',
+          paddingTop: '1rem',
+          display: 'flex',
+          gap: '0.75rem',
+        }}>
+          {isCompleted ? (
+            <Button
+              onClick={handleReopen}
+              variant="secondary"
+              size="sm"
+              disabled={isUpdating}
+            >
+              {isUpdating ? 'Reopening...' : 'Reopen Task'}
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setShowCompleteModal(true)}
+              variant="primary"
+              size="sm"
+              disabled={isUpdating}
+            >
+              Mark as Complete
+            </Button>
+          )}
         </div>
       </div>
 
@@ -581,10 +546,7 @@ export default function TaskDetailPage() {
       {showCompleteModal && (
         <div style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
           alignItems: 'center',
@@ -596,31 +558,33 @@ export default function TaskDetailPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
-            boxShadow: 'var(--shadow-xl)',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Complete Task
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               How long did this task actually take? (Optional)
             </p>
 
-            <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ marginBottom: '1rem' }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -634,13 +598,13 @@ export default function TaskDetailPage() {
                   min="1"
                   max="10080"
                   style={{
-                    width: '120px',
-                    padding: '0.75rem 1rem',
-                    borderRadius: 'var(--radius-lg)',
-                    border: '2px solid var(--border-light)',
+                    width: '100px',
+                    padding: '0.5rem 0.75rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-light)',
                     backgroundColor: 'var(--bg-primary)',
                     color: 'var(--text-primary)',
-                    fontSize: 'var(--text-base)',
+                    fontSize: 'var(--text-sm)',
                   }}
                 />
                 <span style={{
@@ -653,7 +617,7 @@ export default function TaskDetailPage() {
               {task.estimatedMinutes && (
                 <p style={{
                   marginTop: '0.5rem',
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--text-tertiary)',
                 }}>
                   Estimated: {formatMinutes(task.estimatedMinutes)}
@@ -664,12 +628,12 @@ export default function TaskDetailPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowCompleteModal(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -677,7 +641,7 @@ export default function TaskDetailPage() {
               <Button
                 onClick={handleComplete}
                 variant="primary"
-                size="lg"
+                size="sm"
                 fullWidth
                 disabled={isUpdating}
               >
@@ -689,72 +653,17 @@ export default function TaskDetailPage() {
       )}
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '1rem',
-        }}
-          onClick={() => setShowDeleteConfirm(false)}
-        >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            maxWidth: '400px',
-            width: '100%',
-            boxShadow: 'var(--shadow-xl)',
-          }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}>
-              Delete Task?
-            </h2>
-            <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
-            }}>
-              Are you sure you want to delete this task? This action cannot be undone.
-            </p>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
-            }}>
-              <Button
-                onClick={() => setShowDeleteConfirm(false)}
-                variant="ghost"
-                size="lg"
-                fullWidth
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDelete}
-                variant="danger"
-                size="lg"
-                fullWidth
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title="Delete Task"
+        message={<>Are you sure you want to delete <strong>&ldquo;{task?.title}&rdquo;</strong>? This action cannot be undone.</>}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={isDeleting}
+      />
 
       {/* Edit Task Modal */}
       {showEditModal && user && (
@@ -772,21 +681,21 @@ export default function TaskDetailPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '600px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               Edit Task
             </h2>

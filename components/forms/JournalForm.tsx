@@ -113,7 +113,7 @@ export const JournalForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {/* Journal Name */}
       <Input
         label="Journal Name"
@@ -134,7 +134,7 @@ export const JournalForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -198,7 +198,7 @@ export const JournalForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -207,8 +207,8 @@ export const JournalForm = ({
         </label>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(50px, 1fr))',
-          gap: '0.75rem',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(36px, 1fr))',
+          gap: '0.5rem',
         }}>
           {COLOR_OPTIONS.map((color) => (
             <button
@@ -216,13 +216,13 @@ export const JournalForm = ({
               type="button"
               onClick={() => setSelectedColor(color.value)}
               style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: 'var(--radius-md)',
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: color.value,
                 border: selectedColor === color.value
-                  ? '3px solid var(--text-primary)'
-                  : '2px solid var(--border-light)',
+                  ? '2px solid var(--text-primary)'
+                  : '1px solid var(--border-light)',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 position: 'relative',
@@ -235,7 +235,8 @@ export const JournalForm = ({
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  fontSize: '1.5rem',
+                  fontSize: '1rem',
+                  color: 'white',
                 }}>
                   ✓
                 </div>
@@ -244,13 +245,13 @@ export const JournalForm = ({
           ))}
         </div>
         <p style={{
-          marginTop: '0.75rem',
+          marginTop: '0.5rem',
           fontSize: 'var(--text-xs)',
           color: 'var(--text-tertiary)',
           paddingLeft: '0.25rem',
-          lineHeight: '1.6',
+          lineHeight: '1.5',
         }}>
-          Pick a color to help you identify this journal
+          Pick a color to identify this journal
         </p>
       </div>
 
@@ -258,7 +259,7 @@ export const JournalForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -267,8 +268,8 @@ export const JournalForm = ({
         </label>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(50px, 1fr))',
-          gap: '0.75rem',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(36px, 1fr))',
+          gap: '0.5rem',
         }}>
           {ICON_OPTIONS.map((icon) => (
             <button
@@ -276,17 +277,17 @@ export const JournalForm = ({
               type="button"
               onClick={() => setSelectedIcon(icon)}
               style={{
-                width: '50px',
-                height: '50px',
-                borderRadius: 'var(--radius-md)',
+                width: '36px',
+                height: '36px',
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: selectedIcon === icon
                   ? `${selectedColor}30`
                   : 'var(--bg-secondary)',
                 border: selectedIcon === icon
-                  ? `3px solid ${selectedColor}`
-                  : '2px solid var(--border-light)',
+                  ? `2px solid ${selectedColor}`
+                  : '1px solid var(--border-light)',
                 cursor: 'pointer',
-                fontSize: '1.5rem',
+                fontSize: '1.125rem',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -298,28 +299,29 @@ export const JournalForm = ({
           ))}
         </div>
         <p style={{
-          marginTop: '0.75rem',
+          marginTop: '0.5rem',
           fontSize: 'var(--text-xs)',
           color: 'var(--text-tertiary)',
           paddingLeft: '0.25rem',
-          lineHeight: '1.6',
+          lineHeight: '1.5',
         }}>
-          Choose an icon that represents this journal
+          Choose an icon for this journal
         </p>
       </div>
 
       {/* Action Buttons */}
       <div style={{
-        display: 'flex',
-        gap: '1rem',
-        marginTop: '0.5rem',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '0.75rem',
+        marginTop: '0.25rem',
       }}>
         <Button
           type="button"
           onClick={onCancel}
           variant="ghost"
-          size="lg"
-          style={{ flex: 1 }}
+          size="sm"
+          fullWidth
           disabled={loading}
         >
           Cancel
@@ -327,8 +329,8 @@ export const JournalForm = ({
         <Button
           type="submit"
           variant="primary"
-          size="lg"
-          style={{ flex: 1 }}
+          size="sm"
+          fullWidth
           loading={loading}
         >
           {loading

@@ -53,11 +53,11 @@ export const Select: React.FC<SelectProps> = ({
   };
 
   return (
-    <div className={label ? "mb-4" : ""} ref={containerRef}>
+    <div ref={containerRef}>
       {label && (
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',

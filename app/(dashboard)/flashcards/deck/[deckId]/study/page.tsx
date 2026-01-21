@@ -22,6 +22,7 @@ import {
 import { Flashcard, FlashcardDeck } from '@/types';
 import { FlashcardStudyCard } from '@/components/flashcards/FlashcardStudyCard';
 import { Button } from '@/components/ui/Button';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import toast from 'react-hot-toast';
 
 interface StudyPageProps {
@@ -42,6 +43,7 @@ export default function StudyPage({ params }: StudyPageProps) {
   const [studiedCards, setStudiedCards] = useState<Flashcard[]>([]);
   const [loading, setLoading] = useState(true);
   const [sessionComplete, setSessionComplete] = useState(false);
+  const [showEndSessionConfirm, setShowEndSessionConfirm] = useState(false);
 
   // Load deck and flashcards
   useEffect(() => {
@@ -130,13 +132,12 @@ export default function StudyPage({ params }: StudyPageProps) {
   if (loading || authLoading) {
     return (
       <div style={{
-        padding: '2rem',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '400px',
+        padding: '4rem 0',
       }}>
-        <div style={{ fontSize: 'var(--text-lg)', color: 'var(--text-secondary)' }}>
+        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
           Loading study session...
         </div>
       </div>
@@ -148,26 +149,22 @@ export default function StudyPage({ params }: StudyPageProps) {
     const stats = calculateSessionStats(allCards, studiedCards);
 
     return (
-      <div style={{
-        padding: '2rem',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}>
+      <div>
         {/* Header */}
         <div style={{
-          marginBottom: '2rem',
+          marginBottom: '1.5rem',
           textAlign: 'center',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-3xl)',
-            fontWeight: 'bold',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
-            marginBottom: '0.5rem',
+            marginBottom: '0.25rem',
           }}>
-            {studiedCards.length > 0 ? '🎉 Session Complete!' : '✅ All Caught Up!'}
+            {studiedCards.length > 0 ? 'Session Complete!' : 'All Caught Up!'}
           </h1>
           <p style={{
-            fontSize: 'var(--text-lg)',
+            fontSize: 'var(--text-sm)',
             color: 'var(--text-secondary)',
           }}>
             {deck?.name}
@@ -177,97 +174,97 @@ export default function StudyPage({ params }: StudyPageProps) {
         {/* Session Stats */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '1rem',
-          marginBottom: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+          gap: '0.75rem',
+          marginBottom: '1.5rem',
         }}>
           <div style={{
-            padding: '1.5rem',
+            padding: '1rem',
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
             textAlign: 'center',
           }}>
             <div style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: 'bold',
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
               color: 'var(--primary-500)',
-              marginBottom: '0.5rem',
+              marginBottom: '0.25rem',
             }}>
               {stats.cardsStudied}
             </div>
             <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
             }}>
               Cards Studied
             </div>
           </div>
 
           <div style={{
-            padding: '1.5rem',
+            padding: '1rem',
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
             textAlign: 'center',
           }}>
             <div style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: 'bold',
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
               color: stats.accuracy >= 80 ? '#22c55e' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444',
-              marginBottom: '0.5rem',
+              marginBottom: '0.25rem',
             }}>
               {stats.accuracy}%
             </div>
             <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
             }}>
               Accuracy
             </div>
           </div>
 
           <div style={{
-            padding: '1.5rem',
+            padding: '1rem',
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
             textAlign: 'center',
           }}>
             <div style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: 'bold',
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
               color: 'var(--primary-500)',
-              marginBottom: '0.5rem',
+              marginBottom: '0.25rem',
             }}>
               {stats.newCards}
             </div>
             <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
             }}>
               New Cards
             </div>
           </div>
 
           <div style={{
-            padding: '1.5rem',
+            padding: '1rem',
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-light)',
             textAlign: 'center',
           }}>
             <div style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: 'bold',
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
               color: 'var(--primary-500)',
-              marginBottom: '0.5rem',
+              marginBottom: '0.25rem',
             }}>
               {stats.reviewCards}
             </div>
             <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
             }}>
               Due for Review
             </div>
@@ -277,25 +274,25 @@ export default function StudyPage({ params }: StudyPageProps) {
         {/* Motivational Message */}
         {studiedCards.length > 0 && (
           <div style={{
-            padding: '1.5rem',
+            padding: '1rem',
             backgroundColor: 'var(--primary-50)',
-            borderRadius: 'var(--radius-lg)',
+            borderRadius: 'var(--radius-md)',
             border: '1px solid var(--primary-200)',
-            marginBottom: '2rem',
+            marginBottom: '1.5rem',
             textAlign: 'center',
           }}>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-primary)',
-              marginBottom: '0.5rem',
+              marginBottom: '0.25rem',
             }}>
-              {stats.accuracy >= 90 ? '🌟 Outstanding work!' :
-               stats.accuracy >= 75 ? '👏 Great job!' :
-               stats.accuracy >= 60 ? '👍 Good effort!' :
-               '💪 Keep practicing!'}
+              {stats.accuracy >= 90 ? 'Outstanding work!' :
+               stats.accuracy >= 75 ? 'Great job!' :
+               stats.accuracy >= 60 ? 'Good effort!' :
+               'Keep practicing!'}
             </p>
             <p style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-secondary)',
             }}>
               {stats.cardsCorrect > 0 && `You got ${stats.cardsCorrect} cards right. `}
@@ -308,12 +305,12 @@ export default function StudyPage({ params }: StudyPageProps) {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
           <Button
             onClick={() => router.push(`/flashcards/deck/${deckId}`)}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
           >
             Back to Deck
@@ -321,10 +318,10 @@ export default function StudyPage({ params }: StudyPageProps) {
           <Button
             onClick={() => router.push('/flashcards')}
             variant="primary"
-            size="lg"
+            size="sm"
             fullWidth
           >
-            Back to Flashcards
+            All Decks
           </Button>
         </div>
       </div>
@@ -336,29 +333,25 @@ export default function StudyPage({ params }: StudyPageProps) {
   const progress = ((currentCardIndex) / studyQueue.length) * 100;
 
   return (
-    <div style={{
-      padding: '2rem',
-      maxWidth: '900px',
-      margin: '0 auto',
-    }}>
+    <div>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '2rem',
+        marginBottom: '1.5rem',
       }}>
         <div>
           <h1 style={{
-            fontSize: 'var(--text-2xl)',
-            fontWeight: 'bold',
+            fontSize: 'var(--text-xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
             marginBottom: '0.25rem',
           }}>
             Studying: {deck?.name}
           </h1>
           <p style={{
-            fontSize: 'var(--text-sm)',
+            fontSize: 'var(--text-xs)',
             color: 'var(--text-secondary)',
           }}>
             {studyQueue.length} cards due for review
@@ -366,13 +359,9 @@ export default function StudyPage({ params }: StudyPageProps) {
         </div>
 
         <Button
-          onClick={() => {
-            if (confirm('Are you sure you want to end this study session?')) {
-              router.push(`/flashcards/deck/${deckId}`);
-            }
-          }}
+          onClick={() => setShowEndSessionConfirm(true)}
           variant="ghost"
-          size="md"
+          size="sm"
         >
           End Session
         </Button>
@@ -381,10 +370,10 @@ export default function StudyPage({ params }: StudyPageProps) {
       {/* Progress Bar */}
       <div style={{
         width: '100%',
-        height: '8px',
+        height: '6px',
         backgroundColor: 'var(--bg-secondary)',
         borderRadius: 'var(--radius-full)',
-        marginBottom: '2rem',
+        marginBottom: '1.5rem',
         overflow: 'hidden',
       }}>
         <div style={{
@@ -406,39 +395,51 @@ export default function StudyPage({ params }: StudyPageProps) {
 
       {/* Study Stats (below card) */}
       <div style={{
-        marginTop: '2rem',
-        padding: '1rem',
+        marginTop: '1.5rem',
+        padding: '0.75rem',
         backgroundColor: 'var(--bg-secondary)',
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: 'var(--radius-md)',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
       }}>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
             Studied
           </div>
-          <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+          <div style={{ fontSize: 'var(--text-base)', fontWeight: '600', color: 'var(--text-primary)' }}>
             {currentCardIndex}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
             Remaining
           </div>
-          <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+          <div style={{ fontSize: 'var(--text-base)', fontWeight: '600', color: 'var(--text-primary)' }}>
             {studyQueue.length - currentCardIndex}
           </div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
+          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
             Total
           </div>
-          <div style={{ fontSize: 'var(--text-lg)', fontWeight: 'bold', color: 'var(--text-primary)' }}>
+          <div style={{ fontSize: 'var(--text-base)', fontWeight: '600', color: 'var(--text-primary)' }}>
             {allCards.length}
           </div>
         </div>
       </div>
+
+      {/* End Session Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showEndSessionConfirm}
+        onClose={() => setShowEndSessionConfirm(false)}
+        onConfirm={() => router.push(`/flashcards/deck/${deckId}`)}
+        title="End Study Session"
+        message={<>Are you sure you want to end this study session? You&apos;ve studied <strong>{currentCardIndex}</strong> of <strong>{studyQueue.length}</strong> cards.</>}
+        confirmText="End Session"
+        cancelText="Continue Studying"
+        variant="warning"
+      />
     </div>
   );
 }

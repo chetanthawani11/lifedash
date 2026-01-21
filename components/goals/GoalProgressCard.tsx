@@ -9,6 +9,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import {
   Goal,
   getCategoryInfo,
@@ -36,6 +37,7 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
   const { user } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const categoryInfo = getCategoryInfo(goal.category);
   const progress = calculateProgress(currentValue, goal.targetValue, goal.isUpperLimit);
@@ -58,8 +60,6 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
 
   const handleDelete = async () => {
     if (!user?.uid) return;
-    if (!confirm('Are you sure you want to delete this goal?')) return;
-
     setDeleting(true);
     try {
       await deleteGoal(user.uid, goal.id);
@@ -69,6 +69,7 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
       toast.error('Failed to delete goal');
     } finally {
       setDeleting(false);
+      setShowDeleteConfirm(false);
     }
     setShowMenu(false);
   };
@@ -174,7 +175,10 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
                 Pause Goal
               </button>
               <button
-                onClick={handleDelete}
+                onClick={() => {
+                  setShowMenu(false);
+                  setShowDeleteConfirm(true);
+                }}
                 disabled={deleting}
                 style={{
                   display: 'block',
@@ -188,7 +192,7 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
                   fontSize: '0.85rem',
                 }}
               >
-                {deleting ? 'Deleting...' : 'Delete Goal'}
+                Delete Goal
               </button>
             </div>
           )}
@@ -269,6 +273,19 @@ export const GoalProgressCard: React.FC<GoalProgressCardProps> = ({
           {motivational.message}
         </span>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title="Delete Goal"
+        message={<>Are you sure you want to delete <strong>&ldquo;{goal.title}&rdquo;</strong>? This action cannot be undone.</>}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={deleting}
+      />
     </div>
   );
 };

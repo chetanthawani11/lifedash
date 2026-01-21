@@ -104,7 +104,7 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {/* Folder Name */}
         <Input
           label="Folder Name"
@@ -130,7 +130,7 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -149,13 +149,13 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
                 onClick={() => setIcon(ic)}
                 disabled={loading}
                 style={{
-                  width: '2.5rem',
-                  height: '2.5rem',
-                  borderRadius: 'var(--radius-md)',
+                  width: '2rem',
+                  height: '2rem',
+                  borderRadius: 'var(--radius-sm)',
                   backgroundColor: icon === ic ? 'var(--primary-100)' : 'var(--bg-secondary)',
                   border: icon === ic ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
                   cursor: loading ? 'not-allowed' : 'pointer',
-                  fontSize: '1.25rem',
+                  fontSize: '1rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -183,7 +183,7 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -202,11 +202,11 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
                 onClick={() => setColor(c)}
                 disabled={loading}
                 style={{
-                  width: '2.5rem',
-                  height: '2.5rem',
-                  borderRadius: 'var(--radius-md)',
+                  width: '2rem',
+                  height: '2rem',
+                  borderRadius: 'var(--radius-sm)',
                   backgroundColor: c,
-                  border: color === c ? '3px solid var(--text-primary)' : '2px solid var(--border-light)',
+                  border: color === c ? '2px solid var(--text-primary)' : '1px solid var(--border-light)',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
                   opacity: loading ? 0.5 : 1,
@@ -224,39 +224,39 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
 
         {/* Preview */}
         <div style={{
-          padding: '1rem',
+          padding: '0.75rem',
           backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-lg)',
+          borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-light)',
         }}>
           <p style={{
-            fontSize: 'var(--text-sm)',
+            fontSize: 'var(--text-xs)',
             color: 'var(--text-tertiary)',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
           }}>
             Preview:
           </p>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
+            gap: '0.5rem',
           }}>
             <div style={{
-              width: '3rem',
-              height: '3rem',
-              borderRadius: 'var(--radius-md)',
+              width: '2.25rem',
+              height: '2.25rem',
+              borderRadius: 'var(--radius-sm)',
               backgroundColor: `${color}20`,
               border: `2px solid ${color}`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '1.5rem',
+              fontSize: '1.125rem',
             }}>
               {icon}
             </div>
             <div>
               <div style={{
-                fontSize: 'var(--text-base)',
+                fontSize: 'var(--text-sm)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
               }}>
@@ -264,7 +264,7 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
               </div>
               {description && (
                 <div style={{
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--text-secondary)',
                 }}>
                   {description}
@@ -278,14 +278,14 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
-          marginTop: '0.5rem',
+          gap: '0.75rem',
+          marginTop: '0.25rem',
         }}>
           <Button
             type="button"
             onClick={onCancel}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
             disabled={loading}
           >
@@ -294,7 +294,7 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
           <Button
             type="submit"
             variant="primary"
-            size="lg"
+            size="sm"
             fullWidth
             loading={loading}
           >

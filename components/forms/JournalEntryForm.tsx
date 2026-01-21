@@ -123,7 +123,7 @@ export const JournalEntryForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
       {/* Title */}
       <div>
         <input
@@ -136,8 +136,8 @@ export const JournalEntryForm = ({
             borderBottom: errors.title ? '2px solid var(--error)' : '2px solid var(--border-light)',
             backgroundColor: 'transparent',
             color: 'var(--text-primary)',
-            fontSize: 'var(--text-2xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-lg)',
+            fontWeight: '600',
             outline: 'none',
             transition: 'all var(--transition-base)',
           }}
@@ -170,7 +170,7 @@ export const JournalEntryForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -179,7 +179,7 @@ export const JournalEntryForm = ({
         </label>
         <div style={{
           display: 'flex',
-          gap: '0.75rem',
+          gap: '0.5rem',
           flexWrap: 'wrap',
         }}>
           {MOOD_OPTIONS.map((mood) => (
@@ -188,25 +188,25 @@ export const JournalEntryForm = ({
               type="button"
               onClick={() => setSelectedMood(selectedMood === mood.value ? null : mood.value)}
               style={{
-                flex: '1 1 calc(20% - 0.75rem)',
-                minWidth: '80px',
-                padding: '0.75rem',
+                flex: '1 1 calc(20% - 0.5rem)',
+                minWidth: '60px',
+                padding: '0.5rem',
                 borderRadius: 'var(--radius-md)',
                 backgroundColor: selectedMood === mood.value
                   ? 'var(--primary-500)'
                   : 'var(--bg-secondary)',
                 border: selectedMood === mood.value
                   ? '2px solid var(--primary-400)'
-                  : '2px solid var(--border-light)',
+                  : '1px solid var(--border-light)',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.25rem',
+                gap: '0.125rem',
               }}
             >
-              <span style={{ fontSize: '1.5rem' }}>{mood.emoji}</span>
+              <span style={{ fontSize: '1.25rem' }}>{mood.emoji}</span>
               <span style={{
                 fontSize: 'var(--text-xs)',
                 fontWeight: '500',
@@ -223,7 +223,7 @@ export const JournalEntryForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -234,16 +234,16 @@ export const JournalEntryForm = ({
           placeholder="Start writing your thoughts..."
           style={{
             width: '100%',
-            minHeight: '300px',
-            padding: '1.5rem',
+            minHeight: '200px',
+            padding: '1rem',
             borderRadius: 'var(--radius-lg)',
-            border: errors.content ? '2px solid var(--error)' : '2px solid var(--border-light)',
+            border: errors.content ? '2px solid var(--error)' : '1px solid var(--border-light)',
             backgroundColor: 'var(--bg-secondary)',
             color: 'var(--text-primary)',
-            fontSize: 'var(--text-base)',
+            fontSize: 'var(--text-sm)',
             outline: 'none',
             resize: 'vertical',
-            lineHeight: '1.7',
+            lineHeight: '1.6',
             fontFamily: 'inherit',
             transition: 'all var(--transition-base)',
           }}
@@ -276,7 +276,7 @@ export const JournalEntryForm = ({
       <div>
         <label style={{
           display: 'block',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -286,7 +286,7 @@ export const JournalEntryForm = ({
         <div style={{
           display: 'flex',
           gap: '0.5rem',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
         }}>
           <input
             type="text"
@@ -301,12 +301,12 @@ export const JournalEntryForm = ({
             placeholder="Add a tag (press Enter)"
             style={{
               flex: 1,
-              padding: '0.75rem 1rem',
-              borderRadius: 'var(--radius-lg)',
-              border: '1.5px solid var(--border-light)',
+              padding: '0.5rem 0.75rem',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-light)',
               backgroundColor: 'var(--bg-primary)',
               color: 'var(--text-primary)',
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               outline: 'none',
               transition: 'all var(--transition-base)',
             }}
@@ -335,15 +335,15 @@ export const JournalEntryForm = ({
               <span
                 key={tag}
                 style={{
-                  padding: '0.5rem 0.75rem',
+                  padding: '0.25rem 0.5rem',
                   backgroundColor: 'var(--primary-100)',
                   color: 'var(--primary-600)',
                   borderRadius: 'var(--radius-full)',
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   fontWeight: '500',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '0.5rem',
+                  gap: '0.375rem',
                 }}
               >
                 #{tag}
@@ -355,10 +355,10 @@ export const JournalEntryForm = ({
                     border: 'none',
                     color: 'var(--primary-600)',
                     cursor: 'pointer',
-                    fontSize: '1.25rem',
+                    fontSize: '1rem',
                     padding: 0,
                     lineHeight: 1,
-                    fontWeight: '700',
+                    fontWeight: '600',
                   }}
                 >
                   ×
@@ -373,7 +373,7 @@ export const JournalEntryForm = ({
       <label style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.75rem',
+        gap: '0.5rem',
         cursor: 'pointer',
         userSelect: 'none',
       }}>
@@ -382,17 +382,17 @@ export const JournalEntryForm = ({
           checked={isFavorite}
           onChange={(e) => setIsFavorite(e.target.checked)}
           style={{
-            width: '1.25rem',
-            height: '1.25rem',
+            width: '1rem',
+            height: '1rem',
             cursor: 'pointer',
           }}
         />
         <span style={{
-          fontSize: 'var(--text-base)',
+          fontSize: 'var(--text-sm)',
           color: 'var(--text-primary)',
           fontWeight: '500',
         }}>
-          ⭐ Mark as favorite
+          Mark as favorite
         </span>
       </label>
 
@@ -400,14 +400,14 @@ export const JournalEntryForm = ({
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
-        marginTop: '0.5rem',
+        gap: '0.75rem',
+        marginTop: '0.25rem',
       }}>
         <Button
           type="button"
           onClick={onCancel}
           variant="ghost"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading}
         >
@@ -416,7 +416,7 @@ export const JournalEntryForm = ({
         <Button
           type="submit"
           variant="primary"
-          size="lg"
+          size="sm"
           fullWidth
           loading={loading}
         >

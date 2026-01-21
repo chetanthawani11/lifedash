@@ -16,10 +16,10 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const [isFocused, setIsFocused] = React.useState(false);
 
     return (
-      <div className="mb-4">
+      <div>
         {label && (
           <label
-            className="block mb-2"
+            className="block mb-1.5"
             style={{
               fontSize: 'var(--text-sm)',
               fontWeight: '500',

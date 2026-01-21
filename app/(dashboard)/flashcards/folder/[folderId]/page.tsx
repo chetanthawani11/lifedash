@@ -100,15 +100,14 @@ export default function FolderDetailPage() {
   if (loading || authLoading || !folder) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading folder...
         </div>
@@ -117,77 +116,45 @@ export default function FolderDetailPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
-        {/* Back Button */}
-        <div style={{ marginBottom: '2rem' }}>
-          <Button
-            onClick={() => router.push('/flashcards')}
-            variant="ghost"
-            size="sm"
-            style={{ marginBottom: '1rem' }}
-          >
-            &larr; Back to Flashcards
-          </Button>
-        </div>
-
-        {/* Folder Header */}
+    <div>
+      {/* Page Header */}
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '1.5rem',
-          marginBottom: '2rem',
-          padding: '1.5rem',
-          backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-2xl)',
-          border: `2px solid ${folder.color}40`,
-          boxShadow: 'var(--shadow-md)',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
-          <div style={{
-            fontSize: '3rem',
-            width: '4rem',
-            height: '4rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: `${folder.color}20`,
-            borderRadius: 'var(--radius-lg)',
-            border: `2px solid ${folder.color}`,
-          }}>
-            {folder.icon}
-          </div>
-
-          <div style={{ flex: 1 }}>
-            <h1 style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '0.5rem',
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: `${folder.color}20`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem',
             }}>
-              {folder.name}
-            </h1>
-            {folder.description && (
-              <p style={{
-                fontSize: 'var(--text-base)',
-                color: 'var(--text-secondary)',
-                marginBottom: '0.5rem',
+              {folder.icon}
+            </div>
+            <div>
+              <h1 style={{
+                fontSize: 'var(--text-2xl)',
+                fontWeight: '600',
+                color: 'var(--text-primary)',
               }}>
-                {folder.description}
+                {folder.name}
+              </h1>
+              <p style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
+              }}>
+                {decks.length} {decks.length === 1 ? 'deck' : 'decks'}
               </p>
-            )}
-            <p style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-tertiary)',
-            }}>
-              {decks.length} {decks.length === 1 ? 'deck' : 'decks'}
-            </p>
+            </div>
           </div>
 
           <Button
@@ -196,172 +163,169 @@ export default function FolderDetailPage() {
               setShowCreateDeckModal(true);
             }}
             variant="primary"
-            size="lg"
+            size="sm"
           >
             New Deck
           </Button>
         </div>
 
-        {/* Decks List */}
-        {decks.length === 0 ? (
-          // Empty state
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
-            textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
+        {folder.description && (
+          <p style={{
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              📚
-            </div>
-            <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '0.5rem',
-            }}>
-              No Decks Yet
-            </h2>
-            <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
-            }}>
-              Create your first deck in this folder!
-            </p>
-            <Button
-              onClick={() => {
-                setSelectedDeck(null);
-                setShowCreateDeckModal(true);
-              }}
-              variant="primary"
-              size="lg"
-            >
-              Create Deck
-            </Button>
-          </div>
-        ) : (
-          // Decks grid
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1.5rem',
-          }}>
-            {decks.map((deck) => (
-              <div
-                key={deck.id}
-                onClick={() => router.push(`/flashcards/deck/${deck.id}`)}
-                style={{
-                  backgroundColor: 'var(--bg-elevated)',
-                  borderRadius: 'var(--radius-xl)',
-                  padding: '1.5rem',
-                  boxShadow: 'var(--shadow-md)',
-                  cursor: 'pointer',
-                  transition: 'all var(--transition-base)',
-                  border: '2px solid transparent',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                  e.currentTarget.style.borderColor = deck.color;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  e.currentTarget.style.borderColor = 'transparent';
-                }}
-              >
-                {/* Deck Icon & Color */}
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: 'var(--radius-lg)',
-                  backgroundColor: `${deck.color}20`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '2rem',
-                  marginBottom: '1rem',
-                  border: `2px solid ${deck.color}`,
-                }}>
-                  {deck.icon}
-                </div>
-
-                {/* Deck Name */}
-                <h3 style={{
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  marginBottom: '0.5rem',
-                }}>
-                  {deck.name}
-                </h3>
-
-                {/* Description */}
-                {deck.description && (
-                  <p style={{
-                    fontSize: 'var(--text-sm)',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '1rem',
-                    lineHeight: '1.5',
-                  }}>
-                    {deck.description}
-                  </p>
-                )}
-
-                {/* Card Count & Progress */}
-                <div style={{
-                  display: 'flex',
-                  gap: '1rem',
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--text-tertiary)',
-                  marginBottom: '1rem',
-                }}>
-                  <span>{deck.cardCount} cards</span>
-                  {deck.cardCount > 0 && (
-                    <span>{Math.round((deck.masteredCount / deck.cardCount) * 100)}% mastered</span>
-                  )}
-                </div>
-
-                {/* Action Buttons */}
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: '0.5rem',
-                    marginTop: 'auto',
-                  }}
-                >
-                  <Button
-                    onClick={() => {
-                      setSelectedDeck(deck);
-                      setShowCreateDeckModal(true);
-                    }}
-                    variant="ghost"
-                    size="sm"
-                    fullWidth
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    onClick={() => handleDelete(deck)}
-                    variant="danger"
-                    size="sm"
-                    fullWidth
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+            {folder.description}
+          </p>
         )}
       </div>
+
+      {/* Decks List */}
+      {decks.length === 0 ? (
+        // Empty state
+        <div style={{
+          backgroundColor: 'var(--bg-elevated)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '3rem 1.5rem',
+          textAlign: 'center',
+        }}>
+          <h2 style={{
+            fontSize: 'var(--text-lg)',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            marginBottom: '0.5rem',
+          }}>
+            No Decks Yet
+          </h2>
+          <p style={{
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-tertiary)',
+            marginBottom: '1.5rem',
+          }}>
+            Create your first deck in this folder!
+          </p>
+          <Button
+            onClick={() => {
+              setSelectedDeck(null);
+              setShowCreateDeckModal(true);
+            }}
+            variant="primary"
+            size="sm"
+          >
+            Create Deck
+          </Button>
+        </div>
+      ) : (
+        // Decks grid
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gap: '0.75rem',
+        }}>
+          {decks.map((deck) => (
+            <div
+              key={deck.id}
+              onClick={() => router.push(`/flashcards/deck/${deck.id}`)}
+              style={{
+                backgroundColor: 'var(--bg-elevated)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '1rem',
+                cursor: 'pointer',
+                transition: 'all var(--transition-base)',
+                border: '1px solid var(--border-light)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = deck.color;
+                e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-light)';
+                e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
+              }}
+            >
+              {/* Deck Icon & Color */}
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: `${deck.color}20`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.25rem',
+                marginBottom: '0.75rem',
+              }}>
+                {deck.icon}
+              </div>
+
+              {/* Deck Name */}
+              <h3 style={{
+                fontSize: 'var(--text-base)',
+                fontWeight: '600',
+                color: 'var(--text-primary)',
+                marginBottom: '0.25rem',
+              }}>
+                {deck.name}
+              </h3>
+
+              {/* Description */}
+              {deck.description && (
+                <p style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                  marginBottom: '0.75rem',
+                  lineHeight: '1.5',
+                }}>
+                  {deck.description}
+                </p>
+              )}
+
+              {/* Card Count & Progress */}
+              <div style={{
+                display: 'flex',
+                gap: '0.75rem',
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
+                marginBottom: '0.75rem',
+              }}>
+                <span>{deck.cardCount} cards</span>
+                {deck.cardCount > 0 && (
+                  <span>{Math.round((deck.masteredCount / deck.cardCount) * 100)}% mastered</span>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '0.5rem',
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    setSelectedDeck(deck);
+                    setShowCreateDeckModal(true);
+                  }}
+                  variant="ghost"
+                  size="sm"
+                  fullWidth
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={() => handleDelete(deck)}
+                  variant="danger"
+                  size="sm"
+                  fullWidth
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Create/Edit Deck Modal */}
       {showCreateDeckModal && user && (
@@ -382,23 +346,23 @@ export default function FolderDetailPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedDeck ? 'Edit Deck' : 'Create New Deck'}
+              {selectedDeck ? 'Edit Deck' : 'New Deck'}
             </h2>
 
             <DeckForm
@@ -423,41 +387,40 @@ export default function FolderDetailPage() {
       {showDeleteConfirm && selectedDeck && (
         <div style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '2rem',
+          padding: '1rem',
         }}
           onClick={() => setShowDeleteConfirm(false)}
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
-            boxShadow: 'var(--shadow-xl)',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Deck?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
               Are you sure you want to delete <strong>&ldquo;{selectedDeck.name}&rdquo;</strong>?
@@ -467,12 +430,12 @@ export default function FolderDetailPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -480,7 +443,7 @@ export default function FolderDetailPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete

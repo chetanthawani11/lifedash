@@ -10,10 +10,13 @@
  * - Settings and logout actions
  */
 
+import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/Button';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
+import { AppIcon } from '@/components/ui/AppIcon';
 import toast from 'react-hot-toast';
 
 interface NavItem {
@@ -33,14 +36,18 @@ export const Header: React.FC = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { signOut } = useAuth();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleSignOut = async () => {
+    setLoggingOut(true);
     try {
       await signOut();
       toast.success('Logged out successfully!');
       router.push('/');
     } catch {
       toast.error('Failed to log out');
+      setLoggingOut(false);
     }
   };
 
@@ -68,23 +75,8 @@ export const Header: React.FC = () => {
       >
         {/* Logo - clicks go to dashboard */}
         <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontWeight: '700',
-                fontSize: '0.9rem',
-              }}
-            >
-              L
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <AppIcon size={28} color="var(--primary-500)" />
             <span style={{ fontSize: '1.125rem', fontWeight: '700', color: 'var(--text-primary)' }}>
               LifeDash
             </span>
@@ -161,11 +153,24 @@ export const Header: React.FC = () => {
               <circle cx="12" cy="12" r="3" />
             </svg>
           </Link>
-          <Button onClick={handleSignOut} variant="secondary" size="sm">
+          <Button onClick={() => setShowLogoutConfirm(true)} variant="secondary" size="sm">
             Logout
           </Button>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutConfirm}
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={handleSignOut}
+        title="Logout"
+        message="Are you sure you want to logout? You'll need to sign in again to access your data."
+        confirmText="Logout"
+        cancelText="Cancel"
+        variant="warning"
+        loading={loggingOut}
+      />
     </header>
   );
 };

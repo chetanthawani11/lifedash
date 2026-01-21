@@ -33,6 +33,7 @@ import {
   getRecurringSeriesStats,
 } from '@/lib/task-service';
 import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 import toast from 'react-hot-toast';
 
 interface RecurringTaskManagerProps {
@@ -56,7 +57,8 @@ export const RecurringTaskManager: React.FC<RecurringTaskManagerProps> = ({
     totalTasksCompleted: number;
     overallCompletionRate: number;
   } | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<RecurringTaskSeries | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Load overall statistics
   const loadStats = useCallback(async () => {
@@ -108,6 +110,7 @@ export const RecurringTaskManager: React.FC<RecurringTaskManagerProps> = ({
 
   // Handle delete
   const handleDelete = async (seriesId: string, deleteInstances: boolean) => {
+    setIsDeleting(true);
     try {
       await deleteRecurringSeries(userId, seriesId, deleteInstances);
       toast.success('Recurring task deleted');
@@ -116,6 +119,8 @@ export const RecurringTaskManager: React.FC<RecurringTaskManagerProps> = ({
     } catch (error) {
       console.error('Error deleting series:', error);
       toast.error('Failed to delete recurring task');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -427,7 +432,7 @@ export const RecurringTaskManager: React.FC<RecurringTaskManagerProps> = ({
                         {s.isActive ? 'Pause' : 'Resume'}
                       </Button>
                       <Button
-                        onClick={() => setConfirmDelete(s.id)}
+                        onClick={() => setConfirmDelete(s)}
                         variant="ghost"
                         size="sm"
                         style={{ color: '#ef4444' }}
@@ -532,55 +537,90 @@ export const RecurringTaskManager: React.FC<RecurringTaskManagerProps> = ({
                   </div>
                 )}
 
-                {/* Delete Confirmation */}
-                {confirmDelete === s.id && (
-                  <div style={{
-                    padding: '1rem 1.5rem',
-                    borderTop: '1px solid var(--border-light)',
-                    backgroundColor: 'rgba(239, 68, 68, 0.05)',
-                  }}>
-                    <p style={{
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--text-primary)',
-                      marginBottom: '0.75rem',
-                    }}>
-                      <strong>Delete this recurring task?</strong>
-                    </p>
-                    <div style={{
-                      display: 'flex',
-                      gap: '0.5rem',
-                      flexWrap: 'wrap',
-                    }}>
-                      <Button
-                        onClick={() => handleDelete(s.id, false)}
-                        variant="ghost"
-                        size="sm"
-                      >
-                        Delete Series Only
-                      </Button>
-                      <Button
-                        onClick={() => handleDelete(s.id, true)}
-                        variant="ghost"
-                        size="sm"
-                        style={{ color: '#ef4444' }}
-                      >
-                        Delete All Tasks Too
-                      </Button>
-                      <Button
-                        onClick={() => setConfirmDelete(null)}
-                        variant="ghost"
-                        size="sm"
-                      >
-                        Cancel
-                      </Button>
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        title="Delete Recurring Task"
+        maxWidth="450px"
+      >
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}>
+          {/* Icon */}
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: 'var(--error)',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1rem',
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+            </svg>
+          </div>
+
+          <p style={{
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
+            marginBottom: '1.25rem',
+            lineHeight: '1.6',
+          }}>
+            Are you sure you want to delete <strong>&ldquo;{confirmDelete?.title}&rdquo;</strong>?
+            Choose whether to keep or delete all generated tasks.
+          </p>
+
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            width: '100%',
+          }}>
+            <Button
+              onClick={() => confirmDelete && handleDelete(confirmDelete.id, false)}
+              variant="ghost"
+              size="sm"
+              fullWidth
+              disabled={isDeleting}
+            >
+              Delete Series Only (Keep Tasks)
+            </Button>
+            <Button
+              onClick={() => confirmDelete && handleDelete(confirmDelete.id, true)}
+              variant="danger"
+              size="sm"
+              fullWidth
+              disabled={isDeleting}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete Series & All Tasks'}
+            </Button>
+            <Button
+              onClick={() => setConfirmDelete(null)}
+              variant="ghost"
+              size="sm"
+              fullWidth
+              disabled={isDeleting}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

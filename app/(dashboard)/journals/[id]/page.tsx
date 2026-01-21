@@ -95,15 +95,14 @@ export default function JournalPage() {
   if (loading || authLoading || !journal) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading journal...
         </div>
@@ -176,42 +175,29 @@ export default function JournalPage() {
     });
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Header */}
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back button */}
-        <Link href="/journals" style={{ textDecoration: 'none' }}>
-          <Button variant="ghost" size="sm" style={{ marginBottom: '1rem' }}>
-            ← Back to Journals
-          </Button>
-        </Link>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         {/* Journal Info */}
         <div style={{
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'space-between',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             {/* Journal Icon */}
             <div style={{
-              width: '60px',
-              height: '60px',
-              borderRadius: 'var(--radius-lg)',
+              width: '40px',
+              height: '40px',
+              borderRadius: 'var(--radius-md)',
               backgroundColor: `${journal.color}20`,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '2rem',
+              fontSize: '1.25rem',
             }}>
               {journal.icon}
             </div>
@@ -219,21 +205,18 @@ export default function JournalPage() {
             {/* Journal Name & Description */}
             <div>
               <h1 style={{
-                fontSize: 'var(--text-3xl)',
-                fontWeight: '700',
+                fontSize: 'var(--text-2xl)',
+                fontWeight: '600',
                 color: 'var(--text-primary)',
-                marginBottom: '0.25rem',
               }}>
                 {journal.name}
               </h1>
-              {journal.description && (
-                <p style={{
-                  fontSize: 'var(--text-base)',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {journal.description}
-                </p>
-              )}
+              <p style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
+              }}>
+                {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
+              </p>
             </div>
           </div>
 
@@ -241,29 +224,29 @@ export default function JournalPage() {
           <Button
             onClick={() => setShowCreateModal(true)}
             variant="primary"
-            size="lg"
+            size="sm"
           >
-            Create Entry
+            New Entry
           </Button>
         </div>
 
-        {/* Stats */}
-        <div style={{
-          fontSize: 'var(--text-sm)',
-          color: 'var(--text-tertiary)',
-        }}>
-          {entries.length} {entries.length === 1 ? 'entry' : 'entries'}
-        </div>
+        {journal.description && (
+          <p style={{
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-secondary)',
+          }}>
+            {journal.description}
+          </p>
+        )}
       </div>
 
       {/* Search and Sort */}
       {entries.length > 0 && (
         <div style={{
-          maxWidth: '900px',
-          margin: '0 auto 1.5rem auto',
           display: 'flex',
-          gap: '1rem',
+          gap: '0.75rem',
           alignItems: 'center',
+          marginBottom: '1rem',
         }}>
           {/* Search Bar */}
           <input
@@ -275,8 +258,8 @@ export default function JournalPage() {
               flex: 1,
               padding: '0.75rem 1rem',
               borderRadius: 'var(--radius-lg)',
-              border: '2px solid var(--border-light)',
-              backgroundColor: 'var(--bg-elevated)',
+              border: '1.5px solid var(--border-light)',
+              backgroundColor: 'var(--bg-primary)',
               color: 'var(--text-primary)',
               fontSize: 'var(--text-base)',
               outline: 'none',
@@ -291,7 +274,7 @@ export default function JournalPage() {
           />
 
           {/* Sort Dropdown */}
-          <div style={{ width: '240px', margin: 0 }}>
+          <div style={{ width: '180px', margin: 0 }}>
             <Select
               value={sortBy}
               onChange={(value) => setSortBy(value as any)}
@@ -307,44 +290,34 @@ export default function JournalPage() {
       )}
 
       {/* Entries List */}
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-      }}>
+      <div>
         {filteredEntries.length === 0 && entries.length === 0 ? (
           // Empty state
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              ✍️
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Entries Yet
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
               Start writing your first entry in this journal!
             </p>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
               Create Entry
             </Button>
@@ -353,36 +326,29 @@ export default function JournalPage() {
           // No search results
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              🔍
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Entries Found
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
-              No entries match "{searchQuery}"
+              No entries match &ldquo;{searchQuery}&rdquo;
             </p>
             <Button
               onClick={() => setSearchQuery('')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
               Clear Search
             </Button>
@@ -392,27 +358,26 @@ export default function JournalPage() {
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
+            gap: '0.75rem',
           }}>
             {filteredEntries.map((entry) => (
               <div
                 key={entry.id}
                 style={{
                   backgroundColor: 'var(--bg-elevated)',
-                  borderRadius: 'var(--radius-xl)',
-                  padding: '1.5rem',
-                  boxShadow: 'var(--shadow-sm)',
-                  border: `2px solid transparent`,
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem',
+                  border: '1px solid var(--border-light)',
                   transition: 'all var(--transition-base)',
                   cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
                   e.currentTarget.style.borderColor = journal.color;
+                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--border-light)';
+                  e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                 }}
                 onClick={() => {
                   setSelectedEntry(entry);
@@ -424,22 +389,22 @@ export default function JournalPage() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
-                  marginBottom: '0.75rem',
+                  marginBottom: '0.5rem',
                 }}>
                   <div style={{ flex: 1 }}>
                     <h3 style={{
-                      fontSize: 'var(--text-xl)',
+                      fontSize: 'var(--text-base)',
                       fontWeight: '600',
                       color: 'var(--text-primary)',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.25rem',
                     }}>
                       {entry.title}
                     </h3>
                     <div style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '1rem',
-                      fontSize: 'var(--text-sm)',
+                      gap: '0.75rem',
+                      fontSize: 'var(--text-xs)',
                       color: 'var(--text-tertiary)',
                     }}>
                       <span>{formatDate(entry.createdAt)}</span>
@@ -477,13 +442,13 @@ export default function JournalPage() {
 
                 {/* Entry Preview */}
                 <p style={{
-                  fontSize: 'var(--text-base)',
+                  fontSize: 'var(--text-sm)',
                   color: 'var(--text-secondary)',
                   lineHeight: '1.6',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   display: '-webkit-box',
-                  WebkitLineClamp: 3,
+                  WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical',
                 }}>
                   {entry.content}
@@ -493,18 +458,18 @@ export default function JournalPage() {
                 {entry.tags && entry.tags.length > 0 && (
                   <div style={{
                     display: 'flex',
-                    gap: '0.5rem',
-                    marginTop: '0.75rem',
+                    gap: '0.375rem',
+                    marginTop: '0.5rem',
                     flexWrap: 'wrap',
                   }}>
                     {entry.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          padding: '0.25rem 0.75rem',
+                          padding: '0.125rem 0.5rem',
                           backgroundColor: `${journal.color}15`,
                           color: journal.color,
-                          borderRadius: 'var(--radius-full)',
+                          borderRadius: 'var(--radius-sm)',
                           fontSize: 'var(--text-xs)',
                           fontWeight: '500',
                         }}
@@ -539,13 +504,13 @@ export default function JournalPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2.5rem',
-            maxWidth: '800px',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
+            maxWidth: '700px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -554,15 +519,15 @@ export default function JournalPage() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-start',
-              marginBottom: '1.5rem',
-              gap: '1rem',
+              marginBottom: '1rem',
+              gap: '0.75rem',
             }}>
               <div style={{ flex: 1 }}>
                 <h1 style={{
-                  fontSize: 'var(--text-3xl)',
-                  fontWeight: '700',
+                  fontSize: 'var(--text-xl)',
+                  fontWeight: '600',
                   color: 'var(--text-primary)',
-                  marginBottom: '0.75rem',
+                  marginBottom: '0.5rem',
                   lineHeight: '1.3',
                 }}>
                   {selectedEntry.title}
@@ -570,14 +535,14 @@ export default function JournalPage() {
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '1rem',
+                  gap: '0.75rem',
                   flexWrap: 'wrap',
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--text-tertiary)',
                 }}>
                   <span>{formatDate(selectedEntry.createdAt)}</span>
-                  {selectedEntry.mood && <span style={{ fontSize: '1.25rem' }}>{MOOD_EMOJIS[selectedEntry.mood]}</span>}
-                  {selectedEntry.isFavorite && <span style={{ fontSize: '1.25rem' }}>⭐</span>}
+                  {selectedEntry.mood && <span>{MOOD_EMOJIS[selectedEntry.mood]}</span>}
+                  {selectedEntry.isFavorite && <span>⭐</span>}
                 </div>
               </div>
 
@@ -611,13 +576,13 @@ export default function JournalPage() {
 
             {/* Entry Content */}
             <div style={{
-              padding: '2rem',
+              padding: '1rem',
               backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-xl)',
-              marginBottom: '1.5rem',
+              borderRadius: 'var(--radius-lg)',
+              marginBottom: '1rem',
             }}>
               <p style={{
-                fontSize: 'var(--text-base)',
+                fontSize: 'var(--text-sm)',
                 color: 'var(--text-primary)',
                 lineHeight: '1.8',
                 whiteSpace: 'pre-wrap',
@@ -631,19 +596,19 @@ export default function JournalPage() {
             {selectedEntry.tags && selectedEntry.tags.length > 0 && (
               <div style={{
                 display: 'flex',
-                gap: '0.5rem',
+                gap: '0.375rem',
                 flexWrap: 'wrap',
-                marginBottom: '1.5rem',
+                marginBottom: '1rem',
               }}>
                 {selectedEntry.tags.map((tag) => (
                   <span
                     key={tag}
                     style={{
-                      padding: '0.5rem 0.75rem',
+                      padding: '0.25rem 0.5rem',
                       backgroundColor: `${journal.color}15`,
                       color: journal.color,
-                      borderRadius: 'var(--radius-full)',
-                      fontSize: 'var(--text-sm)',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: 'var(--text-xs)',
                       fontWeight: '500',
                     }}
                   >
@@ -660,7 +625,7 @@ export default function JournalPage() {
                 setSelectedEntry(null);
               }}
               variant="ghost"
-              size="lg"
+              size="sm"
               fullWidth
             >
               Close
@@ -685,43 +650,43 @@ export default function JournalPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Entry?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
-              Are you sure you want to delete <strong>"{selectedEntry.title}"</strong>?
+              Are you sure you want to delete <strong>&ldquo;{selectedEntry.title}&rdquo;</strong>?
               <br /><br />
               <strong style={{ color: 'var(--error)' }}>This action cannot be undone.</strong>
             </p>
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -729,7 +694,7 @@ export default function JournalPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete
@@ -758,21 +723,21 @@ export default function JournalPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '900px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               {selectedEntry ? 'Edit Entry' : 'New Entry'}
             </h2>

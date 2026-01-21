@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { LoginForm } from '@/components/forms/LoginForm';
 import { RegisterForm } from '@/components/forms/RegisterForm';
 import { ResetPasswordForm } from '@/components/forms/ResetPasswordForm';
+import { AppIcon } from '@/components/ui/AppIcon';
 
 type AuthView = 'login' | 'register' | 'reset';
 
@@ -39,14 +40,23 @@ export default function AuthPage() {
       }}>
         {/* Simple Logo */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h1 style={{
-            fontSize: 'var(--text-3xl)',
-            fontWeight: '700',
-            color: 'var(--text-primary)',
-            marginBottom: '0.5rem',
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem',
+            marginBottom: '0.75rem',
           }}>
-            LifeDash
-          </h1>
+            <AppIcon size={36} color="var(--primary-500)" />
+            <h1 style={{
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '700',
+              color: 'var(--text-primary)',
+              margin: 0,
+            }}>
+              LifeDash
+            </h1>
+          </div>
           <p style={{
             fontSize: 'var(--text-sm)',
             color: 'var(--text-tertiary)',

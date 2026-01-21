@@ -89,15 +89,14 @@ export default function JournalsPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading journals...
         </div>
@@ -106,143 +105,107 @@ export default function JournalsPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back to Dashboard */}
-        <Button
-          onClick={() => router.push('/dashboard')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          ← Back to Dashboard
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
-              My Journals
+            Journals
           </h1>
 
           <Button
             onClick={() => setShowCreateModal(true)}
             variant="primary"
-            size="lg"
+            size="sm"
           >
-            Create Journal
+            New Journal
           </Button>
         </div>
-
-        <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
-        }}>
-          Manage your personal journals. Create, edit, or delete journals to organize your thoughts.
-        </p>
       </div>
 
       {/* Journals Grid */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
+      <div>
         {journals.length === 0 ? (
           // Empty state
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              📔
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Journals Yet
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
-              Create your first journal to start writing your thoughts, ideas, and memories.
+              Create your first journal to start writing
             </p>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
-              Create Your First Journal
+              Create Journal
             </Button>
           </div>
         ) : (
           // Journal cards grid
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '1.5rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '0.75rem',
           }}>
             {journals.map((journal) => (
               <div
                 key={journal.id}
                 style={{
                   backgroundColor: 'var(--bg-elevated)',
-                  borderRadius: 'var(--radius-xl)',
-                  padding: '1.5rem',
-                  boxShadow: 'var(--shadow-md)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem',
                   cursor: 'pointer',
                   transition: 'all var(--transition-base)',
-                  border: '2px solid transparent',
+                  border: '1px solid var(--border-light)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
                   e.currentTarget.style.borderColor = journal.color;
+                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--border-light)';
+                  e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                 }}
                 onClick={() => router.push(`/journals/${journal.id}`)}
               >
                 {/* Journal Icon & Color */}
                 <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: 'var(--radius-lg)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: 'var(--radius-md)',
                   backgroundColor: `${journal.color}20`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '2rem',
-                  marginBottom: '1rem',
+                  fontSize: '1.25rem',
+                  marginBottom: '0.75rem',
                 }}>
                   {journal.icon}
                 </div>
@@ -331,31 +294,31 @@ export default function JournalsPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Journal?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
-              Are you sure you want to delete <strong>"{selectedJournal.name}"</strong>?
+              Are you sure you want to delete <strong>&ldquo;{selectedJournal.name}&rdquo;</strong>?
               This will also delete all {selectedJournal.entryCount} {selectedJournal.entryCount === 1 ? 'entry' : 'entries'} in this journal.
               <br /><br />
               <strong style={{ color: 'var(--error)' }}>This action cannot be undone.</strong>
@@ -363,12 +326,12 @@ export default function JournalsPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -376,7 +339,7 @@ export default function JournalsPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete
@@ -405,23 +368,23 @@ export default function JournalsPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '600px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedJournal ? 'Edit Journal' : 'Create New Journal'}
+              {selectedJournal ? 'Edit Journal' : 'New Journal'}
             </h2>
 
             <JournalForm

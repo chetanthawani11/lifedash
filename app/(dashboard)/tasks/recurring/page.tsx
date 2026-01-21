@@ -34,21 +34,20 @@ export default function RecurringTasksPage() {
   if (authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{
-            width: '48px',
-            height: '48px',
+            width: '40px',
+            height: '40px',
             border: '3px solid var(--border-light)',
             borderTopColor: 'var(--primary-500)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem',
+            margin: '0 auto 0.75rem',
           }} />
           <style jsx>{`
             @keyframes spin {
@@ -56,8 +55,8 @@ export default function RecurringTasksPage() {
             }
           `}</style>
           <div style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--text-secondary)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-tertiary)',
           }}>
             Loading...
           </div>
@@ -72,68 +71,42 @@ export default function RecurringTasksPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       <Toaster position="top-right" />
 
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
-        {/* Navigation */}
+      {/* Page Header */}
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '1rem',
-          marginBottom: '1rem',
-        }}>
-          <Button
-            onClick={() => router.push('/tasks')}
-            variant="ghost"
-            size="sm"
-          >
-            ← Back to Tasks
-          </Button>
-          <Button
-            onClick={() => router.push('/dashboard')}
-            variant="ghost"
-            size="sm"
-          >
-            Dashboard
-          </Button>
-        </div>
-
-        {/* Page Header */}
-        <div style={{
-          marginBottom: '2rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
-            marginBottom: '0.5rem',
           }}>
             Recurring Tasks
           </h1>
-          <p style={{
-            fontSize: 'var(--text-base)',
-            color: 'var(--text-secondary)',
-          }}>
-            Manage your repeating tasks and view their completion history.
-          </p>
         </div>
-
-        {/* Recurring Task Manager */}
-        {user && (
-          <RecurringTaskManager
-            userId={user.uid}
-            onTaskClick={handleTaskClick}
-          />
-        )}
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
+        }}>
+          Manage your repeating tasks and view their completion history.
+        </p>
       </div>
+
+      {/* Recurring Task Manager */}
+      {user && (
+        <RecurringTaskManager
+          userId={user.uid}
+          onTaskClick={handleTaskClick}
+        />
+      )}
     </div>
   );
 }

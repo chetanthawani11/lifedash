@@ -114,15 +114,14 @@ export default function CategoriesPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading categories...
         </div>
@@ -131,121 +130,95 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back to Dashboard */}
-        <Button
-          onClick={() => router.push('/dashboard')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          ← Back to Dashboard
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
             Expense Categories
           </h1>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
               onClick={() => router.push('/expenses')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
               View Expenses
             </Button>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
-              Create Category
+              New Category
             </Button>
           </div>
         </div>
 
         <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
-          Manage your expense categories. Create custom categories with budgets to organize your spending.
+          Create custom categories with budgets to organize your spending.
         </p>
       </div>
 
       {/* Categories Grid */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
+      <div>
         {categories.length === 0 ? (
           // Empty state
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              📊
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Categories Yet
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
-              Create categories to organize your expenses. Start with default categories or create custom ones.
+              Create categories to organize your expenses.
             </p>
             <div style={{
               display: 'flex',
-              gap: '1rem',
+              gap: '0.5rem',
               justifyContent: 'center',
               flexWrap: 'wrap',
             }}>
               <Button
                 onClick={handleCreateDefaults}
                 variant="primary"
-                size="lg"
+                size="sm"
               >
-                Create Default Categories
+                Create Defaults
               </Button>
               <Button
                 onClick={() => setShowCreateModal(true)}
                 variant="ghost"
-                size="lg"
+                size="sm"
               >
-                Create Custom Category
+                Custom Category
               </Button>
             </div>
           </div>
@@ -254,52 +227,48 @@ export default function CategoriesPage() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: '1.5rem',
+            gap: '0.75rem',
           }}>
             {categories.map((category) => (
               <div
                 key={category.id}
                 style={{
                   backgroundColor: 'var(--bg-elevated)',
-                  borderRadius: 'var(--radius-xl)',
-                  padding: '1.5rem',
-                  boxShadow: 'var(--shadow-md)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem',
                   transition: 'all var(--transition-base)',
-                  border: '2px solid transparent',
+                  border: '1px solid var(--border-light)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
                   e.currentTarget.style.borderColor = category.color;
+                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--border-light)';
+                  e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                 }}
               >
                 {/* Category Icon & Color */}
                 <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: 'var(--radius-lg)',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: 'var(--radius-md)',
                   backgroundColor: `${category.color}20`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '2rem',
-                  marginBottom: '1rem',
-                  border: `2px solid ${category.color}`,
+                  fontSize: '1.25rem',
+                  marginBottom: '0.75rem',
                 }}>
                   {category.icon}
                 </div>
 
                 {/* Category Name */}
                 <h3 style={{
-                  fontSize: 'var(--text-xl)',
+                  fontSize: 'var(--text-base)',
                   fontWeight: '600',
                   color: 'var(--text-primary)',
-                  marginBottom: '0.5rem',
+                  marginBottom: '0.25rem',
                 }}>
                   {category.name}
                 </h3>
@@ -307,20 +276,12 @@ export default function CategoriesPage() {
                 {/* Budget Info */}
                 {category.budget && (
                   <div style={{
-                    display: 'inline-block',
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: 'var(--radius-md)',
-                    backgroundColor: `${category.color}15`,
-                    border: `1px solid ${category.color}40`,
-                    marginBottom: '1rem',
+                    fontSize: 'var(--text-sm)',
+                    color: category.color,
+                    fontWeight: '500',
+                    marginBottom: '0.75rem',
                   }}>
-                    <span style={{
-                      fontSize: 'var(--text-sm)',
-                      fontWeight: '600',
-                      color: category.color,
-                    }}>
-                      Budget: {formatBudget(category.budget)}
-                    </span>
+                    Budget: {formatBudget(category.budget)}
                   </div>
                 )}
 
@@ -328,7 +289,7 @@ export default function CategoriesPage() {
                   <div style={{
                     fontSize: 'var(--text-sm)',
                     color: 'var(--text-tertiary)',
-                    marginBottom: '1rem',
+                    marginBottom: '0.75rem',
                   }}>
                     No budget set
                   </div>
@@ -339,7 +300,6 @@ export default function CategoriesPage() {
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
                   gap: '0.5rem',
-                  marginTop: 'auto',
                 }}>
                   <Button
                     onClick={() => {
@@ -383,28 +343,28 @@ export default function CategoriesPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Category?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
               Are you sure you want to delete <strong>&ldquo;{selectedCategory.name}&rdquo;</strong>?
@@ -414,12 +374,12 @@ export default function CategoriesPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -427,7 +387,7 @@ export default function CategoriesPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete
@@ -456,23 +416,23 @@ export default function CategoriesPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedCategory ? 'Edit Category' : 'Create New Category'}
+              {selectedCategory ? 'Edit Category' : 'New Category'}
             </h2>
 
             <CategoryForm

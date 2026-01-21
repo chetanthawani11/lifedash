@@ -25,6 +25,7 @@ import {
 } from '@/lib/flashcard-service';
 import { FlashcardDeck, Flashcard } from '@/types';
 import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 import { FlashcardForm } from '@/components/forms/FlashcardForm';
 import {
   exportToCSV,
@@ -54,6 +55,7 @@ export default function DeckViewPage() {
   const [selectedCard, setSelectedCard] = useState<Flashcard | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -215,15 +217,14 @@ export default function DeckViewPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading deck...
         </div>
@@ -234,24 +235,23 @@ export default function DeckViewPage() {
   if (!deck) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
           textAlign: 'center',
         }}>
           <h2 style={{
-            fontSize: 'var(--text-2xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-lg)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
             marginBottom: '0.5rem',
           }}>
             Deck Not Found
           </h2>
-          <Button onClick={() => router.push('/flashcards')} variant="primary" size="lg">
+          <Button onClick={() => router.push('/flashcards')} variant="primary" size="sm">
             Back to Flashcards
           </Button>
         </div>
@@ -260,119 +260,98 @@ export default function DeckViewPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back Button */}
-        <Button
-          onClick={() => router.push('/flashcards')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          &larr; Back to Flashcards
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         {/* Deck Info */}
         <div style={{
           display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          marginBottom: '1rem',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: '0.75rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
         }}>
-          <div style={{
-            width: '4rem',
-            height: '4rem',
-            borderRadius: 'var(--radius-lg)',
-            backgroundColor: `${deck.color}20`,
-            border: `2px solid ${deck.color}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '2rem',
-          }}>
-            {deck.icon}
-          </div>
-          <div style={{ flex: 1 }}>
-            <h1 style={{
-              fontSize: 'var(--text-4xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: `${deck.color}20`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '1.25rem',
             }}>
-              {deck.name}
-            </h1>
-            {deck.description && (
-              <p style={{
-                fontSize: 'var(--text-base)',
-                color: 'var(--text-secondary)',
+              {deck.icon}
+            </div>
+            <div>
+              <h1 style={{
+                fontSize: 'var(--text-2xl)',
+                fontWeight: '600',
+                color: 'var(--text-primary)',
               }}>
-                {deck.description}
-              </p>
-            )}
+                {deck.name}
+              </h1>
+              {deck.description && (
+                <p style={{
+                  fontSize: 'var(--text-sm)',
+                  color: 'var(--text-secondary)',
+                }}>
+                  {deck.description}
+                </p>
+              )}
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
               onClick={() => setShowImportModal(true)}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
               Import
             </Button>
-            <div style={{ position: 'relative' }}>
-              <Button
-                onClick={() => {
-                  // Simple export menu - could be enhanced with dropdown
-                  if (confirm('Export as CSV?')) {
-                    handleExportCSV();
-                  } else {
-                    handleExportJSON();
-                  }
-                }}
-                variant="ghost"
-                size="lg"
-              >
-                Export
-              </Button>
-            </div>
+            <Button
+              onClick={() => setShowExportModal(true)}
+              variant="ghost"
+              size="sm"
+            >
+              Export
+            </Button>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
-              + New Flashcard
+              New Flashcard
             </Button>
           </div>
         </div>
 
         {/* Stats */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+          display: 'flex',
           gap: '1rem',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
+          flexWrap: 'wrap',
         }}>
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            padding: '1rem',
-            borderRadius: 'var(--radius-lg)',
+            padding: '0.75rem 1rem',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-light)',
           }}>
             <div style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}>
               Total Cards
             </div>
             <div style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
             }}>
               {flashcards.length}
@@ -380,18 +359,21 @@ export default function DeckViewPage() {
           </div>
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            padding: '1rem',
-            borderRadius: 'var(--radius-lg)',
+            padding: '0.75rem 1rem',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-light)',
           }}>
             <div style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}>
               Mastered
             </div>
             <div style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--success)',
             }}>
               {deck.masteredCount}
@@ -399,18 +381,21 @@ export default function DeckViewPage() {
           </div>
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            padding: '1rem',
-            borderRadius: 'var(--radius-lg)',
+            padding: '0.75rem 1rem',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-light)',
           }}>
             <div style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}>
               Progress
             </div>
             <div style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: deck.cardCount > 0 ? 'var(--primary-500)' : 'var(--text-tertiary)',
             }}>
               {deck.cardCount > 0
@@ -418,52 +403,42 @@ export default function DeckViewPage() {
                 : '0%'}
             </div>
           </div>
-        </div>
-
-        {/* Study Now Button */}
-        {flashcards.length > 0 && (
-          <div style={{
-            marginBottom: '1.5rem',
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
+          {/* Study Now Button */}
+          {flashcards.length > 0 && (
             <Button
               onClick={() => router.push(`/flashcards/deck/${deckId}/study`)}
               variant="primary"
-              size="lg"
-              style={{
-                fontSize: 'var(--text-lg)',
-                padding: '1rem 2rem',
-                minWidth: '200px',
-              }}
+              size="sm"
             >
               Study Now
             </Button>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Tag Filter */}
         {tags.length > 0 && (
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1rem' }}>
             <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
               marginBottom: '0.5rem',
               fontWeight: '500',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
             }}>
-              Filter by tag:
+              Filter by tag
             </div>
             <div style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '0.5rem',
+              gap: '0.375rem',
             }}>
               <button
                 onClick={() => setSelectedTag(null)}
                 style={{
-                  padding: '0.5rem 1rem',
+                  padding: '0.375rem 0.75rem',
                   borderRadius: 'var(--radius-md)',
-                  border: selectedTag === null ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
+                  border: selectedTag === null ? '1px solid var(--primary-500)' : '1px solid var(--border-light)',
                   backgroundColor: selectedTag === null ? 'var(--primary-100)' : 'var(--bg-elevated)',
                   color: selectedTag === null ? 'var(--primary-700)' : 'var(--text-secondary)',
                   cursor: 'pointer',
@@ -479,9 +454,9 @@ export default function DeckViewPage() {
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
                   style={{
-                    padding: '0.5rem 1rem',
+                    padding: '0.375rem 0.75rem',
                     borderRadius: 'var(--radius-md)',
-                    border: selectedTag === tag ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
+                    border: selectedTag === tag ? '1px solid var(--primary-500)' : '1px solid var(--border-light)',
                     backgroundColor: selectedTag === tag ? 'var(--primary-100)' : 'var(--bg-elevated)',
                     color: selectedTag === tag ? 'var(--primary-700)' : 'var(--text-secondary)',
                     cursor: 'pointer',
@@ -499,37 +474,27 @@ export default function DeckViewPage() {
       </div>
 
       {/* Flashcards List */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
+      <div>
         {filteredCards.length === 0 ? (
           // Empty state
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              &#x1F4DA;
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               {selectedTag ? `No flashcards with tag "${selectedTag}"` : 'No Flashcards Yet'}
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
               {selectedTag
                 ? 'Try selecting a different tag or create new flashcards.'
@@ -539,7 +504,7 @@ export default function DeckViewPage() {
               <Button
                 onClick={() => setShowCreateModal(true)}
                 variant="primary"
-                size="lg"
+                size="sm"
               >
                 Create First Flashcard
               </Button>
@@ -549,49 +514,48 @@ export default function DeckViewPage() {
           // Flashcards grid
           <div style={{
             display: 'grid',
-            gap: '1rem',
+            gap: '0.75rem',
           }}>
             {filteredCards.map((card) => (
               <div
                 key={card.id}
                 style={{
                   backgroundColor: 'var(--bg-elevated)',
-                  borderRadius: 'var(--radius-xl)',
-                  padding: '1.5rem',
-                  boxShadow: 'var(--shadow-md)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '1rem',
                   transition: 'all var(--transition-base)',
-                  border: '2px solid transparent',
+                  border: '1px solid var(--border-light)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
                   e.currentTarget.style.borderColor = deck.color;
+                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  e.currentTarget.style.borderColor = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--border-light)';
+                  e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                 }}
               >
                 {/* Card Content */}
                 <div style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 1fr',
-                  gap: '1.5rem',
-                  marginBottom: '1rem',
+                  gap: '1rem',
+                  marginBottom: '0.75rem',
                 }}>
                   {/* Front */}
                   <div>
                     <div style={{
                       fontSize: 'var(--text-xs)',
                       color: 'var(--text-tertiary)',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.25rem',
                       fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
                     }}>
-                      FRONT
+                      Front
                     </div>
                     <div style={{
-                      fontSize: 'var(--text-base)',
+                      fontSize: 'var(--text-sm)',
                       color: 'var(--text-primary)',
                       whiteSpace: 'pre-wrap',
                     }}>
@@ -604,13 +568,15 @@ export default function DeckViewPage() {
                     <div style={{
                       fontSize: 'var(--text-xs)',
                       color: 'var(--text-tertiary)',
-                      marginBottom: '0.5rem',
+                      marginBottom: '0.25rem',
                       fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
                     }}>
-                      BACK
+                      Back
                     </div>
                     <div style={{
-                      fontSize: 'var(--text-base)',
+                      fontSize: 'var(--text-sm)',
                       color: 'var(--text-primary)',
                       whiteSpace: 'pre-wrap',
                     }}>
@@ -625,8 +591,8 @@ export default function DeckViewPage() {
                     fontSize: 'var(--text-sm)',
                     color: 'var(--text-secondary)',
                     fontStyle: 'italic',
-                    marginBottom: '1rem',
-                    padding: '0.75rem',
+                    marginBottom: '0.75rem',
+                    padding: '0.5rem',
                     backgroundColor: 'var(--bg-secondary)',
                     borderRadius: 'var(--radius-md)',
                   }}>
@@ -644,16 +610,16 @@ export default function DeckViewPage() {
                   <div style={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    gap: '0.5rem',
+                    gap: '0.375rem',
                   }}>
                     {card.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          padding: '0.25rem 0.75rem',
+                          padding: '0.125rem 0.5rem',
                           backgroundColor: 'var(--primary-100)',
                           color: 'var(--primary-700)',
-                          borderRadius: 'var(--radius-md)',
+                          borderRadius: 'var(--radius-sm)',
                           fontSize: 'var(--text-xs)',
                           fontWeight: '500',
                         }}
@@ -709,28 +675,28 @@ export default function DeckViewPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Flashcard?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
               Are you sure you want to delete this flashcard? This action cannot be undone.
@@ -738,12 +704,12 @@ export default function DeckViewPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -751,7 +717,7 @@ export default function DeckViewPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete
@@ -780,23 +746,23 @@ export default function DeckViewPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '600px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedCard ? 'Edit Flashcard' : 'Create New Flashcard'}
+              {selectedCard ? 'Edit Flashcard' : 'New Flashcard'}
             </h2>
 
             <FlashcardForm
@@ -833,29 +799,29 @@ export default function DeckViewPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Import Flashcards
             </h2>
 
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               Upload a CSV or JSON file to import flashcards into this deck.
             </p>
@@ -869,23 +835,24 @@ export default function DeckViewPage() {
               disabled={importing}
               style={{
                 width: '100%',
-                padding: '0.75rem',
-                border: '2px dashed var(--border-light)',
-                borderRadius: 'var(--radius-lg)',
-                marginBottom: '1.5rem',
+                padding: '0.5rem',
+                border: '1px dashed var(--border-light)',
+                borderRadius: 'var(--radius-md)',
+                marginBottom: '1rem',
                 cursor: importing ? 'not-allowed' : 'pointer',
                 backgroundColor: 'var(--bg-secondary)',
+                fontSize: 'var(--text-sm)',
               }}
             />
 
             {importing && (
               <div style={{
                 textAlign: 'center',
-                padding: '1rem',
-                marginBottom: '1.5rem',
+                padding: '0.75rem',
+                marginBottom: '1rem',
               }}>
                 <div style={{
-                  fontSize: 'var(--text-base)',
+                  fontSize: 'var(--text-sm)',
                   color: 'var(--text-secondary)',
                 }}>
                   Importing flashcards...
@@ -896,15 +863,15 @@ export default function DeckViewPage() {
             {/* Template Downloads */}
             <div style={{
               backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-lg)',
-              padding: '1rem',
-              marginBottom: '1.5rem',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.75rem',
+              marginBottom: '1rem',
             }}>
               <div style={{
                 fontSize: 'var(--text-sm)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
-                marginBottom: '0.75rem',
+                marginBottom: '0.5rem',
               }}>
                 Need a template?
               </div>
@@ -918,7 +885,7 @@ export default function DeckViewPage() {
                   size="sm"
                   disabled={importing}
                 >
-                  Download CSV Template
+                  CSV Template
                 </Button>
                 <Button
                   onClick={() => handleDownloadTemplate('json')}
@@ -926,27 +893,27 @@ export default function DeckViewPage() {
                   size="sm"
                   disabled={importing}
                 >
-                  Download JSON Template
+                  JSON Template
                 </Button>
               </div>
             </div>
 
             {/* Format Info */}
             <div style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-tertiary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
-              <strong>CSV Format:</strong> front,back,notes,tags<br />
-              <strong>JSON Format:</strong> Array of objects with front, back, notes, and tags fields
+              <strong>CSV:</strong> front,back,notes,tags<br />
+              <strong>JSON:</strong> Array of objects with front, back, notes, tags
             </div>
 
             {/* Close Button */}
             <Button
               onClick={() => setShowImportModal(false)}
               variant="ghost"
-              size="lg"
+              size="sm"
               fullWidth
               disabled={importing}
             >
@@ -955,6 +922,51 @@ export default function DeckViewPage() {
           </div>
         </div>
       )}
+
+      {/* Export Modal */}
+      <Modal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        title="Export Flashcards"
+        maxWidth="400px"
+      >
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-secondary)',
+          marginBottom: '1rem',
+          lineHeight: '1.6',
+        }}>
+          Choose your preferred export format:
+        </p>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.75rem',
+        }}>
+          <Button
+            onClick={() => {
+              handleExportCSV();
+              setShowExportModal(false);
+            }}
+            variant="primary"
+            size="sm"
+            fullWidth
+          >
+            Export as CSV
+          </Button>
+          <Button
+            onClick={() => {
+              handleExportJSON();
+              setShowExportModal(false);
+            }}
+            variant="ghost"
+            size="sm"
+            fullWidth
+          >
+            Export as JSON
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }

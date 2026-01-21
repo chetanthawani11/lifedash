@@ -246,7 +246,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
   const labelStyle = {
     display: 'block',
-    marginBottom: '0.5rem',
+    marginBottom: '0.375rem',
     fontSize: 'var(--text-sm)',
     fontWeight: '500' as const,
     color: 'var(--text-secondary)',
@@ -255,7 +255,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       {/* Title Input */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={labelStyle}>
           Task Title *
         </label>
@@ -283,7 +283,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       </div>
 
       {/* Description Input */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={labelStyle}>
           Description (Optional)
         </label>
@@ -307,7 +307,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '1rem',
-        marginBottom: '1.5rem',
+        marginBottom: '0.75rem',
       }}>
         {/* Due Date */}
         <div>
@@ -339,7 +339,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '1rem',
-        marginBottom: '1.5rem',
+        marginBottom: '0.75rem',
       }}>
         {/* Status */}
         <div>
@@ -369,7 +369,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       </div>
 
       {/* Estimated Time */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={labelStyle}>
           Estimated Time (Optional)
         </label>
@@ -409,7 +409,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       </div>
 
       {/* Tags */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={labelStyle}>
           Tags (Optional, max 10)
         </label>
@@ -500,10 +500,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       {/* Recurring Task Section - Only show when creating new task */}
       {!isEditing && (
         <div style={{
-          marginBottom: '1.5rem',
-          padding: '1rem',
-          borderRadius: 'var(--radius-lg)',
-          border: '2px solid var(--border-light)',
+          marginBottom: '0.75rem',
+          padding: '0.75rem',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-light)',
           backgroundColor: isRecurring ? 'var(--primary-50)' : 'var(--bg-secondary)',
         }}>
           {/* Recurring Toggle */}
@@ -511,18 +511,18 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: isRecurring ? '1rem' : 0,
+            marginBottom: isRecurring ? '0.75rem' : 0,
           }}>
             <div>
               <label style={{
-                fontSize: 'var(--text-base)',
+                fontSize: 'var(--text-sm)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
               }}>
                 Recurring Task
               </label>
               <p style={{
-                fontSize: 'var(--text-sm)',
+                fontSize: 'var(--text-xs)',
                 color: 'var(--text-secondary)',
                 marginTop: '2px',
               }}>
@@ -533,9 +533,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               type="button"
               onClick={() => setIsRecurring(!isRecurring)}
               style={{
-                width: '48px',
-                height: '28px',
-                borderRadius: '14px',
+                width: '40px',
+                height: '22px',
+                borderRadius: '11px',
                 border: 'none',
                 backgroundColor: isRecurring ? 'var(--primary-500)' : 'var(--bg-tertiary)',
                 cursor: 'pointer',
@@ -546,9 +546,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               <span style={{
                 position: 'absolute',
                 top: '2px',
-                left: isRecurring ? '22px' : '2px',
-                width: '24px',
-                height: '24px',
+                left: isRecurring ? '20px' : '2px',
+                width: '18px',
+                height: '18px',
                 borderRadius: '50%',
                 backgroundColor: 'white',
                 boxShadow: 'var(--shadow-sm)',
@@ -568,7 +568,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 gap: '1rem',
-                marginBottom: '1rem',
+                marginBottom: '0.75rem',
               }}>
                 {/* Pattern Selection */}
                 <div>
@@ -616,7 +616,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
               {/* Days of Week - Only for Weekly */}
               {recurringPattern === 'weekly' && (
-                <div style={{ marginBottom: '1rem' }}>
+                <div style={{ marginBottom: '0.75rem' }}>
                   <label style={labelStyle}>
                     On these days
                   </label>
@@ -631,10 +631,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                         type="button"
                         onClick={() => handleToggleDayOfWeek(day.value)}
                         style={{
-                          width: '40px',
-                          height: '40px',
-                          borderRadius: 'var(--radius-lg)',
-                          border: '2px solid',
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: 'var(--radius-md)',
+                          border: '1px solid',
                           borderColor: selectedDaysOfWeek.includes(day.value)
                             ? 'var(--primary-500)'
                             : 'var(--border-light)',
@@ -644,7 +644,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                           color: selectedDaysOfWeek.includes(day.value)
                             ? 'white'
                             : 'var(--text-secondary)',
-                          fontSize: 'var(--text-sm)',
+                          fontSize: 'var(--text-xs)',
                           fontWeight: '600',
                           cursor: 'pointer',
                           transition: 'all var(--transition-base)',
@@ -659,7 +659,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
               {/* Day of Month - Only for Monthly */}
               {recurringPattern === 'monthly' && (
-                <div style={{ marginBottom: '1rem' }}>
+                <div style={{ marginBottom: '0.75rem' }}>
                   <label style={labelStyle}>
                     Day of month (optional)
                   </label>
@@ -714,11 +714,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
               {/* Info Box */}
               <div style={{
-                marginTop: '1rem',
-                padding: '0.75rem 1rem',
+                marginTop: '0.75rem',
+                padding: '0.5rem 0.75rem',
                 backgroundColor: 'var(--bg-secondary)',
                 borderRadius: 'var(--radius-md)',
-                fontSize: 'var(--text-sm)',
+                fontSize: 'var(--text-xs)',
                 color: 'var(--text-secondary)',
               }}>
                 <strong style={{ color: 'var(--text-primary)' }}>Preview:</strong>{' '}
@@ -759,30 +759,29 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       {/* Show recurring info for existing recurring tasks */}
       {isEditing && task?.isRecurring && (
         <div style={{
-          marginBottom: '1.5rem',
-          padding: '1rem',
-          borderRadius: 'var(--radius-lg)',
+          marginBottom: '0.75rem',
+          padding: '0.75rem',
+          borderRadius: 'var(--radius-md)',
           backgroundColor: 'var(--primary-50)',
-          border: '2px solid var(--primary-200)',
+          border: '1px solid var(--primary-200)',
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
-            fontSize: 'var(--text-sm)',
+            gap: '0.375rem',
+            fontSize: 'var(--text-xs)',
             color: 'var(--primary-700)',
             fontWeight: '600',
           }}>
-            <span style={{ fontSize: '1.25rem' }}>🔄</span>
+            <span style={{ fontSize: '1rem' }}>🔄</span>
             Recurring Task
           </div>
           <p style={{
-            fontSize: 'var(--text-sm)',
+            fontSize: 'var(--text-xs)',
             color: 'var(--text-secondary)',
-            marginTop: '0.5rem',
+            marginTop: '0.375rem',
           }}>
-            This is an instance of a recurring task. Changes to this task will only affect this instance.
-            To edit the recurring pattern, go to the Recurring Tasks manager.
+            Changes only affect this instance. Edit pattern in Recurring Tasks manager.
           </p>
         </div>
       )}
@@ -791,13 +790,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
+        gap: '0.75rem',
       }}>
         <Button
           type="button"
           onClick={onCancel}
           variant="ghost"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading}
         >
@@ -806,11 +805,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         <Button
           type="submit"
           variant="primary"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading || !title.trim()}
         >
-          {loading ? 'Saving...' : isEditing ? 'Update Task' : isRecurring ? 'Create Recurring Task' : 'Create Task'}
+          {loading ? 'Saving...' : isEditing ? 'Update Task' : isRecurring ? 'Create Recurring' : 'Create Task'}
         </Button>
       </div>
     </form>

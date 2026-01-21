@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { Task, TASK_PRIORITY_OPTIONS, TASK_STATUS_OPTIONS, isTaskOverdue, formatMinutes } from '@/types';
 import { completeTask, reopenTask, deleteTask } from '@/lib/task-service';
 import { Button } from '@/components/ui/Button';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import toast from 'react-hot-toast';
 
 interface TaskCardProps {
@@ -41,6 +42,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Check if task is overdue
   const overdue = isTaskOverdue(task);
@@ -99,6 +101,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({
 
   // Handle deleting a task
   const handleDelete = async () => {
+    setIsDeleting(true);
     try {
       await deleteTask(userId, task.id);
       toast.success('Task deleted');
@@ -106,8 +109,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({
     } catch (error) {
       console.error('Error deleting task:', error);
       toast.error('Failed to delete task');
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
     }
-    setShowDeleteConfirm(false);
   };
 
   const isCompleted = task.status === 'completed';
@@ -374,75 +379,17 @@ export const TaskCard: React.FC<TaskCardProps> = ({
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '1rem',
-        }}
-          onClick={() => setShowDeleteConfirm(false)}
-        >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            maxWidth: '400px',
-            width: '100%',
-            boxShadow: 'var(--shadow-xl)',
-          }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}>
-              Delete Task?
-            </h2>
-            <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
-              lineHeight: '1.6',
-            }}>
-              Are you sure you want to delete "<strong>{task.title}</strong>"?
-              <br /><br />
-              <strong style={{ color: 'var(--error)' }}>This action cannot be undone.</strong>
-            </p>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
-            }}>
-              <Button
-                onClick={() => setShowDeleteConfirm(false)}
-                variant="ghost"
-                size="lg"
-                fullWidth
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleDelete}
-                variant="danger"
-                size="lg"
-                fullWidth
-              >
-                Delete
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmationModal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title="Delete Task"
+        message={<>Are you sure you want to delete <strong>&ldquo;{task.title}&rdquo;</strong>? This action cannot be undone.</>}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        loading={isDeleting}
+      />
     </>
   );
 };

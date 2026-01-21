@@ -164,9 +164,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
   if (loadingCategories) {
     return (
       <div style={{
-        padding: '3rem',
+        padding: '2rem',
         textAlign: 'center',
         color: 'var(--text-secondary)',
+        fontSize: 'var(--text-sm)',
       }}>
         Loading categories...
       </div>
@@ -176,17 +177,17 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
   if (categories.length === 0) {
     return (
       <div style={{
-        padding: '2rem',
+        padding: '1.5rem',
         textAlign: 'center',
       }}>
         <p style={{
-          fontSize: 'var(--text-base)',
+          fontSize: 'var(--text-sm)',
           color: 'var(--text-secondary)',
-          marginBottom: '1.5rem',
+          marginBottom: '0.75rem',
         }}>
           You need to create at least one category before adding expenses.
         </p>
-        <Button onClick={onCancel} variant="primary" size="lg">
+        <Button onClick={onCancel} variant="primary" size="sm">
           Go to Categories
         </Button>
       </div>
@@ -196,10 +197,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       {/* Amount Input */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -258,7 +259,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       </div>
 
       {/* Category Selection */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <Select
           label="Category *"
           value={categoryId}
@@ -270,10 +271,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       </div>
 
       {/* Description */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -321,13 +322,13 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '1rem',
-        marginBottom: '1.5rem',
+        marginBottom: '0.75rem',
       }}>
         {/* Date Picker */}
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -374,10 +375,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       </div>
 
       {/* Notes */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -412,10 +413,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       </div>
 
       {/* Tags */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -508,16 +509,16 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
 
       {/* Recurring Expense Toggle */}
       <div style={{
-        marginBottom: '1.5rem',
-        padding: '1rem',
-        borderRadius: 'var(--radius-lg)',
+        marginBottom: '0.75rem',
+        padding: '0.75rem',
+        borderRadius: 'var(--radius-md)',
         backgroundColor: 'var(--bg-secondary)',
-        border: '2px solid var(--border-light)',
+        border: '1px solid var(--border-light)',
       }}>
         <label style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '0.75rem',
+          gap: '0.5rem',
           cursor: 'pointer',
         }}>
           <input
@@ -525,24 +526,24 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
             checked={isRecurring}
             onChange={(e) => setIsRecurring(e.target.checked)}
             style={{
-              width: '1.25rem',
-              height: '1.25rem',
+              width: '1rem',
+              height: '1rem',
               cursor: 'pointer',
             }}
           />
           <div>
             <div style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               fontWeight: '500',
               color: 'var(--text-primary)',
             }}>
               Recurring Expense
             </div>
             <div style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-secondary)',
             }}>
-              Mark this as a recurring monthly expense (e.g., rent, subscriptions)
+              Mark this as a recurring monthly expense
             </div>
           </div>
         </label>
@@ -552,13 +553,13 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
+        gap: '0.75rem',
       }}>
         <Button
           type="button"
           onClick={onCancel}
           variant="ghost"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading}
         >
@@ -567,7 +568,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
         <Button
           type="submit"
           variant="primary"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading || !amountDollars || !categoryId || !description.trim()}
         >

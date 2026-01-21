@@ -129,7 +129,7 @@ export function NoteForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {/* Title */}
         <Input
           label="Title"
@@ -145,7 +145,7 @@ export function NoteForm({
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -192,7 +192,7 @@ export function NoteForm({
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -278,7 +278,7 @@ export function NoteForm({
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -363,7 +363,7 @@ export function NoteForm({
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -382,14 +382,14 @@ export function NoteForm({
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
-          marginTop: '0.5rem',
+          gap: '0.75rem',
+          marginTop: '0.25rem',
         }}>
           <Button
             type="button"
             onClick={onCancel}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
             disabled={loading}
           >
@@ -398,7 +398,7 @@ export function NoteForm({
           <Button
             type="submit"
             variant="primary"
-            size="lg"
+            size="sm"
             fullWidth
             loading={loading}
           >

@@ -122,184 +122,157 @@ function SettingsContent() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-secondary)' }}>
+    <div>
       <Toaster position="top-right" />
 
       {/* Header */}
-      <header style={{
-        backgroundColor: 'var(--bg-elevated)',
-        borderBottom: '1px solid var(--border-light)',
-        boxShadow: 'var(--shadow-sm)',
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '1.5rem 2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h1 style={{
+          fontSize: 'var(--text-2xl)',
+          fontWeight: '600',
+          color: 'var(--text-primary)',
+          marginBottom: '0.25rem',
         }}>
-          <div>
-            <h1 style={{
-              fontSize: 'var(--text-3xl)',
-              fontWeight: '700',
+          Settings
+        </h1>
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
+        }}>
+          Personalize your LifeDash experience
+        </p>
+      </div>
+
+      {/* Main Content */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* Profile Section */}
+        <section style={{
+          backgroundColor: 'var(--bg-elevated)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '1.5rem',
+          border: '1px solid var(--border-light)',
+        }}>
+          <div style={{ marginBottom: '1rem' }}>
+            <h2 style={{
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.25rem',
             }}>
-              Settings
-            </h1>
+              Profile
+            </h2>
             <p style={{
-              fontSize: 'var(--text-sm)',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-tertiary)',
             }}>
-              Personalize your LifeDash experience
+              Update your personal information
             </p>
           </div>
-          <Link href="/dashboard">
-            <Button variant="ghost" size="md">
-              ← Back
-            </Button>
-          </Link>
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <main style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-        padding: '3rem 2rem',
-      }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {/* Profile Section */}
-          <section style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 style={{
-                fontSize: 'var(--text-xl)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-                marginBottom: '0.5rem',
-              }}>
-                Profile
-              </h2>
-              <p style={{
-                fontSize: 'var(--text-sm)',
-                color: 'var(--text-tertiary)',
-              }}>
-                Update your personal information
-              </p>
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <Input
+              label="Email"
+              type="email"
+              value={user?.email || ''}
+              disabled
+              helperText="Email cannot be changed"
+            />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <Input
-                label="Email"
-                type="email"
-                value={user?.email || ''}
-                disabled
-                helperText="Email cannot be changed"
-              />
+            <Input
+              label="Display Name"
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your name"
+            />
 
-              <Input
-                label="Display Name"
-                type="text"
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                placeholder="Your name"
-              />
+            <Textarea
+              label="Bio"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows={3}
+              placeholder="Tell us about yourself..."
+              helperText="A short description about you"
+            />
+          </div>
+        </section>
 
-              <Textarea
-                label="Bio"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                rows={4}
-                placeholder="Tell us about yourself..."
-                helperText="A short description about you"
-              />
-            </div>
-          </section>
-
-          {/* Preferences Section */}
-          <section style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow-sm)',
-          }}>
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 style={{
-                fontSize: 'var(--text-xl)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-                marginBottom: '0.5rem',
-              }}>
-                Preferences
-              </h2>
-              <p style={{
-                fontSize: 'var(--text-sm)',
-                color: 'var(--text-tertiary)',
-              }}>
-                Customize your app experience
-              </p>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <Select
-                label="Theme"
-                value={theme}
-                onChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}
-                options={themeOptions}
-              />
-
-              <Select
-                label="Currency"
-                value={currency}
-                onChange={setCurrency}
-                options={currencyOptions}
-              />
-            </div>
-          </section>
-
-          {/* Account Info */}
-          {profile && (
-            <section style={{
-              backgroundColor: 'var(--bg-elevated)',
-              borderRadius: 'var(--radius-2xl)',
-              padding: '2rem',
-              boxShadow: 'var(--shadow-sm)',
+        {/* Preferences Section */}
+        <section style={{
+          backgroundColor: 'var(--bg-elevated)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '1.5rem',
+          border: '1px solid var(--border-light)',
+        }}>
+          <div style={{ marginBottom: '1rem' }}>
+            <h2 style={{
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              marginBottom: '0.25rem',
             }}>
-              <h2 style={{
-                fontSize: 'var(--text-xl)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-                marginBottom: '1rem',
+              Preferences
+            </h2>
+            <p style={{
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-tertiary)',
+            }}>
+              Customize your app experience
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <Select
+              label="Theme"
+              value={theme}
+              onChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}
+              options={themeOptions}
+            />
+
+            <Select
+              label="Currency"
+              value={currency}
+              onChange={setCurrency}
+              options={currencyOptions}
+            />
+          </div>
+        </section>
+
+        {/* Account Info */}
+        {profile && (
+          <section style={{
+            backgroundColor: 'var(--bg-elevated)',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
+            border: '1px solid var(--border-light)',
+          }}>
+            <h2 style={{
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              marginBottom: '0.75rem',
+            }}>
+              Account Information
+            </h2>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--text-secondary)',
+            }}>
+              <p><strong>Account created:</strong> {profile.createdAt.toLocaleDateString()}</p>
+              <p><strong>Last updated:</strong> {profile.updatedAt.toLocaleDateString()}</p>
+              <p style={{
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--text-tertiary)',
               }}>
-                Account Information
-              </h2>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.75rem',
-                fontSize: 'var(--text-sm)',
-                color: 'var(--text-secondary)',
-              }}>
-                <p><strong>Account created:</strong> {profile.createdAt.toLocaleDateString()}</p>
-                <p><strong>Last updated:</strong> {profile.updatedAt.toLocaleDateString()}</p>
-                <p style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--text-tertiary)',
-                }}>
-                  <strong>User ID:</strong> {profile.uid}
-                </p>
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
+                <strong>User ID:</strong> {profile.uid}
+              </p>
+            </div>
+          </section>
+        )}
+      </div>
 
       {/* Sticky Save Bar */}
       {hasChanges && (
@@ -310,13 +283,13 @@ function SettingsContent() {
           right: 0,
           backgroundColor: 'var(--bg-elevated)',
           borderTop: '1px solid var(--border-light)',
-          boxShadow: 'var(--shadow-xl)',
+          boxShadow: 'var(--shadow-lg)',
           zIndex: 50,
         }}>
           <div style={{
             maxWidth: '900px',
             margin: '0 auto',
-            padding: '1.25rem 2rem',
+            padding: '1rem 1.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -324,20 +297,20 @@ function SettingsContent() {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '0.75rem',
-              fontSize: 'var(--text-sm)',
+              gap: '0.5rem',
+              fontSize: 'var(--text-xs)',
               color: 'var(--text-secondary)',
             }}>
-              <svg style={{ width: '1.25rem', height: '1.25rem', color: 'var(--warning)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg style={{ width: '1rem', height: '1rem', color: 'var(--warning)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
-              <span style={{ fontWeight: '500' }}>You have unsaved changes</span>
+              <span style={{ fontWeight: '500' }}>Unsaved changes</span>
             </div>
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
               <Button
                 onClick={handleDiscard}
                 variant="ghost"
-                size="md"
+                size="sm"
                 disabled={loading}
               >
                 Discard
@@ -346,9 +319,9 @@ function SettingsContent() {
                 onClick={handleSaveAll}
                 loading={loading}
                 variant="primary"
-                size="md"
+                size="sm"
               >
-                Save Changes
+                Save
               </Button>
             </div>
           </div>

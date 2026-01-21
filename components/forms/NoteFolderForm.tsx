@@ -85,7 +85,7 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {/* Folder Name */}
         <Input
           label="Folder Name"
@@ -111,7 +111,7 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -130,10 +130,10 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
                 onClick={() => setIcon(iconOption)}
                 disabled={loading}
                 style={{
-                  padding: '0.75rem',
-                  fontSize: '1.5rem',
+                  padding: '0.5rem',
+                  fontSize: '1.125rem',
                   border: icon === iconOption ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-sm)',
                   backgroundColor: icon === iconOption ? 'var(--primary-100)' : 'var(--bg-elevated)',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
@@ -149,7 +149,7 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
         <div>
           <label style={{
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.375rem',
             fontSize: 'var(--text-sm)',
             fontWeight: '500',
             color: 'var(--text-secondary)',
@@ -168,20 +168,20 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
                 onClick={() => setColor(colorOption.value)}
                 disabled={loading}
                 style={{
-                  padding: '0.75rem',
+                  padding: '0.5rem',
                   border: color === colorOption.value ? '2px solid var(--text-primary)' : '1px solid var(--border-light)',
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--radius-sm)',
                   backgroundColor: colorOption.value,
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '0.25rem',
+                  gap: '0.125rem',
                 }}
               >
                 <span style={{
-                  fontSize: 'var(--text-xs)',
+                  fontSize: '10px',
                   fontWeight: '500',
                   color: 'white',
                   textShadow: '0 1px 2px rgba(0,0,0,0.3)',
@@ -195,51 +195,51 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
 
         {/* Preview */}
         <div style={{
-          padding: '1rem',
+          padding: '0.75rem',
           backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-lg)',
+          borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-light)',
         }}>
           <p style={{
-            fontSize: 'var(--text-sm)',
+            fontSize: 'var(--text-xs)',
             color: 'var(--text-tertiary)',
-            marginBottom: '0.75rem',
+            marginBottom: '0.375rem',
           }}>
             Preview:
           </p>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
-            padding: '0.75rem',
+            gap: '0.5rem',
+            padding: '0.5rem',
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-md)',
+            borderRadius: 'var(--radius-sm)',
             border: `2px solid ${color}`,
           }}>
             <div style={{
-              fontSize: '2rem',
-              width: '3rem',
-              height: '3rem',
+              fontSize: '1.25rem',
+              width: '2.25rem',
+              height: '2.25rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: `${color}20`,
-              borderRadius: 'var(--radius-md)',
+              borderRadius: 'var(--radius-sm)',
             }}>
               {icon}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{
-                fontSize: 'var(--text-base)',
+                fontSize: 'var(--text-sm)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
-                marginBottom: '0.25rem',
+                marginBottom: '0.125rem',
               }}>
                 {name || 'Folder Name'}
               </div>
               {description && (
                 <div style={{
-                  fontSize: 'var(--text-sm)',
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--text-secondary)',
                 }}>
                   {description}
@@ -253,14 +253,14 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
-          marginTop: '0.5rem',
+          gap: '0.75rem',
+          marginTop: '0.25rem',
         }}>
           <Button
             type="button"
             onClick={onCancel}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
             disabled={loading}
           >
@@ -269,7 +269,7 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
           <Button
             type="submit"
             variant="primary"
-            size="lg"
+            size="sm"
             fullWidth
             loading={loading}
           >

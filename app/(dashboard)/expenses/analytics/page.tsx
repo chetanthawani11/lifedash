@@ -37,8 +37,6 @@ export default function AnalyticsPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [totalSpent, setTotalSpent] = useState(0);
-  const [trendData, setTrendData] = useState<any[]>([]);
-  const [trendYear, setTrendYear] = useState(new Date().getFullYear());
 
   // Get currency from user preferences (loaded from localStorage/context)
   const currency = userPreferences?.currency || 'USD';
@@ -48,9 +46,9 @@ export default function AnalyticsPage() {
   useEffect(() => {
     if (!user) return;
     loadAnalytics();
-    loadTrendData();
+    // loadTrendData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, selectedMonth, selectedYear, trendYear]);
+  }, [user, selectedMonth, selectedYear]);
 
   const loadAnalytics = async () => {
     if (!user) return;
@@ -68,54 +66,6 @@ export default function AnalyticsPage() {
       console.error('Error loading analytics:', error);
       toast.error('Failed to load analytics');
       setLoading(false);
-    }
-  };
-
-  // Load multi-month trend data (12 months for selected year)
-  const loadTrendData = async () => {
-    if (!user) return;
-
-    try {
-      const monthlyData: any[] = [];
-
-      // Get all categories first
-      const allCategories = await getCategoriesWithSpending(user.uid);
-
-      // Load data for all 12 months of the selected year
-      for (let month = 0; month < 12; month++) {
-        // Get expenses for this month
-        const monthExpenses = await getMonthlyExpenses(user.uid, trendYear, month);
-
-        // Calculate spending by category
-        const categorySpending: { [key: string]: number } = {};
-        let total = 0;
-
-        monthExpenses.forEach(expense => {
-          const category = allCategories.find(c => c.id === expense.categoryId);
-          if (category) {
-            categorySpending[category.name] = (categorySpending[category.name] || 0) + expense.amount;
-          }
-          total += expense.amount;
-        });
-
-        // Create data point
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const dataPoint: any = {
-          month: monthNames[month],
-          total: centsToDollars(total),
-        };
-
-        // Add each category's spending
-        allCategories.forEach(cat => {
-          dataPoint[cat.name] = centsToDollars(categorySpending[cat.name] || 0);
-        });
-
-        monthlyData.push(dataPoint);
-      }
-
-      setTrendData(monthlyData);
-    } catch (error) {
-      console.error('Error loading trend data:', error);
     }
   };
 
@@ -206,15 +156,14 @@ export default function AnalyticsPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading analytics...
         </div>
@@ -223,36 +172,20 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back Button */}
-        <Button
-          onClick={() => router.push('/expenses')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          ← Back to Expenses
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
             Expense Analytics
@@ -261,15 +194,15 @@ export default function AnalyticsPage() {
           <Button
             onClick={handleExport}
             variant="primary"
-            size="lg"
+            size="sm"
           >
-            📥 Export to CSV
+            Export CSV
           </Button>
         </div>
 
         <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Visualize your spending patterns and track your budget.
         </p>
@@ -277,12 +210,11 @@ export default function AnalyticsPage() {
 
       {/* Monthly Overview Section */}
       <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto 2rem auto',
         backgroundColor: 'var(--bg-elevated)',
-        borderRadius: 'var(--radius-2xl)',
-        padding: '1.5rem',
-        boxShadow: 'var(--shadow-md)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '1rem',
+        marginBottom: '1rem',
+        border: '1px solid var(--border-light)',
       }}>
         {/* Section Header with Month Selector */}
         <div style={{
@@ -294,8 +226,8 @@ export default function AnalyticsPage() {
           borderBottom: '1px solid var(--border-light)',
         }}>
           <h2 style={{
-            fontSize: 'var(--text-2xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-lg)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
             Monthly Overview
@@ -318,19 +250,19 @@ export default function AnalyticsPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '0.75rem',
-          marginBottom: '1.25rem',
+          gap: '0.5rem',
+          marginBottom: '1rem',
         }}>
           <span style={{
-            fontSize: 'var(--text-base)',
+            fontSize: 'var(--text-sm)',
             color: 'var(--text-secondary)',
             fontWeight: '500',
           }}>
             Total Spent in {monthNames[selectedMonth]}:
           </span>
           <span style={{
-            fontSize: 'var(--text-2xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-lg)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
             {currencySymbol}{centsToDollars(totalSpent).toFixed(2)}
@@ -341,34 +273,24 @@ export default function AnalyticsPage() {
         {pieChartData.length > 0 ? (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-            gap: '0',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '0.75rem',
           }}>
             {/* Pie Chart */}
             <div style={{
               backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '1.25rem',
-              position: 'relative',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1rem',
             }}>
-              {/* Vertical divider */}
-              <div style={{
-                position: 'absolute',
-                right: 0,
-                top: '1rem',
-                bottom: '1rem',
-                width: '1px',
-                backgroundColor: 'var(--border-light)',
-              }} />
               <h3 style={{
-                fontSize: 'var(--text-lg)',
+                fontSize: 'var(--text-base)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
-                marginBottom: '1rem',
+                marginBottom: '0.75rem',
               }}>
                 Spending by Category
               </h3>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie
                     data={pieChartData}
@@ -423,14 +345,14 @@ export default function AnalyticsPage() {
             {/* Budget Tracking */}
             <div style={{
               backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '1.25rem',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1rem',
             }}>
               <h3 style={{
-                fontSize: 'var(--text-lg)',
+                fontSize: 'var(--text-base)',
                 fontWeight: '600',
                 color: 'var(--text-primary)',
-                marginBottom: '1rem',
+                marginBottom: '0.75rem',
               }}>
                 Budget Tracking
               </h3>
@@ -517,10 +439,10 @@ export default function AnalyticsPage() {
               </div>
             ) : (
               <p style={{
-                fontSize: 'var(--text-base)',
-                color: 'var(--text-secondary)',
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-tertiary)',
                 textAlign: 'center',
-                padding: '2rem',
+                padding: '1.5rem',
               }}>
                 No budgets set. Add budgets to your categories to track spending limits.
               </p>
@@ -530,13 +452,12 @@ export default function AnalyticsPage() {
         ) : (
           <div style={{
             backgroundColor: 'var(--bg-secondary)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-lg)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
           }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📊</div>
             <h3 style={{
-              fontSize: 'var(--text-xl)',
+              fontSize: 'var(--text-lg)',
               fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
@@ -545,7 +466,7 @@ export default function AnalyticsPage() {
             </h3>
             <p style={{
               fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
+              color: 'var(--text-tertiary)',
               marginBottom: '1.5rem',
             }}>
               Add some expenses to see your spending analytics and charts.
@@ -553,99 +474,13 @@ export default function AnalyticsPage() {
             <Button
               onClick={() => router.push('/expenses')}
               variant="primary"
-              size="md"
+              size="sm"
             >
               Add Expense
             </Button>
           </div>
         )}
       </div>
-
-      {/* Multi-Month Spending Trend */}
-      {trendData.length > 0 && (
-        <div style={{
-          maxWidth: '1400px',
-          margin: '0 auto 2rem auto',
-        }}>
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            boxShadow: 'var(--shadow-md)',
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '1.5rem',
-            }}>
-              <h2 style={{
-                fontSize: 'var(--text-2xl)',
-                fontWeight: '700',
-                color: 'var(--text-primary)',
-              }}>
-                Spending Trends
-              </h2>
-
-              {/* Year Selector */}
-              <div style={{ minWidth: '120px' }}>
-                <Select
-                  value={trendYear.toString()}
-                  onChange={(value) => setTrendYear(parseInt(value))}
-                  options={yearOptions}
-                />
-              </div>
-            </div>
-
-            {/* Stacked Bar Chart */}
-            <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={trendData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis
-                  dataKey="month"
-                  stroke="#6b7280"
-                  style={{ fontSize: 'var(--text-sm)' }}
-                />
-                <YAxis
-                  stroke="#6b7280"
-                  style={{ fontSize: 'var(--text-sm)' }}
-                />
-                <Tooltip
-                  formatter={(value: number) => `${currencySymbol}${value.toFixed(2)}`}
-                  contentStyle={{
-                    backgroundColor: 'var(--bg-elevated)',
-                    border: '1px solid var(--border-light)',
-                    borderRadius: 'var(--radius-lg)',
-                    boxShadow: 'var(--shadow-md)',
-                  }}
-                />
-                <Legend
-                  wrapperStyle={{ fontSize: 'var(--text-sm)' }}
-                />
-                {/* Category bars - stacked */}
-                {categories.filter(cat => cat.totalSpent > 0).map((cat) => (
-                  <Bar
-                    key={cat.id}
-                    dataKey={cat.name}
-                    stackId="a"
-                    fill={cat.color}
-                    name={cat.name}
-                  />
-                ))}
-              </BarChart>
-            </ResponsiveContainer>
-
-            <p style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-tertiary)',
-              marginTop: '1rem',
-              textAlign: 'center',
-            }}>
-              Compare your spending patterns across all 12 months of {trendYear}
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -322,15 +322,14 @@ export default function NotesPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading notes...
         </div>
@@ -339,38 +338,32 @@ export default function NotesPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.75rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
             Notes
           </h1>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
               onClick={() => {
                 setSelectedFolder(null);
                 setShowCreateFolderModal(true);
               }}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
               New Folder
             </Button>
@@ -380,38 +373,30 @@ export default function NotesPage() {
                 setShowCreateNoteModal(true);
               }}
               variant="primary"
-              size="lg"
+              size="sm"
             >
               New Note
             </Button>
           </div>
         </div>
 
-        <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
-          marginBottom: '1rem',
-        }}>
-          Organize your learning notes in folders
-        </p>
-
         {/* Search Bar */}
         <div style={{
           position: 'relative',
-          maxWidth: '500px',
+          maxWidth: '400px',
         }}>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search notes by title, content, or tags..."
+            placeholder="Search notes..."
             style={{
               width: '100%',
               padding: '0.75rem 1rem',
               fontSize: 'var(--text-base)',
               color: 'var(--text-primary)',
-              backgroundColor: 'var(--bg-elevated)',
-              border: '2px solid var(--border-light)',
+              backgroundColor: 'var(--bg-primary)',
+              border: '1.5px solid var(--border-light)',
               borderRadius: 'var(--radius-lg)',
               outline: 'none',
               transition: 'border-color var(--transition-base)',
@@ -447,43 +432,33 @@ export default function NotesPage() {
       </div>
 
       {/* Content */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
+      <div>
         {folders.length === 0 && notes.length === 0 ? (
           // Empty state - no folders or notes
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              📝
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Notes Yet
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
-              Create your first note or folder to get started!
+              Create your first note or folder to get started
             </p>
             <div style={{
               display: 'flex',
-              gap: '1rem',
+              gap: '0.5rem',
               justifyContent: 'center',
             }}>
               <Button
@@ -492,7 +467,7 @@ export default function NotesPage() {
                   setShowCreateFolderModal(true);
                 }}
                 variant="ghost"
-                size="lg"
+                size="sm"
               >
                 Create Folder
               </Button>
@@ -502,7 +477,7 @@ export default function NotesPage() {
                   setShowCreateNoteModal(true);
                 }}
                 variant="primary"
-                size="lg"
+                size="sm"
               >
                 Create Note
               </Button>
@@ -512,12 +487,14 @@ export default function NotesPage() {
           <div>
             {/* Folders Section */}
             {folders.length > 0 && (
-              <div style={{ marginBottom: '2rem' }}>
+              <div style={{ marginBottom: '1.5rem' }}>
                 <h2 style={{
-                  fontSize: 'var(--text-xl)',
+                  fontSize: 'var(--text-sm)',
                   fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  marginBottom: '1rem',
+                  color: 'var(--text-tertiary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: '0.75rem',
                 }}>
                   Folders
                 </h2>
@@ -538,17 +515,19 @@ export default function NotesPage() {
               return (
                 <div>
                   <h2 style={{
-                    fontSize: 'var(--text-xl)',
+                    fontSize: 'var(--text-sm)',
                     fontWeight: '600',
-                    color: 'var(--text-primary)',
-                    marginBottom: '1rem',
+                    color: 'var(--text-tertiary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: '0.75rem',
                   }}>
-                    {searchQuery ? `Search Results (${notes.length})` : 'Quick Notes'}
+                    {searchQuery ? `Search Results (${notes.length})` : 'Notes'}
                   </h2>
                   <div style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                    gap: '1rem',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                    gap: '0.75rem',
                   }}>
                     {quickNotes.map((note) => (
                     <div
@@ -557,22 +536,19 @@ export default function NotesPage() {
                       style={{
                         position: 'relative',
                         backgroundColor: 'var(--bg-elevated)',
-                        borderRadius: 'var(--radius-xl)',
-                        padding: '1.5rem',
-                        boxShadow: 'var(--shadow-md)',
+                        borderRadius: 'var(--radius-lg)',
+                        padding: '1rem',
                         cursor: 'pointer',
                         transition: 'all var(--transition-base)',
-                        border: '2px solid transparent',
+                        border: '1px solid var(--border-light)',
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-4px)';
-                        e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                        e.currentTarget.style.borderColor = 'var(--primary-500)';
+                        e.currentTarget.style.borderColor = 'var(--primary-400)';
+                        e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                        e.currentTarget.style.borderColor = 'transparent';
+                        e.currentTarget.style.borderColor = 'var(--border-light)';
+                        e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                       }}
                     >
                       {/* Pin icon */}
@@ -580,8 +556,8 @@ export default function NotesPage() {
                         onClick={(e) => handleTogglePin(note, e)}
                         style={{
                           position: 'absolute',
-                          top: '0.75rem',
-                          right: '0.75rem',
+                          top: '0.5rem',
+                          right: '0.5rem',
                           cursor: 'pointer',
                           padding: '0.25rem',
                           borderRadius: 'var(--radius-md)',
@@ -605,47 +581,47 @@ export default function NotesPage() {
                       </div>
 
                       <h3 style={{
-                        fontSize: 'var(--text-lg)',
-                        fontWeight: '600',
+                        fontSize: 'var(--text-base)',
+                        fontWeight: '500',
                         color: 'var(--text-primary)',
-                        marginBottom: '0.5rem',
+                        marginBottom: '0.25rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        paddingRight: '2rem',
+                        paddingRight: '1.5rem',
                       }}>
                         {note.title}
                       </h3>
 
                       {note.content && (
                         <p style={{
-                          fontSize: 'var(--text-sm)',
-                          color: 'var(--text-secondary)',
-                          marginBottom: '1rem',
+                          fontSize: 'var(--text-xs)',
+                          color: 'var(--text-tertiary)',
+                          marginBottom: '0.5rem',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           display: '-webkit-box',
-                          WebkitLineClamp: 3,
+                          WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
-                          lineHeight: '1.5',
+                          lineHeight: '1.4',
                         }}>
-                          {getPlainTextPreview(note.content, 150)}
+                          {getPlainTextPreview(note.content, 100)}
                         </p>
                       )}
 
                       {note.tags && note.tags.length > 0 && (
                         <div style={{
                           display: 'flex',
-                          gap: '0.5rem',
+                          gap: '0.25rem',
                           flexWrap: 'wrap',
-                          marginBottom: '1rem',
+                          marginBottom: '0.5rem',
                         }}>
                           {note.tags.slice(0, 3).map((tag: string, i: number) => (
                             <span
                               key={i}
                               style={{
-                                fontSize: 'var(--text-xs)',
-                                padding: '0.25rem 0.5rem',
+                                fontSize: '0.65rem',
+                                padding: '0.125rem 0.375rem',
                                 backgroundColor: 'var(--primary-100)',
                                 color: 'var(--primary-500)',
                                 borderRadius: 'var(--radius-full)',
@@ -701,9 +677,9 @@ export default function NotesPage() {
         maxWidth="400px"
       >
         <p style={{
-          fontSize: 'var(--text-base)',
+          fontSize: 'var(--text-sm)',
           color: 'var(--text-secondary)',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
           lineHeight: '1.6',
         }}>
           Are you sure you want to delete <strong>{selectedFolder?.name}</strong>?
@@ -712,12 +688,12 @@ export default function NotesPage() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
           <Button
             onClick={() => setShowDeleteFolderConfirm(false)}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
           >
             Cancel
@@ -725,7 +701,7 @@ export default function NotesPage() {
           <Button
             onClick={confirmDeleteFolder}
             variant="danger"
-            size="lg"
+            size="sm"
             fullWidth
           >
             Delete
@@ -795,9 +771,9 @@ export default function NotesPage() {
         maxWidth="400px"
       >
         <p style={{
-          fontSize: 'var(--text-base)',
+          fontSize: 'var(--text-sm)',
           color: 'var(--text-secondary)',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
           lineHeight: '1.6',
         }}>
           Are you sure you want to delete <strong>&ldquo;{selectedNote?.title}&rdquo;</strong>?
@@ -806,12 +782,12 @@ export default function NotesPage() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
           <Button
             onClick={() => setShowDeleteNoteConfirm(false)}
             variant="ghost"
-            size="lg"
+            size="sm"
             fullWidth
           >
             Cancel
@@ -819,7 +795,7 @@ export default function NotesPage() {
           <Button
             onClick={confirmDeleteNote}
             variant="danger"
-            size="lg"
+            size="sm"
             fullWidth
           >
             Delete

@@ -126,15 +126,14 @@ export default function NoteDetailPage() {
   if (loading || authLoading || !note) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading note...
         </div>
@@ -154,69 +153,50 @@ export default function NoteDetailPage() {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
-      <div style={{
-        maxWidth: '900px',
-        margin: '0 auto',
-      }}>
-        {/* Back Button & Breadcrumb */}
-        <div style={{ marginBottom: '2rem' }}>
-          <Button
-            onClick={() => router.push('/notes')}
-            variant="ghost"
-            size="sm"
-            style={{ marginBottom: '1rem' }}
-          >
-            &larr; Back to Notes
-          </Button>
-
-          {/* Breadcrumb */}
-          {folderPath.length > 0 && (
-            <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-tertiary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              flexWrap: 'wrap',
-            }}>
-              <span>In:</span>
-              {folderPath.map((folder, index) => (
-                <span key={folder.id}>
-                  {index > 0 && <span style={{ margin: '0 0.25rem' }}>›</span>}
-                  <span>{folder.name}</span>
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Note Header */}
+    <div>
+      {/* Breadcrumb */}
+      {folderPath.length > 0 && (
         <div style={{
-          backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-2xl)',
-          padding: '2rem',
-          marginBottom: '2rem',
-          boxShadow: 'var(--shadow-md)',
+          fontSize: 'var(--text-xs)',
+          color: 'var(--text-tertiary)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          flexWrap: 'wrap',
+          marginBottom: '1rem',
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '1rem',
+          <span>In:</span>
+          {folderPath.map((folder, index) => (
+            <span key={folder.id}>
+              {index > 0 && <span style={{ margin: '0 0.25rem' }}>/</span>}
+              <span>{folder.name}</span>
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Note Header */}
+      <div style={{
+        backgroundColor: 'var(--bg-elevated)',
+        borderRadius: 'var(--radius-xl)',
+        padding: '1.5rem',
+        marginBottom: '1rem',
+        border: '1px solid var(--border-light)',
+      }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          marginBottom: '0.75rem',
+        }}>
+          <h1 style={{
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            flex: 1,
           }}>
-            <h1 style={{
-              fontSize: 'var(--text-4xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              flex: 1,
-            }}>
-              {note.title}
-            </h1>
+            {note.title}
+          </h1>
 
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               <div
@@ -267,8 +247,8 @@ export default function NoteDetailPage() {
           {/* Metadata */}
           <div style={{
             display: 'flex',
-            gap: '1.5rem',
-            fontSize: 'var(--text-sm)',
+            gap: '1rem',
+            fontSize: 'var(--text-xs)',
             color: 'var(--text-tertiary)',
             flexWrap: 'wrap',
           }}>
@@ -290,10 +270,10 @@ export default function NoteDetailPage() {
         {/* Note Content */}
         <div style={{
           backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-2xl)',
-          padding: '2rem',
-          boxShadow: 'var(--shadow-md)',
-          minHeight: '300px',
+          borderRadius: 'var(--radius-xl)',
+          padding: '1.5rem',
+          border: '1px solid var(--border-light)',
+          minHeight: '200px',
         }}>
           {note.content.trim() ? (
             <div style={{
@@ -448,14 +428,16 @@ export default function NoteDetailPage() {
 
         {/* Linked Resources Section */}
         {(linkedDecks.length > 0 || linkedNotes.length > 0) && (
-          <div style={{ marginTop: '2rem' }}>
+          <div style={{ marginTop: '1.5rem' }}>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              fontSize: 'var(--text-sm)',
+              fontWeight: '600',
+              color: 'var(--text-tertiary)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              marginBottom: '0.75rem',
             }}>
-              🔗 Linked Resources
+              Linked Resources
             </h2>
 
             {/* Linked Flashcard Decks */}
@@ -612,40 +594,38 @@ export default function NoteDetailPage() {
             )}
           </div>
         )}
-      </div>
 
       {/* Edit Modal */}
       {showEditModal && user && (
         <div style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          overflowY: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 1000,
-          padding: '2rem 1rem',
+          padding: '1rem',
         }}
           onClick={() => setShowEditModal(false)}
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '800px',
             width: '100%',
-            boxShadow: 'var(--shadow-xl)',
-            margin: '0 auto',
-            minHeight: 'fit-content',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               Edit Note
             </h2>
@@ -667,41 +647,40 @@ export default function NoteDetailPage() {
       {showDeleteConfirm && (
         <div style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '2rem',
+          padding: '1rem',
         }}
           onClick={() => setShowDeleteConfirm(false)}
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
-            boxShadow: 'var(--shadow-xl)',
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Note?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
               Are you sure you want to delete <strong>&ldquo;{note.title}&rdquo;</strong>?
@@ -710,12 +689,12 @@ export default function NoteDetailPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -723,7 +702,7 @@ export default function NoteDetailPage() {
               <Button
                 onClick={handleDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete

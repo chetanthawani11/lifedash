@@ -113,10 +113,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       {/* Category Name */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -160,10 +160,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       </div>
 
       {/* Color Picker */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -173,7 +173,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '0.75rem',
+          gap: '0.5rem',
         }}>
           {COLOR_OPTIONS.map((colorOption) => (
             <button
@@ -183,15 +183,15 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
               style={{
                 width: '100%',
                 aspectRatio: '1',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: colorOption.value,
-                border: color === colorOption.value ? `3px solid var(--text-primary)` : '2px solid transparent',
+                border: color === colorOption.value ? `2px solid var(--text-primary)` : '1px solid transparent',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 position: 'relative',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.transform = 'scale(1.05)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
@@ -203,7 +203,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  fontSize: '1.25rem',
+                  fontSize: '1rem',
+                  color: 'white',
                 }}>
                   ✓
                 </span>
@@ -214,10 +215,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       </div>
 
       {/* Icon Picker */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -237,11 +238,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
               style={{
                 width: '100%',
                 aspectRatio: '1',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: 'var(--radius-sm)',
                 backgroundColor: icon === iconOption ? `${color}20` : 'var(--bg-secondary)',
-                border: icon === iconOption ? `2px solid ${color}` : '2px solid transparent',
+                border: icon === iconOption ? `2px solid ${color}` : '1px solid transparent',
                 cursor: 'pointer',
-                fontSize: '1.5rem',
+                fontSize: '1.125rem',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -251,7 +252,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 if (icon !== iconOption) {
                   e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
                 }
-                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.transform = 'scale(1.05)';
               }}
               onMouseLeave={(e) => {
                 if (icon !== iconOption) {
@@ -267,10 +268,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       </div>
 
       {/* Budget Input */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div style={{ marginBottom: '0.75rem' }}>
         <label style={{
           display: 'block',
-          marginBottom: '0.5rem',
+          marginBottom: '0.375rem',
           fontSize: 'var(--text-sm)',
           fontWeight: '500',
           color: 'var(--text-secondary)',
@@ -336,17 +337,17 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
       {/* Preview */}
       <div style={{
-        marginBottom: '1.5rem',
-        padding: '1rem',
-        borderRadius: 'var(--radius-lg)',
+        marginBottom: '0.75rem',
+        padding: '0.75rem',
+        borderRadius: 'var(--radius-md)',
         backgroundColor: 'var(--bg-secondary)',
-        border: '2px solid var(--border-light)',
+        border: '1px solid var(--border-light)',
       }}>
         <p style={{
-          fontSize: 'var(--text-xs)',
+          fontSize: '10px',
           fontWeight: '500',
           color: 'var(--text-tertiary)',
-          marginBottom: '0.75rem',
+          marginBottom: '0.375rem',
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
         }}>
@@ -355,33 +356,33 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
           <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: 'var(--radius-md)',
+            width: '36px',
+            height: '36px',
+            borderRadius: 'var(--radius-sm)',
             backgroundColor: `${color}20`,
             border: `2px solid ${color}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '1.5rem',
+            fontSize: '1.125rem',
           }}>
             {icon}
           </div>
           <div>
             <div style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '0.25rem',
+              marginBottom: '0.125rem',
             }}>
               {name || 'Category Name'}
             </div>
             {budgetDollars && (
               <div style={{
-                fontSize: 'var(--text-sm)',
+                fontSize: 'var(--text-xs)',
                 color: 'var(--text-secondary)',
               }}>
                 Budget: ${parseFloat(budgetDollars || '0').toFixed(2)}/month
@@ -395,13 +396,13 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
+        gap: '0.75rem',
       }}>
         <Button
           type="button"
           onClick={onCancel}
           variant="ghost"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading}
         >
@@ -410,11 +411,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         <Button
           type="submit"
           variant="primary"
-          size="lg"
+          size="sm"
           fullWidth
           disabled={loading || !name.trim()}
         >
-          {loading ? 'Saving...' : isEditing ? 'Update Category' : 'Create Category'}
+          {loading ? 'Saving...' : isEditing ? 'Update' : 'Create'}
         </Button>
       </div>
     </form>

@@ -153,15 +153,14 @@ export default function ExpensesPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{
-          fontSize: 'var(--text-lg)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Loading expenses...
         </div>
@@ -170,81 +169,57 @@ export default function ExpensesPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back to Dashboard */}
-        <Button
-          onClick={() => router.push('/dashboard')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          ← Back to Dashboard
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
+          flexWrap: 'wrap',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
-            My Expenses
+            Expenses
           </h1>
 
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Button
               onClick={() => router.push('/expenses/analytics')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
-              View Analytics
+              Analytics
             </Button>
             <Button
               onClick={() => router.push('/expenses/categories')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
-              Manage Categories
+              Categories
             </Button>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
               Add Expense
             </Button>
           </div>
         </div>
-
-        <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
-        }}>
-          Track and manage your expenses. View spending by category and stay within budget.
-        </p>
       </div>
 
       {/* Filters and Sort */}
       {expenses.length > 0 && (
         <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto 1.5rem auto',
+          marginBottom: '1rem',
           display: 'flex',
-          gap: '1rem',
+          gap: '0.75rem',
           alignItems: 'center',
         }}>
           {/* Category Filter */}
@@ -268,44 +243,34 @@ export default function ExpensesPage() {
       )}
 
       {/* Expenses List */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
+      <div>
         {expenses.length === 0 ? (
           // Empty state
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '4rem 2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{
-              fontSize: '4rem',
-              marginBottom: '1rem',
-            }}>
-              💰
-            </div>
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
             }}>
               No Expenses Yet
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '2rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1.5rem',
             }}>
-              Start tracking your expenses to understand your spending habits.
+              Start tracking your expenses to understand your spending habits
             </p>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
               Add Your First Expense
             </Button>
@@ -314,14 +279,12 @@ export default function ExpensesPage() {
           // No results after filtering
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '3rem 2rem',
+            borderRadius: 'var(--radius-lg)',
+            padding: '2rem 1.5rem',
             textAlign: 'center',
-            boxShadow: 'var(--shadow-md)',
           }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
             <h2 style={{
-              fontSize: 'var(--text-xl)',
+              fontSize: 'var(--text-base)',
               fontWeight: '600',
               color: 'var(--text-primary)',
               marginBottom: '0.5rem',
@@ -329,11 +292,11 @@ export default function ExpensesPage() {
               No Expenses Found
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+              marginBottom: '1rem',
             }}>
-              No expenses match your filter criteria.
+              No expenses match your filter criteria
             </p>
             <Button
               onClick={() => setFilterCategory('all')}
@@ -526,28 +489,28 @@ export default function ExpensesPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '400px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1rem',
+              marginBottom: '0.75rem',
             }}>
               Delete Expense?
             </h2>
             <p style={{
-              fontSize: 'var(--text-base)',
+              fontSize: 'var(--text-sm)',
               color: 'var(--text-secondary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               lineHeight: '1.6',
             }}>
               Are you sure you want to delete this expense?
@@ -559,12 +522,12 @@ export default function ExpensesPage() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '1rem',
+              gap: '0.75rem',
             }}>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Cancel
@@ -572,7 +535,7 @@ export default function ExpensesPage() {
               <Button
                 onClick={confirmDelete}
                 variant="danger"
-                size="lg"
+                size="sm"
                 fullWidth
               >
                 Delete
@@ -601,23 +564,23 @@ export default function ExpensesPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
             maxWidth: '600px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedExpense ? 'Edit Expense' : 'Add New Expense'}
+              {selectedExpense ? 'Edit Expense' : 'Add Expense'}
             </h2>
 
             <ExpenseForm

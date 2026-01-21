@@ -85,13 +85,13 @@ export const Modal: React.FC<ModalProps> = ({
         style={{
           position: 'relative',
           backgroundColor: 'var(--bg-elevated)',
-          borderRadius: '16px',
+          borderRadius: 'var(--radius-lg)',
           width: '100%',
           maxWidth: maxWidth,
           maxHeight: '90vh',
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+          boxShadow: 'var(--shadow-lg)',
         }}
       >
         {/* Header */}
@@ -101,7 +101,7 @@ export const Modal: React.FC<ModalProps> = ({
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '1.25rem 1.5rem',
+              padding: '0.75rem 1rem',
               borderBottom: '1px solid var(--border-light)',
               flexShrink: 0,
             }}
@@ -110,8 +110,8 @@ export const Modal: React.FC<ModalProps> = ({
               <h2
                 id="modal-title"
                 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '700',
+                  fontSize: 'var(--text-lg)',
+                  fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: 0,
                 }}
@@ -127,13 +127,13 @@ export const Modal: React.FC<ModalProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '32px',
-                  height: '32px',
+                  width: '28px',
+                  height: '28px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
                   color: 'var(--text-tertiary)',
-                  borderRadius: '8px',
+                  borderRadius: 'var(--radius-md)',
                   transition: 'all 0.2s',
                   marginLeft: title ? '0' : 'auto',
                 }}
@@ -146,7 +146,7 @@ export const Modal: React.FC<ModalProps> = ({
                   e.currentTarget.style.color = 'var(--text-tertiary)';
                 }}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
               </button>
@@ -157,7 +157,7 @@ export const Modal: React.FC<ModalProps> = ({
         {/* Scrollable Content */}
         <div
           style={{
-            padding: '1.5rem',
+            padding: '1rem',
             overflowY: 'auto',
             flex: 1,
           }}

@@ -114,23 +114,20 @@ export default function TasksPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
-        <div style={{
-          textAlign: 'center',
-        }}>
+        <div style={{ textAlign: 'center' }}>
           <div style={{
-            width: '48px',
-            height: '48px',
+            width: '40px',
+            height: '40px',
             border: '3px solid var(--border-light)',
             borderTopColor: 'var(--primary-500)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem',
+            margin: '0 auto 0.75rem',
           }} />
           <style jsx>{`
             @keyframes spin {
@@ -138,8 +135,8 @@ export default function TasksPage() {
             }
           `}</style>
           <div style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--text-secondary)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-tertiary)',
           }}>
             Loading tasks...
           </div>
@@ -149,101 +146,75 @@ export default function TasksPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
-      <Toaster position="top-right" />
-
+    <div>
       {/* Page Header */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        marginBottom: '2rem',
-      }}>
-        {/* Back to Dashboard */}
-        <Button
-          onClick={() => router.push('/dashboard')}
-          variant="ghost"
-          size="sm"
-          style={{ marginBottom: '1rem' }}
-        >
-          ← Back to Dashboard
-        </Button>
-
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '0.5rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
           <h1 style={{
-            fontSize: 'var(--text-4xl)',
-            fontWeight: '700',
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
             color: 'var(--text-primary)',
           }}>
-            My Tasks
+            Tasks
           </h1>
 
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
               onClick={() => router.push('/tasks/recurring')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
               Recurring
             </Button>
             <Button
               onClick={() => router.push('/tasks/calendar')}
               variant="ghost"
-              size="lg"
+              size="sm"
             >
-              Calendar View
+              Calendar
             </Button>
             <Button
               onClick={() => setShowCreateModal(true)}
               variant="primary"
-              size="lg"
+              size="sm"
             >
-              + Add Task
+              Add Task
             </Button>
           </div>
         </div>
 
         <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
         }}>
           Stay organized and track your progress. Create tasks, set priorities, and never miss a deadline.
         </p>
       </div>
 
-      {/* Tasks List */}
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
-        {/* Overdue Tasks Alert */}
-        {user && (
-          <OverdueAlert
-            tasks={tasks}
-            onTaskClick={handleEdit}
-          />
-        )}
+      {/* Overdue Tasks Alert */}
+      {user && (
+        <OverdueAlert
+          tasks={tasks}
+          onTaskClick={handleEdit}
+        />
+      )}
 
-        {/* Task List */}
-        {user && (
-          <TaskList
-            tasks={tasks}
-            userId={user.uid}
-            onEdit={handleEdit}
-            onUpdate={loadTasks}
-          />
-        )}
-      </div>
+      {/* Task List */}
+      {user && (
+        <TaskList
+          tasks={tasks}
+          userId={user.uid}
+          onEdit={handleEdit}
+          onUpdate={loadTasks}
+        />
+      )}
 
       {/* Create/Edit Task Modal */}
       {showCreateModal && user && (
@@ -261,23 +232,23 @@ export default function TasksPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            maxWidth: '600px',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
+            maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              {selectedTask ? 'Edit Task' : 'Create New Task'}
+              {selectedTask ? 'Edit Task' : 'New Task'}
             </h2>
 
             <TaskForm

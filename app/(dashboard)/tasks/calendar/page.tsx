@@ -82,21 +82,20 @@ export default function TasksCalendarPage() {
   if (loading || authLoading) {
     return (
       <div style={{
-        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'var(--bg-secondary)',
+        padding: '4rem 0',
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{
-            width: '48px',
-            height: '48px',
+            width: '40px',
+            height: '40px',
             border: '3px solid var(--border-light)',
             borderTopColor: 'var(--primary-500)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
-            margin: '0 auto 1rem',
+            margin: '0 auto 0.75rem',
           }} />
           <style jsx>{`
             @keyframes spin {
@@ -104,8 +103,8 @@ export default function TasksCalendarPage() {
             }
           `}</style>
           <div style={{
-            fontSize: 'var(--text-lg)',
-            color: 'var(--text-secondary)',
+            fontSize: 'var(--text-sm)',
+            color: 'var(--text-tertiary)',
           }}>
             Loading calendar...
           </div>
@@ -115,65 +114,26 @@ export default function TasksCalendarPage() {
   }
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--bg-secondary)',
-      padding: '2rem',
-    }}>
+    <div>
       <Toaster position="top-right" />
 
-      <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-      }}>
-        {/* Navigation */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          marginBottom: '1rem',
-        }}>
-          <Button
-            onClick={() => router.push('/tasks')}
-            variant="ghost"
-            size="sm"
-          >
-            ← Back to List View
-          </Button>
-          <Button
-            onClick={() => router.push('/dashboard')}
-            variant="ghost"
-            size="sm"
-          >
-            Dashboard
-          </Button>
-        </div>
-
-        {/* Page Header */}
+      {/* Page Header */}
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1.5rem',
+          marginBottom: '0.5rem',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '0.75rem',
         }}>
-          <div>
-            <h1 style={{
-              fontSize: 'var(--text-4xl)',
-              fontWeight: '700',
-              color: 'var(--text-primary)',
-              marginBottom: '0.25rem',
-            }}>
-              Task Calendar
-            </h1>
-            <p style={{
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-secondary)',
-            }}>
-              View and manage your tasks by date
-            </p>
-          </div>
+          <h1 style={{
+            fontSize: 'var(--text-2xl)',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+          }}>
+            Task Calendar
+          </h1>
 
           <Button
             onClick={() => {
@@ -181,11 +141,19 @@ export default function TasksCalendarPage() {
               setShowCreateModal(true);
             }}
             variant="primary"
-            size="lg"
+            size="sm"
           >
-            + Add Task
+            Add Task
           </Button>
         </div>
+
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-tertiary)',
+        }}>
+          View and manage your tasks by date
+        </p>
+      </div>
 
         {/* Overdue Tasks Alert */}
         <OverdueAlert
@@ -200,47 +168,48 @@ export default function TasksCalendarPage() {
           onDateClick={handleDateClick}
         />
 
-        {/* Legend */}
-        <div style={{
-          marginTop: '1.5rem',
-          padding: '1rem 1.5rem',
-          backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-sm)',
+      {/* Legend */}
+      <div style={{
+        marginTop: '1rem',
+        padding: '0.75rem 1rem',
+        backgroundColor: 'var(--bg-elevated)',
+        borderRadius: 'var(--radius-lg)',
+        border: '1px solid var(--border-light)',
+      }}>
+        <h3 style={{
+          fontSize: 'var(--text-xs)',
+          fontWeight: '600',
+          color: 'var(--text-tertiary)',
+          marginBottom: '0.5rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
         }}>
-          <h3 style={{
-            fontSize: 'var(--text-sm)',
-            fontWeight: '600',
-            color: 'var(--text-secondary)',
-            marginBottom: '0.75rem',
-          }}>
-            Priority Colors
-          </h3>
-          <div style={{
-            display: 'flex',
-            gap: '1.5rem',
-            flexWrap: 'wrap',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#78716c' }} />
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Low</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Medium</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#f97316' }} />
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>High</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Urgent</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#22c55e' }} />
-              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>Completed</span>
-            </div>
+          Priority Colors
+        </h3>
+        <div style={{
+          display: 'flex',
+          gap: '1rem',
+          flexWrap: 'wrap',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#78716c' }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Low</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Medium</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f97316' }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>High</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Urgent</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#22c55e' }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Completed</span>
           </div>
         </div>
       </div>
@@ -264,13 +233,13 @@ export default function TasksCalendarPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            maxWidth: '600px',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
+            maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -278,11 +247,11 @@ export default function TasksCalendarPage() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               <h2 style={{
-                fontSize: 'var(--text-2xl)',
-                fontWeight: '700',
+                fontSize: 'var(--text-lg)',
+                fontWeight: '600',
                 color: 'var(--text-primary)',
               }}>
                 Edit Task
@@ -292,7 +261,7 @@ export default function TasksCalendarPage() {
                 variant="ghost"
                 size="sm"
               >
-                View Full Details →
+                Full Details
               </Button>
             </div>
 
@@ -332,23 +301,23 @@ export default function TasksCalendarPage() {
         >
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-2xl)',
-            padding: '2rem',
-            maxWidth: '600px',
+            borderRadius: 'var(--radius-xl)',
+            padding: '1.5rem',
+            maxWidth: '500px',
             width: '100%',
             maxHeight: '90vh',
             overflowY: 'auto',
-            boxShadow: 'var(--shadow-xl)',
+            boxShadow: 'var(--shadow-lg)',
           }}
             onClick={(e) => e.stopPropagation()}
           >
             <h2 style={{
-              fontSize: 'var(--text-2xl)',
-              fontWeight: '700',
+              fontSize: 'var(--text-lg)',
+              fontWeight: '600',
               color: 'var(--text-primary)',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
-              Create New Task
+              New Task
               {selectedDate && (
                 <span style={{
                   display: 'block',

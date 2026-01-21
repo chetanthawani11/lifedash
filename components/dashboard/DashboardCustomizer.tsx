@@ -26,6 +26,7 @@ import {
   WIDGET_METADATA,
   getWidgetMetadata,
 } from '@/types';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 interface DashboardCustomizerProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ export const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   useEffect(() => {
     if (!user || !isOpen) return;
@@ -84,12 +86,10 @@ export const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
 
   const handleReset = async () => {
     if (!user) return;
-    if (!confirm('Are you sure you want to reset your dashboard to the default layout?')) {
-      return;
-    }
     setResetting(true);
     try {
       await resetDashboardLayout(user.uid);
+      setShowResetConfirm(false);
     } catch (error) {
       console.error('Error resetting layout:', error);
     }
@@ -353,7 +353,7 @@ export const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
           }}
         >
           <button
-            onClick={handleReset}
+            onClick={() => setShowResetConfirm(true)}
             disabled={resetting}
             style={{
               padding: '0.5rem 1rem',
@@ -387,6 +387,19 @@ export const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Reset Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showResetConfirm}
+        onClose={() => setShowResetConfirm(false)}
+        onConfirm={handleReset}
+        title="Reset Dashboard"
+        message="Are you sure you want to reset your dashboard to the default layout? All your customizations will be lost."
+        confirmText="Reset"
+        cancelText="Cancel"
+        variant="danger"
+        loading={resetting}
+      />
     </div>
   );
 };
