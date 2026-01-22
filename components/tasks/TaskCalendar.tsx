@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * TASK CALENDAR COMPONENT
+ * TASK CALENDAR COMPONENT (Mobile Responsive)
  *
  * Displays tasks in a monthly calendar view.
  * Features:
@@ -13,14 +13,15 @@
  * - Today is highlighted
  * - Overdue tasks are marked in red
  *
- * HOW IT WORKS:
- * 1. Generates a grid of days for the current month
- * 2. Places tasks on their due date cells
- * 3. Users can navigate between months
- * 4. Clicking a task opens a detail modal
+ * Mobile Optimizations:
+ * - Compact cell heights on mobile
+ * - Shorter day names (S M T W T F S)
+ * - Touch-friendly tap targets
+ * - Horizontal scrolling if needed
+ * - Selected date panel at bottom
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Task, TASK_PRIORITY_OPTIONS, isTaskOverdue } from '@/types';
 import { Button } from '@/components/ui/Button';
 
@@ -30,13 +31,21 @@ interface TaskCalendarProps {
   onDateClick?: (date: Date) => void;
 }
 
-// Days of the week header
-const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// Days of the week - full names for desktop
+const DAYS_OF_WEEK_FULL = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// Days of the week - short names for mobile
+const DAYS_OF_WEEK_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 // Month names for display
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+// Short month names for mobile
+const MONTH_NAMES_SHORT = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
 export const TaskCalendar: React.FC<TaskCalendarProps> = ({
@@ -47,6 +56,17 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
   // Current viewing month/year
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Get current month and year
   const currentMonth = currentDate.getMonth();
@@ -158,6 +178,10 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
   // Get tasks for selected date
   const selectedDateTasks = selectedDate ? getTasksForDate(selectedDate) : [];
 
+  // Day names based on screen size
+  const dayNames = isMobile ? DAYS_OF_WEEK_SHORT : DAYS_OF_WEEK_FULL;
+  const monthName = isMobile ? MONTH_NAMES_SHORT[currentMonth] : MONTH_NAMES[currentMonth];
+
   return (
     <div style={{
       backgroundColor: 'var(--bg-elevated)',
@@ -165,36 +189,40 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
       boxShadow: 'var(--shadow-md)',
       overflow: 'hidden',
     }}>
-      {/* Calendar Header */}
+      {/* Calendar Header - Responsive */}
       <div style={{
-        padding: '1.5rem',
+        padding: isMobile ? '1rem' : '1.5rem',
         borderBottom: '1px solid var(--border-light)',
         display: 'flex',
+        flexDirection: isMobile ? 'column' : 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: isMobile ? 'stretch' : 'center',
+        gap: '0.75rem',
       }}>
         {/* Month/Year Title */}
         <h2 style={{
-          fontSize: 'var(--text-2xl)',
+          fontSize: isMobile ? 'var(--text-xl)' : 'var(--text-2xl)',
           fontWeight: '700',
           color: 'var(--text-primary)',
+          textAlign: isMobile ? 'center' : 'left',
         }}>
-          {MONTH_NAMES[currentMonth]} {currentYear}
+          {monthName} {currentYear}
         </h2>
 
         {/* Navigation Buttons */}
         <div style={{
           display: 'flex',
           gap: '0.5rem',
+          justifyContent: 'center',
         }}>
           <Button onClick={goToPreviousMonth} variant="ghost" size="sm">
-            ← Prev
+            {isMobile ? '←' : '← Prev'}
           </Button>
           <Button onClick={goToToday} variant="ghost" size="sm">
             Today
           </Button>
           <Button onClick={goToNextMonth} variant="ghost" size="sm">
-            Next →
+            {isMobile ? '→' : 'Next →'}
           </Button>
         </div>
       </div>
@@ -205,13 +233,13 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
         gridTemplateColumns: 'repeat(7, 1fr)',
         borderBottom: '1px solid var(--border-light)',
       }}>
-        {DAYS_OF_WEEK.map(day => (
+        {dayNames.map((day, index) => (
           <div
-            key={day}
+            key={`${day}-${index}`}
             style={{
-              padding: '0.75rem',
+              padding: isMobile ? '0.5rem' : '0.75rem',
               textAlign: 'center',
-              fontSize: 'var(--text-sm)',
+              fontSize: isMobile ? 'var(--text-xs)' : 'var(--text-sm)',
               fontWeight: '600',
               color: 'var(--text-secondary)',
               backgroundColor: 'var(--bg-secondary)',
@@ -234,7 +262,7 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
               <div
                 key={`empty-${index}`}
                 style={{
-                  minHeight: '100px',
+                  minHeight: isMobile ? '60px' : '100px',
                   backgroundColor: 'var(--bg-tertiary)',
                   borderRight: (index + 1) % 7 !== 0 ? '1px solid var(--border-light)' : 'none',
                   borderBottom: '1px solid var(--border-light)',
@@ -246,14 +274,15 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
           const dayTasks = getTasksForDate(date);
           const today = isToday(date);
           const selected = isSelected(date);
+          const hasOverdue = dayTasks.some(t => isTaskOverdue(t) && t.status !== 'completed');
 
           return (
             <div
               key={date.toISOString()}
               onClick={() => handleDateClick(date)}
               style={{
-                minHeight: '100px',
-                padding: '0.5rem',
+                minHeight: isMobile ? '60px' : '100px',
+                padding: isMobile ? '0.25rem' : '0.5rem',
                 backgroundColor: selected
                   ? 'var(--primary-50)'
                   : today
@@ -263,34 +292,23 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                 borderBottom: '1px solid var(--border-light)',
                 cursor: 'pointer',
                 transition: 'background-color var(--transition-base)',
-              }}
-              onMouseEnter={(e) => {
-                if (!selected) {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!selected) {
-                  e.currentTarget.style.backgroundColor = today
-                    ? 'rgba(242, 100, 25, 0.05)'
-                    : 'var(--bg-primary)';
-                }
+                position: 'relative',
               }}
             >
               {/* Day Number */}
               <div style={{
                 display: 'flex',
-                justifyContent: 'flex-end',
-                marginBottom: '0.25rem',
+                justifyContent: isMobile ? 'center' : 'flex-end',
+                marginBottom: '0.125rem',
               }}>
                 <span style={{
-                  width: '28px',
-                  height: '28px',
+                  width: isMobile ? '24px' : '28px',
+                  height: isMobile ? '24px' : '28px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   borderRadius: '50%',
-                  fontSize: 'var(--text-sm)',
+                  fontSize: isMobile ? 'var(--text-xs)' : 'var(--text-sm)',
                   fontWeight: today ? '700' : '500',
                   color: today ? 'white' : 'var(--text-primary)',
                   backgroundColor: today ? 'var(--primary-500)' : 'transparent',
@@ -299,65 +317,113 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                 </span>
               </div>
 
-              {/* Tasks for this day (show up to 3) */}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2px',
-              }}>
-                {dayTasks.slice(0, 3).map(task => {
-                  const overdue = isTaskOverdue(task);
-                  const isCompleted = task.status === 'completed';
+              {/* Task indicators for mobile (dots) */}
+              {isMobile && dayTasks.length > 0 && (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '2px',
+                  flexWrap: 'wrap',
+                  marginTop: '2px',
+                }}>
+                  {dayTasks.slice(0, 3).map(task => {
+                    const overdue = isTaskOverdue(task);
+                    const isCompleted = task.status === 'completed';
+                    return (
+                      <div
+                        key={task.id}
+                        style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: isCompleted
+                            ? '#22c55e'
+                            : overdue
+                              ? '#ef4444'
+                              : getPriorityColor(task.priority),
+                        }}
+                      />
+                    );
+                  })}
+                  {dayTasks.length > 3 && (
+                    <span style={{
+                      fontSize: '8px',
+                      color: 'var(--text-tertiary)',
+                    }}>
+                      +{dayTasks.length - 3}
+                    </span>
+                  )}
+                </div>
+              )}
 
-                  return (
-                    <div
-                      key={task.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onTaskClick(task);
-                      }}
-                      style={{
-                        padding: '2px 6px',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '11px',
-                        fontWeight: '500',
-                        backgroundColor: overdue && !isCompleted
-                          ? 'rgba(239, 68, 68, 0.15)'
-                          : `${getPriorityColor(task.priority)}15`,
-                        color: overdue && !isCompleted
-                          ? '#ef4444'
-                          : getPriorityColor(task.priority),
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        textDecoration: isCompleted ? 'line-through' : 'none',
-                        opacity: isCompleted ? 0.6 : 1,
-                        cursor: 'pointer',
-                        transition: 'transform var(--transition-base)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.02)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'scale(1)';
-                      }}
-                    >
-                      {task.title}
+              {/* Tasks for this day - Desktop only (show up to 3) */}
+              {!isMobile && (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2px',
+                }}>
+                  {dayTasks.slice(0, 3).map(task => {
+                    const overdue = isTaskOverdue(task);
+                    const isCompleted = task.status === 'completed';
+
+                    return (
+                      <div
+                        key={task.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onTaskClick(task);
+                        }}
+                        style={{
+                          padding: '2px 6px',
+                          borderRadius: 'var(--radius-sm)',
+                          fontSize: '11px',
+                          fontWeight: '500',
+                          backgroundColor: overdue && !isCompleted
+                            ? 'rgba(239, 68, 68, 0.15)'
+                            : `${getPriorityColor(task.priority)}15`,
+                          color: overdue && !isCompleted
+                            ? '#ef4444'
+                            : getPriorityColor(task.priority),
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          textDecoration: isCompleted ? 'line-through' : 'none',
+                          opacity: isCompleted ? 0.6 : 1,
+                          cursor: 'pointer',
+                          transition: 'transform var(--transition-base)',
+                        }}
+                      >
+                        {task.title}
+                      </div>
+                    );
+                  })}
+
+                  {/* Show "+X more" if there are more than 3 tasks */}
+                  {dayTasks.length > 3 && (
+                    <div style={{
+                      fontSize: '10px',
+                      color: 'var(--text-tertiary)',
+                      paddingLeft: '6px',
+                    }}>
+                      +{dayTasks.length - 3} more
                     </div>
-                  );
-                })}
+                  )}
+                </div>
+              )}
 
-                {/* Show "+X more" if there are more than 3 tasks */}
-                {dayTasks.length > 3 && (
-                  <div style={{
-                    fontSize: '10px',
-                    color: 'var(--text-tertiary)',
-                    paddingLeft: '6px',
-                  }}>
-                    +{dayTasks.length - 3} more
-                  </div>
-                )}
-              </div>
+              {/* Overdue indicator */}
+              {hasOverdue && (
+                <div style={{
+                  position: 'absolute',
+                  top: '4px',
+                  left: '4px',
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ef4444',
+                }} />
+              )}
             </div>
           );
         })}
@@ -366,19 +432,19 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
       {/* Selected Date Tasks Panel */}
       {selectedDate && (
         <div style={{
-          padding: '1.5rem',
+          padding: isMobile ? '1rem' : '1.5rem',
           borderTop: '2px solid var(--border-light)',
           backgroundColor: 'var(--bg-secondary)',
         }}>
           <h3 style={{
-            fontSize: 'var(--text-lg)',
+            fontSize: 'var(--text-base)',
             fontWeight: '600',
             color: 'var(--text-primary)',
-            marginBottom: '1rem',
+            marginBottom: '0.75rem',
           }}>
-            Tasks for {selectedDate.toLocaleDateString('en-US', {
-              weekday: 'long',
-              month: 'long',
+            {selectedDate.toLocaleDateString('en-US', {
+              weekday: isMobile ? 'short' : 'long',
+              month: isMobile ? 'short' : 'long',
               day: 'numeric',
             })}
           </h3>
@@ -406,28 +472,19 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                     key={task.id}
                     onClick={() => onTaskClick(task)}
                     style={{
-                      padding: '0.75rem 1rem',
+                      padding: '0.75rem',
                       backgroundColor: 'var(--bg-elevated)',
                       borderRadius: 'var(--radius-lg)',
                       border: overdue && !isCompleted
                         ? '2px solid rgba(239, 68, 68, 0.3)'
                         : '1px solid var(--border-light)',
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
                       transition: 'all var(--transition-base)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = 'none';
                     }}
                   >
                     <div style={{
                       display: 'flex',
-                      alignItems: 'center',
+                      alignItems: 'flex-start',
                       gap: '0.75rem',
                     }}>
                       {/* Completion indicator */}
@@ -438,11 +495,13 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                         backgroundColor: isCompleted
                           ? '#22c55e'
                           : priorityInfo?.color || '#78716c',
+                        flexShrink: 0,
+                        marginTop: '4px',
                       }} />
 
-                      <div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{
-                          fontSize: 'var(--text-base)',
+                          fontSize: 'var(--text-sm)',
                           fontWeight: '500',
                           color: 'var(--text-primary)',
                           textDecoration: isCompleted ? 'line-through' : 'none',
@@ -450,46 +509,38 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                         }}>
                           {task.title}
                         </div>
-                        {task.description && (
-                          <div style={{
-                            fontSize: 'var(--text-sm)',
-                            color: 'var(--text-tertiary)',
-                            marginTop: '2px',
-                          }}>
-                            {task.description.substring(0, 50)}
-                            {task.description.length > 50 ? '...' : ''}
-                          </div>
-                        )}
-                      </div>
-                    </div>
 
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                    }}>
-                      {overdue && !isCompleted && (
-                        <span style={{
-                          fontSize: 'var(--text-xs)',
-                          fontWeight: '600',
-                          padding: '0.125rem 0.5rem',
-                          borderRadius: 'var(--radius-full)',
-                          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                          color: '#ef4444',
+                        {/* Status badges */}
+                        <div style={{
+                          display: 'flex',
+                          gap: '0.5rem',
+                          marginTop: '0.5rem',
+                          flexWrap: 'wrap',
                         }}>
-                          Overdue
-                        </span>
-                      )}
-                      <span style={{
-                        fontSize: 'var(--text-xs)',
-                        fontWeight: '600',
-                        padding: '0.125rem 0.5rem',
-                        borderRadius: 'var(--radius-full)',
-                        backgroundColor: `${priorityInfo?.color}20`,
-                        color: priorityInfo?.color,
-                      }}>
-                        {priorityInfo?.icon} {priorityInfo?.label}
-                      </span>
+                          {overdue && !isCompleted && (
+                            <span style={{
+                              fontSize: 'var(--text-xs)',
+                              fontWeight: '600',
+                              padding: '0.125rem 0.5rem',
+                              borderRadius: 'var(--radius-full)',
+                              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                              color: '#ef4444',
+                            }}>
+                              Overdue
+                            </span>
+                          )}
+                          <span style={{
+                            fontSize: 'var(--text-xs)',
+                            fontWeight: '600',
+                            padding: '0.125rem 0.5rem',
+                            borderRadius: 'var(--radius-full)',
+                            backgroundColor: `${priorityInfo?.color}20`,
+                            color: priorityInfo?.color,
+                          }}>
+                            {priorityInfo?.label}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );

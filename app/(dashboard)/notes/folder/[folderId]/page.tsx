@@ -23,7 +23,7 @@ import {
   toggleNotePin,
   sortNotesWithPinned,
 } from '@/lib/note-service';
-import { NoteFolder } from '@/types';
+import { NoteFolder, Note } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { NoteForm } from '@/components/forms/NoteForm';
 import toast from 'react-hot-toast';
@@ -36,10 +36,10 @@ export default function FolderDetailPage() {
 
   const [folder, setFolder] = useState<NoteFolder | null>(null);
   const [folderPath, setFolderPath] = useState<NoteFolder[]>([]);
-  const [notes, setNotes] = useState<any[]>([]);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
-  const [selectedNote, setSelectedNote] = useState<any | null>(null);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // Load folder and notes
@@ -77,7 +77,7 @@ export default function FolderDetailPage() {
   };
 
   // Handle delete
-  const handleDelete = async (note: any) => {
+  const handleDelete = async (note: Note) => {
     setSelectedNote(note);
     setShowDeleteConfirm(true);
   };
@@ -98,7 +98,7 @@ export default function FolderDetailPage() {
   };
 
   // Handle toggle pin
-  const handleTogglePin = async (note: any, event: React.MouseEvent) => {
+  const handleTogglePin = async (note: Note, event: React.MouseEvent) => {
     event.stopPropagation();
 
     if (!user) return;
@@ -117,7 +117,7 @@ export default function FolderDetailPage() {
   const getPlainTextPreview = (markdown: string, maxLength: number = 150): string => {
     if (!markdown) return '';
 
-    let text = markdown
+    const text = markdown
       .replace(/#{1,6}\s+/g, '')
       .replace(/(\*\*|__)(.*?)\1/g, '$2')
       .replace(/(\*|_)(.*?)\1/g, '$2')

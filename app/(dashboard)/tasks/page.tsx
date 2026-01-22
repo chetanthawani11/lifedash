@@ -216,32 +216,42 @@ export default function TasksPage() {
         />
       )}
 
-      {/* Create/Edit Task Modal */}
+      {/* Create/Edit Task Modal - Mobile-friendly bottom sheet */}
       {showCreateModal && user && (
         <div style={{
           position: 'fixed',
           inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '1rem',
         }}
           onClick={handleFormCancel}
         >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '1.5rem',
-            maxWidth: '500px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            boxShadow: 'var(--shadow-lg)',
-          }}
+          <div
+            className="scroll-container"
+            style={{
+              backgroundColor: 'var(--bg-elevated)',
+              borderRadius: '16px 16px 0 0',
+              padding: '1.5rem',
+              paddingBottom: 'max(1.5rem, var(--safe-area-bottom))',
+              width: '100%',
+              maxWidth: '500px',
+              maxHeight: '90dvh',
+              overflowY: 'auto',
+              boxShadow: 'var(--shadow-lg)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Drag handle */}
+            <div style={{
+              width: '32px',
+              height: '4px',
+              backgroundColor: 'var(--neutral-300)',
+              borderRadius: '2px',
+              margin: '0 auto 1rem',
+            }} />
             <h2 style={{
               fontSize: 'var(--text-lg)',
               fontWeight: '600',

@@ -1,22 +1,29 @@
 'use client';
 
 /**
- * HEADER COMPONENT
+ * HEADER COMPONENT (Mobile Responsive)
  *
  * Persistent navigation header for all authenticated pages.
  * Features:
  * - Logo with link to dashboard
- * - Main navigation links with active state
+ * - Desktop: Horizontal navigation with active state
+ * - Mobile: Hamburger menu with slide-out panel
  * - Settings and logout actions
+ *
+ * How the responsive design works:
+ * - On screens 768px and wider (tablets/desktops): Shows horizontal nav
+ * - On screens smaller than 768px (phones): Shows hamburger menu
+ * - CSS classes 'desktop-only' and 'mobile-only' handle visibility
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/Button';
 import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import { AppIcon } from '@/components/ui/AppIcon';
+import { MobileNav } from './MobileNav';
 import toast from 'react-hot-toast';
 
 interface NavItem {
@@ -25,6 +32,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Journals', href: '/journals' },
   { label: 'Expenses', href: '/expenses' },
   { label: 'Flashcards', href: '/flashcards' },
@@ -38,6 +46,23 @@ export const Header: React.FC = () => {
   const { signOut } = useAuth();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if we're on mobile (screen width < 768px)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Check on mount
+    checkMobile();
+
+    // Check when window is resized
+    window.addEventListener('resize', checkMobile);
+
+    // Cleanup listener on unmount
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleSignOut = async () => {
     setLoggingOut(true);
@@ -51,6 +76,10 @@ export const Header: React.FC = () => {
     }
   };
 
+  const handleLogoutClick = () => {
+    setShowLogoutConfirm(true);
+  };
+
   const isActive = (href: string) => pathname.startsWith(href);
 
   return (
@@ -61,13 +90,16 @@ export const Header: React.FC = () => {
         position: 'sticky',
         top: 0,
         zIndex: 40,
+        // Handle safe areas for notched phones
+        paddingTop: 'var(--safe-area-top)',
       }}
     >
       <div
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: '0.75rem 1.5rem',
+          // Responsive padding: smaller on mobile, larger on desktop
+          padding: '0.75rem var(--container-padding)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -77,14 +109,27 @@ export const Header: React.FC = () => {
         <Link href="/dashboard" style={{ textDecoration: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <AppIcon size={28} color="var(--primary-500)" />
-            <span style={{ fontSize: '1.125rem', fontWeight: '700', color: 'var(--text-primary)' }}>
+            <span
+              style={{
+                fontSize: '1.125rem',
+                fontWeight: '700',
+                color: 'var(--text-primary)',
+              }}
+            >
               LifeDash
             </span>
           </div>
         </Link>
 
-        {/* Main Navigation */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        {/* Desktop Navigation - Hidden on mobile */}
+        <nav
+          className="desktop-only"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
@@ -120,8 +165,15 @@ export const Header: React.FC = () => {
           })}
         </nav>
 
-        {/* User Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        {/* Desktop User Actions - Hidden on mobile */}
+        <div
+          className="desktop-only"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
           <Link
             href="/settings"
             style={{
@@ -132,8 +184,12 @@ export const Header: React.FC = () => {
               justifyContent: 'center',
               textDecoration: 'none',
               transition: 'all 0.2s',
-              backgroundColor: pathname.startsWith('/settings') ? 'var(--primary-500)' : 'transparent',
-              color: pathname.startsWith('/settings') ? 'white' : 'var(--text-secondary)',
+              backgroundColor: pathname.startsWith('/settings')
+                ? 'var(--primary-500)'
+                : 'transparent',
+              color: pathname.startsWith('/settings')
+                ? 'white'
+                : 'var(--text-secondary)',
             }}
             onMouseEnter={(e) => {
               if (!pathname.startsWith('/settings')) {
@@ -148,15 +204,27 @@ export const Header: React.FC = () => {
               }
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
               <circle cx="12" cy="12" r="3" />
             </svg>
           </Link>
-          <Button onClick={() => setShowLogoutConfirm(true)} variant="secondary" size="sm">
+          <Button onClick={handleLogoutClick} variant="secondary" size="sm">
             Logout
           </Button>
         </div>
+
+        {/* Mobile Navigation - Only visible on mobile */}
+        {isMobile && (
+          <MobileNav onLogout={handleLogoutClick} loggingOut={loggingOut} />
+        )}
       </div>
 
       {/* Logout Confirmation Modal */}

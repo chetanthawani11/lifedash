@@ -1,7 +1,21 @@
 'use client';
 
-// Beautiful Custom Select/Dropdown Component
-// Modern, animated, and accessible
+/**
+ * SELECT/DROPDOWN COMPONENT (Mobile Optimized)
+ *
+ * Modern, animated, and accessible dropdown.
+ * Features:
+ * - Text truncation for long labels (prevents layout shift)
+ * - Touch-friendly 44px minimum height
+ * - Smooth open/close animations
+ * - Keyboard accessible
+ * - Click outside to close
+ *
+ * Mobile Optimizations:
+ * - Fixed height prevents layout jumping
+ * - Text truncates with ellipsis (...)
+ * - 16px font prevents iOS zoom
+ */
 
 import { useState, useRef, useEffect } from 'react';
 
@@ -47,13 +61,27 @@ export const Select: React.FC<SelectProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen]);
+
   const handleSelect = (optionValue: string) => {
     onChange(optionValue);
     setIsOpen(false);
   };
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} style={{ position: 'relative' }}>
       {label && (
         <label style={{
           display: 'block',
@@ -66,119 +94,181 @@ export const Select: React.FC<SelectProps> = ({
         </label>
       )}
 
-      <div className="relative">
-        {/* Selected Value Button */}
-        <button
-          type="button"
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          disabled={disabled}
-          className="w-full text-left transition-all"
-          style={{
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-lg)',
-            border: error
-              ? '2px solid var(--error)'
-              : isOpen
-              ? '2px solid var(--primary-400)'
-              : '1.5px solid var(--border-light)',
-            backgroundColor: disabled ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
-            color: selectedOption ? 'var(--text-primary)' : 'var(--text-tertiary)',
-            fontSize: 'var(--text-base)',
-            cursor: disabled ? 'not-allowed' : 'pointer',
-            boxShadow: isOpen ? 'var(--shadow-sm)' : 'none',
-            transition: 'all var(--transition-base)',
-          }}
-        >
-          <div className="flex items-center justify-between">
-            <span style={{ fontWeight: selectedOption ? '500' : '400' }}>
+      {/* Selected Value Button */}
+      <button
+        type="button"
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        style={{
+          width: '100%',
+          textAlign: 'left',
+          // Fixed height prevents layout shift
+          height: '44px',
+          padding: '0 1rem',
+          borderRadius: 'var(--radius-lg)',
+          border: error
+            ? '2px solid var(--error)'
+            : isOpen
+            ? '2px solid var(--primary-400)'
+            : '1.5px solid var(--border-light)',
+          backgroundColor: disabled ? 'var(--bg-tertiary)' : 'var(--bg-primary)',
+          color: selectedOption ? 'var(--text-primary)' : 'var(--text-tertiary)',
+          // 16px font prevents iOS zoom
+          fontSize: '16px',
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          boxShadow: isOpen ? 'var(--shadow-sm)' : 'none',
+          transition: 'all var(--transition-base)',
+        }}
+      >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '0.5rem',
+          height: '100%',
+        }}>
+          {/* Selected text with icon - truncates if too long */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            flex: 1,
+            minWidth: 0, // Important: allows flex child to shrink below content size
+            overflow: 'hidden',
+          }}>
+            {selectedOption?.icon && (
+              <span style={{ flexShrink: 0 }}>{selectedOption.icon}</span>
+            )}
+            <span style={{
+              fontWeight: selectedOption ? '500' : '400',
+              // Text truncation
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}>
               {selectedOption ? selectedOption.label : placeholder}
             </span>
-            <svg
-              className="transition-transform"
-              style={{
-                width: '1.25rem',
-                height: '1.25rem',
-                color: 'var(--text-tertiary)',
-                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform var(--transition-base)',
-              }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
           </div>
-        </button>
 
-        {/* Dropdown Menu */}
-        {isOpen && (
-          <div
-            className="absolute w-full mt-2 overflow-hidden animate-in"
+          {/* Dropdown arrow */}
+          <svg
             style={{
-              zIndex: 50,
-              borderRadius: 'var(--radius-lg)',
-              backgroundColor: 'var(--bg-elevated)',
-              border: '1.5px solid var(--border-light)',
-              boxShadow: 'var(--shadow-xl)',
-              maxHeight: '16rem',
-              overflowY: 'auto',
-              animation: 'slideDown 0.2s ease-out',
+              width: '1.25rem',
+              height: '1.25rem',
+              color: 'var(--text-tertiary)',
+              transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform var(--transition-base)',
+              flexShrink: 0,
             }}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            {options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => handleSelect(option.value)}
-                className="w-full text-left transition-colors"
-                style={{
-                  padding: '0.75rem 1rem',
-                  fontSize: 'var(--text-base)',
-                  color: option.value === value ? 'var(--primary-600)' : 'var(--text-primary)',
-                  backgroundColor:
-                    option.value === value
-                      ? 'var(--primary-50)'
-                      : 'transparent',
-                  fontWeight: option.value === value ? '600' : '400',
-                  cursor: 'pointer',
-                  transition: 'all var(--transition-fast)',
-                }}
-                onMouseEnter={(e) => {
-                  if (option.value !== value) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (option.value !== value) {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                  }
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  {option.icon && <span>{option.icon}</span>}
-                  <span>{option.label}</span>
-                  {option.value === value && (
-                    <svg
-                      className="ml-auto"
-                      style={{ width: '1rem', height: '1rem', color: 'var(--primary-600)' }}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <div
+          role="listbox"
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            marginTop: '0.5rem',
+            zIndex: 50,
+            borderRadius: 'var(--radius-lg)',
+            backgroundColor: 'var(--bg-elevated)',
+            border: '1.5px solid var(--border-light)',
+            boxShadow: 'var(--shadow-xl)',
+            maxHeight: '240px',
+            overflowY: 'auto',
+            animation: 'selectSlideDown 0.2s ease-out',
+          }}
+        >
+          {options.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              role="option"
+              aria-selected={option.value === value}
+              onClick={() => handleSelect(option.value)}
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                padding: '0.75rem 1rem',
+                fontSize: '16px',
+                color: option.value === value ? 'var(--primary-600)' : 'var(--text-primary)',
+                backgroundColor: option.value === value ? 'var(--primary-50)' : 'transparent',
+                fontWeight: option.value === value ? '600' : '400',
+                cursor: 'pointer',
+                border: 'none',
+                transition: 'all var(--transition-fast)',
+                // Touch-friendly minimum height
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              onMouseEnter={(e) => {
+                if (option.value !== value) {
+                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (option.value !== value) {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                flex: 1,
+                minWidth: 0,
+              }}>
+                {option.icon && <span style={{ flexShrink: 0 }}>{option.icon}</span>}
+                <span style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {option.label}
+                </span>
+                {option.value === value && (
+                  <svg
+                    style={{
+                      width: '1rem',
+                      height: '1rem',
+                      color: 'var(--primary-600)',
+                      marginLeft: 'auto',
+                      flexShrink: 0,
+                    }}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Error Message */}
       {error && (
-        <p className="mt-1.5 flex items-center gap-1" style={{
+        <p style={{
+          marginTop: '0.375rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.25rem',
           fontSize: 'var(--text-sm)',
           color: 'var(--error)',
         }}>
@@ -190,7 +280,7 @@ export const Select: React.FC<SelectProps> = ({
       )}
 
       <style jsx>{`
-        @keyframes slideDown {
+        @keyframes selectSlideDown {
           from {
             opacity: 0;
             transform: translateY(-0.5rem);

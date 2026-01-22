@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * EXPENSES PAGE
+ * EXPENSES PAGE (Responsive)
  *
  * This is where users view and manage all their expenses.
  * Features:
@@ -11,7 +11,7 @@
  * - Delete expenses with confirmation
  * - Filter by category
  * - Sort by date or amount
- * - Real-time updates
+ * - Responsive layout for desktop and mobile
  */
 
 import { useState, useEffect } from 'react';
@@ -26,6 +26,7 @@ import { ExpenseWithCategory, ExpenseCategory, centsToDollars } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { ExpenseForm } from '@/components/forms/ExpenseForm';
 import { Select, SelectOption } from '@/components/ui/Select';
+import { Modal } from '@/components/ui/Modal';
 import { getCurrencySymbol } from '@/lib/currency-utils';
 import toast from 'react-hot-toast';
 
@@ -43,15 +44,25 @@ export default function ExpensesPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<ExpenseWithCategory | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Filter and sort state
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<'date-newest' | 'date-oldest' | 'amount-high' | 'amount-low'>('date-newest');
 
+  // Check screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Load expenses and categories
   useEffect(() => {
     if (!user) return;
-
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -220,10 +231,10 @@ export default function ExpensesPage() {
           marginBottom: '1rem',
           display: 'flex',
           gap: '0.75rem',
-          alignItems: 'center',
+          alignItems: 'stretch',
         }}>
           {/* Category Filter */}
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: '1 1 200px', maxWidth: isMobile ? '100%' : '250px' }}>
             <Select
               value={filterCategory}
               onChange={setFilterCategory}
@@ -232,7 +243,7 @@ export default function ExpensesPage() {
           </div>
 
           {/* Sort */}
-          <div style={{ width: '200px' }}>
+          <div style={{ flex: '0 0 auto', width: isMobile ? '140px' : '180px' }}>
             <Select
               value={sortBy}
               onChange={(value) => setSortBy(value as 'date-newest' | 'date-oldest' | 'amount-high' | 'amount-low')}
@@ -318,7 +329,7 @@ export default function ExpensesPage() {
               <div
                 key={expense.id}
                 style={{
-                  padding: '1.25rem 1.5rem',
+                  padding: isMobile ? '1rem' : '1rem 1.5rem',
                   borderBottom: index < filteredAndSortedExpenses.length - 1 ? '1px solid var(--border-light)' : 'none',
                   transition: 'background-color var(--transition-base)',
                 }}
@@ -329,123 +340,80 @@ export default function ExpensesPage() {
                   e.currentTarget.style.backgroundColor = 'transparent';
                 }}
               >
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '1rem',
-                }}>
-                  {/* Left: Category icon and expense details */}
+                {/* Desktop Layout */}
+                {!isMobile ? (
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     gap: '1rem',
-                    flex: 1,
                   }}>
                     {/* Category Icon */}
                     <div style={{
-                      width: '48px',
-                      height: '48px',
+                      width: '44px',
+                      height: '44px',
                       borderRadius: 'var(--radius-md)',
                       backgroundColor: `${expense.category.color}20`,
                       border: `2px solid ${expense.category.color}`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1.5rem',
+                      fontSize: '1.25rem',
                       flexShrink: 0,
                     }}>
                       {expense.category.icon}
                     </div>
 
-                    {/* Expense Details */}
+                    {/* Details */}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
                         fontSize: 'var(--text-base)',
                         fontWeight: '600',
                         color: 'var(--text-primary)',
-                        marginBottom: '0.25rem',
+                        marginBottom: '0.125rem',
                       }}>
                         {expense.description}
                       </div>
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '1rem',
+                        gap: '0.5rem',
                         fontSize: 'var(--text-sm)',
                         color: 'var(--text-secondary)',
                       }}>
                         <span>{expense.category.name}</span>
                         <span>•</span>
                         <span>{formatDate(expense.date)}</span>
+                        <span>•</span>
+                        <span style={{ color: 'var(--text-tertiary)' }}>
+                          {expense.paymentMethod.toUpperCase()}
+                        </span>
                         {expense.isRecurring && (
                           <>
                             <span>•</span>
-                            <span style={{
-                              color: 'var(--primary-600)',
-                              fontWeight: '500',
-                            }}>
+                            <span style={{ color: 'var(--primary-600)', fontWeight: '500' }}>
                               Recurring
                             </span>
                           </>
                         )}
                       </div>
-                      {expense.tags.length > 0 && (
-                        <div style={{
-                          display: 'flex',
-                          gap: '0.5rem',
-                          marginTop: '0.5rem',
-                          flexWrap: 'wrap',
-                        }}>
-                          {expense.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              style={{
-                                fontSize: 'var(--text-xs)',
-                                padding: '0.125rem 0.5rem',
-                                borderRadius: 'var(--radius-full)',
-                                backgroundColor: 'var(--primary-100)',
-                                color: 'var(--primary-700)',
-                                fontWeight: '500',
-                              }}
-                            >
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
                     </div>
-                  </div>
 
-                  {/* Right: Amount and actions */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1.5rem',
-                  }}>
                     {/* Amount */}
                     <div style={{
+                      fontSize: 'var(--text-lg)',
+                      fontWeight: '700',
+                      color: 'var(--text-primary)',
+                      minWidth: '100px',
                       textAlign: 'right',
                     }}>
-                      <div style={{
-                        fontSize: 'var(--text-xl)',
-                        fontWeight: '700',
-                        color: 'var(--text-primary)',
-                      }}>
-                        {currencySymbol}{centsToDollars(expense.amount).toFixed(2)}
-                      </div>
-                      <div style={{
-                        fontSize: 'var(--text-xs)',
-                        color: 'var(--text-tertiary)',
-                      }}>
-                        {expense.paymentMethod.toUpperCase()}
-                      </div>
+                      {currencySymbol}{centsToDollars(expense.amount).toFixed(2)}
                     </div>
 
-                    {/* Action Buttons */}
+                    {/* Actions */}
                     <div style={{
                       display: 'flex',
                       gap: '0.5rem',
+                      flexShrink: 0,
                     }}>
                       <Button
                         onClick={() => {
@@ -466,7 +434,98 @@ export default function ExpensesPage() {
                       </Button>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* Mobile Layout */
+                  <>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '0.75rem',
+                    }}>
+                      {/* Category Icon */}
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: 'var(--radius-md)',
+                        backgroundColor: `${expense.category.color}20`,
+                        border: `2px solid ${expense.category.color}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.25rem',
+                        flexShrink: 0,
+                      }}>
+                        {expense.category.icon}
+                      </div>
+
+                      {/* Details */}
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          gap: '0.5rem',
+                        }}>
+                          <div style={{
+                            fontSize: 'var(--text-base)',
+                            fontWeight: '600',
+                            color: 'var(--text-primary)',
+                          }}>
+                            {expense.description}
+                          </div>
+                          <div style={{
+                            fontSize: 'var(--text-base)',
+                            fontWeight: '700',
+                            color: 'var(--text-primary)',
+                            flexShrink: 0,
+                          }}>
+                            {currencySymbol}{centsToDollars(expense.amount).toFixed(2)}
+                          </div>
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          flexWrap: 'wrap',
+                          fontSize: 'var(--text-sm)',
+                          color: 'var(--text-secondary)',
+                          marginTop: '0.25rem',
+                        }}>
+                          <span>{expense.category.name}</span>
+                          <span>•</span>
+                          <span>{formatDate(expense.date)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Mobile Action Buttons */}
+                    <div style={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      marginTop: '0.75rem',
+                    }}>
+                      <Button
+                        onClick={() => {
+                          setSelectedExpense(expense);
+                          setShowCreateModal(true);
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        fullWidth
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() => handleDelete(expense)}
+                        variant="danger"
+                        size="sm"
+                        fullWidth
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -474,131 +533,90 @@ export default function ExpensesPage() {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && selectedExpense && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '1rem',
-        }}
-          onClick={() => setShowDeleteConfirm(false)}
-        >
+      <Modal
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        title="Delete Expense?"
+        maxWidth="400px"
+      >
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--text-secondary)',
+          marginBottom: '1rem',
+          lineHeight: '1.6',
+        }}>
+          Are you sure you want to delete this expense?
+        </p>
+        {selectedExpense && (
           <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '1.5rem',
-            maxWidth: '400px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            boxShadow: 'var(--shadow-lg)',
-          }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{
-              fontSize: 'var(--text-lg)',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '0.75rem',
-            }}>
-              Delete Expense?
-            </h2>
-            <p style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-secondary)',
-              marginBottom: '1rem',
-              lineHeight: '1.6',
-            }}>
-              Are you sure you want to delete this expense?
-              <br /><br />
-              <strong>{selectedExpense.description}</strong> - {currencySymbol}{centsToDollars(selectedExpense.amount).toFixed(2)}
-              <br /><br />
-              <strong style={{ color: 'var(--error)' }}>This action cannot be undone.</strong>
-            </p>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.75rem',
-            }}>
-              <Button
-                onClick={() => setShowDeleteConfirm(false)}
-                variant="ghost"
-                size="sm"
-                fullWidth
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={confirmDelete}
-                variant="danger"
-                size="sm"
-                fullWidth
-              >
-                Delete
-              </Button>
+            padding: '0.75rem',
+            backgroundColor: 'var(--bg-secondary)',
+            borderRadius: 'var(--radius-md)',
+            marginBottom: '1rem',
+          }}>
+            <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
+              {selectedExpense.description}
+            </div>
+            <div style={{ fontSize: 'var(--text-lg)', fontWeight: '700', color: 'var(--primary-600)' }}>
+              {currencySymbol}{centsToDollars(selectedExpense.amount).toFixed(2)}
             </div>
           </div>
+        )}
+        <p style={{
+          fontSize: 'var(--text-sm)',
+          color: 'var(--error)',
+          marginBottom: '1rem',
+        }}>
+          This action cannot be undone.
+        </p>
+        <div style={{
+          display: 'flex',
+          gap: '0.75rem',
+          flexDirection: isMobile ? 'column' : 'row',
+        }}>
+          <Button
+            onClick={() => setShowDeleteConfirm(false)}
+            variant="ghost"
+            fullWidth
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={confirmDelete}
+            variant="danger"
+            fullWidth
+          >
+            Delete
+          </Button>
         </div>
-      )}
+      </Modal>
 
       {/* Create/Edit Expense Modal */}
-      {showCreateModal && user && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '1rem',
+      <Modal
+        isOpen={showCreateModal}
+        onClose={() => {
+          setShowCreateModal(false);
+          setSelectedExpense(null);
         }}
-          onClick={() => {
-            setShowCreateModal(false);
-            setSelectedExpense(null);
-          }}
-        >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '1.5rem',
-            maxWidth: '600px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            boxShadow: 'var(--shadow-lg)',
-          }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{
-              fontSize: 'var(--text-lg)',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '1rem',
-            }}>
-              {selectedExpense ? 'Edit Expense' : 'Add Expense'}
-            </h2>
-
-            <ExpenseForm
-              userId={user.uid}
-              expense={selectedExpense}
-              onSuccess={() => {
-                setShowCreateModal(false);
-                setSelectedExpense(null);
-                loadData();
-              }}
-              onCancel={() => {
-                setShowCreateModal(false);
-                setSelectedExpense(null);
-              }}
-            />
-          </div>
-        </div>
-      )}
+        title={selectedExpense ? 'Edit Expense' : 'Add Expense'}
+        maxWidth="500px"
+      >
+        {user && (
+          <ExpenseForm
+            userId={user.uid}
+            expense={selectedExpense}
+            onSuccess={() => {
+              setShowCreateModal(false);
+              setSelectedExpense(null);
+              loadData();
+            }}
+            onCancel={() => {
+              setShowCreateModal(false);
+              setSelectedExpense(null);
+            }}
+          />
+        )}
+      </Modal>
     </div>
   );
 }

@@ -67,9 +67,9 @@ export default function DashboardPage() {
       {/* Achievement Notifications */}
       <AchievementNotifications />
 
-      {/* Welcome */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+      {/* Welcome - Responsive margin */}
+      <div style={{ marginBottom: 'var(--spacing-responsive)' }}>
+        <h1 style={{ fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
           {getGreeting()}, {user?.displayName || user?.email?.split('@')[0] || 'there'}
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-tertiary)', marginTop: '0.25rem' }}>
@@ -77,27 +77,21 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* Goals Section */}
-      <div style={{ marginBottom: '2rem' }}>
+      {/* Goals Section - Responsive margin */}
+      <div style={{ marginBottom: 'var(--spacing-responsive)' }}>
         <GoalsSection />
       </div>
 
-      {/* Loading State */}
+      {/* Loading State - Uses responsive-grid CSS class */}
       {loading && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '1.5rem',
-          }}
-        >
+        <div className="responsive-grid">
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
               style={{
                 backgroundColor: 'var(--bg-elevated)',
                 borderRadius: '12px',
-                padding: '1.5rem',
+                padding: 'var(--spacing-responsive)',
                 height: '200px',
                 animation: 'pulse 2s infinite',
               }}
@@ -123,15 +117,10 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Analytics Grid */}
+      {/* Analytics Grid - Uses responsive-grid CSS class */}
+      {/* On mobile: 1 column, On desktop: 2 columns */}
       {!loading && analytics && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '1.5rem',
-          }}
-        >
+        <div className="responsive-grid">
           <JournalActivityChart data={analytics.journal} />
           <ExpenseChart data={analytics.expense} />
           <LearningProgressChart data={analytics.learning} />

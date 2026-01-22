@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * MODAL COMPONENT
+ * MODAL COMPONENT (Mobile Responsive)
  *
  * Reusable modal with proper scroll behavior.
  * Features:
@@ -10,9 +10,16 @@
  * - Max height based on viewport
  * - Escape key to close
  * - Click outside to close
+ * - Mobile-friendly sizing and touch targets
+ *
+ * Mobile Behavior:
+ * - Takes up nearly full width on small screens
+ * - Smaller padding to maximize content space
+ * - Handles safe areas for notched phones
+ * - Close button is large enough to tap (44x44px)
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -32,6 +39,18 @@ export const Modal: React.FC<ModalProps> = ({
   showCloseButton = true,
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check screen size for responsive behavior
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle escape key and body scroll lock
   useEffect(() => {
@@ -62,9 +81,10 @@ export const Modal: React.FC<ModalProps> = ({
         inset: 0,
         zIndex: 1000,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: isMobile ? 'flex-end' : 'center',
         justifyContent: 'center',
-        padding: '1rem',
+        // Responsive padding: smaller on mobile
+        padding: isMobile ? '0' : '1rem',
       }}
     >
       {/* Backdrop */}
@@ -85,13 +105,21 @@ export const Modal: React.FC<ModalProps> = ({
         style={{
           position: 'relative',
           backgroundColor: 'var(--bg-elevated)',
-          borderRadius: 'var(--radius-lg)',
+          // On mobile: rounded top corners only (sheet-style)
+          // On desktop: all corners rounded
+          borderRadius: isMobile ? '16px 16px 0 0' : 'var(--radius-lg)',
           width: '100%',
-          maxWidth: maxWidth,
-          maxHeight: '90vh',
+          // On mobile: nearly full width
+          // On desktop: respect maxWidth prop
+          maxWidth: isMobile ? '100%' : maxWidth,
+          // On mobile: up to 90% of screen height
+          // On desktop: up to 90% of viewport
+          maxHeight: isMobile ? '90dvh' : '90vh',
           display: 'flex',
           flexDirection: 'column',
           boxShadow: 'var(--shadow-lg)',
+          // Handle safe areas for notched phones
+          paddingBottom: isMobile ? 'var(--safe-area-bottom)' : '0',
         }}
       >
         {/* Header */}
@@ -101,11 +129,27 @@ export const Modal: React.FC<ModalProps> = ({
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '0.75rem 1rem',
+              // Responsive padding
+              padding: isMobile ? '1rem' : '0.75rem 1rem',
               borderBottom: '1px solid var(--border-light)',
               flexShrink: 0,
             }}
           >
+            {/* Drag handle indicator for mobile (visual cue that it can be dismissed) */}
+            {isMobile && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '32px',
+                  height: '4px',
+                  backgroundColor: 'var(--neutral-300)',
+                  borderRadius: '2px',
+                }}
+              />
+            )}
             {title && (
               <h2
                 id="modal-title"
@@ -114,6 +158,7 @@ export const Modal: React.FC<ModalProps> = ({
                   fontWeight: '600',
                   color: 'var(--text-primary)',
                   margin: 0,
+                  paddingTop: isMobile ? '8px' : '0',
                 }}
               >
                 {title}
@@ -127,8 +172,9 @@ export const Modal: React.FC<ModalProps> = ({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '28px',
-                  height: '28px',
+                  // Touch-friendly size: 44x44px minimum
+                  width: '44px',
+                  height: '44px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -136,6 +182,7 @@ export const Modal: React.FC<ModalProps> = ({
                   borderRadius: 'var(--radius-md)',
                   transition: 'all 0.2s',
                   marginLeft: title ? '0' : 'auto',
+                  marginTop: isMobile ? '4px' : '0',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
@@ -146,7 +193,7 @@ export const Modal: React.FC<ModalProps> = ({
                   e.currentTarget.style.color = 'var(--text-tertiary)';
                 }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M18 6L6 18M6 6l12 12" />
                 </svg>
               </button>
@@ -156,8 +203,10 @@ export const Modal: React.FC<ModalProps> = ({
 
         {/* Scrollable Content */}
         <div
+          className="scroll-container"
           style={{
-            padding: '1rem',
+            // Responsive padding
+            padding: isMobile ? '1rem' : '1rem',
             overflowY: 'auto',
             flex: 1,
           }}

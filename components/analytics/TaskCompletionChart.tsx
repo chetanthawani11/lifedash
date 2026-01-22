@@ -46,10 +46,8 @@ export const TaskCompletionChart: React.FC<TaskCompletionChartProps> = ({ data }
 
       {/* Stats Row */}
       <div
+        className="stats-grid"
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1rem',
           marginBottom: data.totalTasks > 0 ? '1.25rem' : '0',
         }}
       >

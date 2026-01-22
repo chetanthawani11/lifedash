@@ -10,12 +10,12 @@
  * - Breadcrumb navigation
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { getNote, deleteNote, getFolderPath, toggleNotePin, getNote as getLinkedNote } from '@/lib/note-service';
 import { getFlashcardDeck } from '@/lib/flashcard-service';
-import { NoteFolder } from '@/types';
+import { NoteFolder, Note, FlashcardDeck } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { NoteForm } from '@/components/forms/NoteForm';
 import ReactMarkdown from 'react-markdown';
@@ -29,21 +29,15 @@ export default function NoteDetailPage() {
   const { user, loading: authLoading } = useAuth();
   const noteId = params.noteId as string;
 
-  const [note, setNote] = useState<any | null>(null);
+  const [note, setNote] = useState<Note | null>(null);
   const [folderPath, setFolderPath] = useState<NoteFolder[]>([]);
-  const [linkedDecks, setLinkedDecks] = useState<any[]>([]);
-  const [linkedNotes, setLinkedNotes] = useState<any[]>([]);
+  const [linkedDecks, setLinkedDecks] = useState<FlashcardDeck[]>([]);
+  const [linkedNotes, setLinkedNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  // Load note data
-  useEffect(() => {
-    if (!user) return;
-    loadNote();
-  }, [user, noteId]);
-
-  const loadNote = async () => {
+  const loadNote = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -86,7 +80,13 @@ export default function NoteDetailPage() {
       toast.error('Failed to load note');
       router.push('/notes');
     }
-  };
+  }, [user, noteId, router]);
+
+  // Load note data
+  useEffect(() => {
+    if (!user) return;
+    loadNote();
+  }, [user, loadNote]);
 
   // Handle delete
   const handleDelete = async () => {
@@ -142,7 +142,7 @@ export default function NoteDetailPage() {
   }
 
   // Format date
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp: { toDate?: () => Date } | Date | string | null) => {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleDateString('en-US', {
@@ -285,7 +285,7 @@ export default function NoteDetailPage() {
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
                 components={{
-                  h1: ({ node, ...props }) => (
+                  h1: ({ ...props }) => (
                     <h1 style={{
                       fontSize: 'var(--text-3xl)',
                       fontWeight: '700',
@@ -296,7 +296,7 @@ export default function NoteDetailPage() {
                       paddingBottom: '0.5rem',
                     }} {...props} />
                   ),
-                  h2: ({ node, ...props }) => (
+                  h2: ({ ...props }) => (
                     <h2 style={{
                       fontSize: 'var(--text-2xl)',
                       fontWeight: '600',
@@ -305,7 +305,7 @@ export default function NoteDetailPage() {
                       color: 'var(--text-primary)',
                     }} {...props} />
                   ),
-                  h3: ({ node, ...props }) => (
+                  h3: ({ ...props }) => (
                     <h3 style={{
                       fontSize: 'var(--text-xl)',
                       fontWeight: '600',
@@ -314,32 +314,32 @@ export default function NoteDetailPage() {
                       color: 'var(--text-primary)',
                     }} {...props} />
                   ),
-                  p: ({ node, ...props }) => (
+                  p: ({ ...props }) => (
                     <p style={{
                       marginBottom: '1rem',
                       color: 'var(--text-primary)',
                     }} {...props} />
                   ),
-                  ul: ({ node, ...props }) => (
+                  ul: ({ ...props }) => (
                     <ul style={{
                       marginBottom: '1rem',
                       paddingLeft: '2rem',
                       listStyleType: 'disc',
                     }} {...props} />
                   ),
-                  ol: ({ node, ...props }) => (
+                  ol: ({ ...props }) => (
                     <ol style={{
                       marginBottom: '1rem',
                       paddingLeft: '2rem',
                       listStyleType: 'decimal',
                     }} {...props} />
                   ),
-                  li: ({ node, ...props }) => (
+                  li: ({ ...props }) => (
                     <li style={{
                       marginBottom: '0.5rem',
                     }} {...props} />
                   ),
-                  code: ({ node, inline, ...props }: any) => (
+                  code: ({ inline, ...props }: { inline?: boolean; children?: React.ReactNode }) => (
                     inline ? (
                       <code style={{
                         backgroundColor: 'var(--bg-secondary)',
@@ -362,7 +362,7 @@ export default function NoteDetailPage() {
                       }} {...props} />
                     )
                   ),
-                  pre: ({ node, ...props }) => (
+                  pre: ({ ...props }) => (
                     <pre style={{
                       backgroundColor: 'var(--bg-secondary)',
                       padding: '1rem',
@@ -371,7 +371,7 @@ export default function NoteDetailPage() {
                       marginBottom: '1rem',
                     }} {...props} />
                   ),
-                  blockquote: ({ node, ...props }) => (
+                  blockquote: ({ ...props }) => (
                     <blockquote style={{
                       borderLeft: '4px solid var(--primary-500)',
                       paddingLeft: '1rem',
@@ -381,20 +381,20 @@ export default function NoteDetailPage() {
                       fontStyle: 'italic',
                     }} {...props} />
                   ),
-                  a: ({ node, ...props }) => (
+                  a: ({ ...props }) => (
                     <a style={{
                       color: 'var(--primary-500)',
                       textDecoration: 'underline',
                     }} target="_blank" rel="noopener noreferrer" {...props} />
                   ),
-                  table: ({ node, ...props }) => (
+                  table: ({ ...props }) => (
                     <table style={{
                       width: '100%',
                       borderCollapse: 'collapse',
                       marginBottom: '1rem',
                     }} {...props} />
                   ),
-                  th: ({ node, ...props }) => (
+                  th: ({ ...props }) => (
                     <th style={{
                       border: '1px solid var(--border-light)',
                       padding: '0.75rem',
@@ -403,7 +403,7 @@ export default function NoteDetailPage() {
                       textAlign: 'left',
                     }} {...props} />
                   ),
-                  td: ({ node, ...props }) => (
+                  td: ({ ...props }) => (
                     <td style={{
                       border: '1px solid var(--border-light)',
                       padding: '0.75rem',

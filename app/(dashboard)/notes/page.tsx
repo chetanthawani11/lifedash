@@ -24,7 +24,7 @@ import {
   toggleNotePin,
   sortNotesWithPinned,
 } from '@/lib/note-service';
-import { NoteFolder } from '@/types';
+import { NoteFolder, Note } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { NoteFolderForm } from '@/components/forms/NoteFolderForm';
@@ -37,14 +37,14 @@ export default function NotesPage() {
 
   // State
   const [folders, setFolders] = useState<NoteFolder[]>([]);
-  const [notes, setNotes] = useState<any[]>([]);
-  const [allNotes, setAllNotes] = useState<any[]>([]); // Store all notes for search
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([]); // Store all notes for search
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [showCreateFolderModal, setShowCreateFolderModal] = useState(false);
   const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState<NoteFolder | null>(null);
-  const [selectedNote, setSelectedNote] = useState<any | null>(null);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [showDeleteFolderConfirm, setShowDeleteFolderConfirm] = useState(false);
   const [showDeleteNoteConfirm, setShowDeleteNoteConfirm] = useState(false);
 
@@ -97,7 +97,7 @@ export default function NotesPage() {
   };
 
   // Handle toggle pin
-  const handleTogglePin = async (note: any, event: React.MouseEvent) => {
+  const handleTogglePin = async (note: Note, event: React.MouseEvent) => {
     event.stopPropagation();
 
     if (!user) return;
@@ -123,7 +123,7 @@ export default function NotesPage() {
     if (!markdown) return '';
 
     // Remove markdown syntax
-    let text = markdown
+    const text = markdown
       // Remove headers
       .replace(/#{1,6}\s+/g, '')
       // Remove bold/italic
@@ -176,7 +176,7 @@ export default function NotesPage() {
   };
 
   // Handle note delete
-  const handleDeleteNote = async (note: any) => {
+  const handleDeleteNote = async (note: Note) => {
     setSelectedNote(note);
     setShowDeleteNoteConfirm(true);
   };

@@ -168,7 +168,7 @@ export default function TasksCalendarPage() {
           onDateClick={handleDateClick}
         />
 
-      {/* Legend */}
+      {/* Legend - Responsive grid */}
       <div style={{
         marginTop: '1rem',
         padding: '0.75rem 1rem',
@@ -187,67 +187,79 @@ export default function TasksCalendarPage() {
           Priority Colors
         </h3>
         <div style={{
-          display: 'flex',
-          gap: '1rem',
-          flexWrap: 'wrap',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))',
+          gap: '0.5rem',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#78716c' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#78716c', flexShrink: 0 }} />
             <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Low</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f59e0b', flexShrink: 0 }} />
             <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Medium</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f97316' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#f97316', flexShrink: 0 }} />
             <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>High</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444' }} />
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ef4444', flexShrink: 0 }} />
             <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Urgent</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#22c55e' }} />
-            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Completed</span>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#22c55e', flexShrink: 0 }} />
+            <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Done</span>
           </div>
         </div>
       </div>
 
-      {/* Task Detail/Edit Modal */}
+      {/* Task Detail/Edit Modal - Mobile-friendly bottom sheet */}
       {showTaskModal && selectedTask && user && (
         <div style={{
           position: 'fixed',
           inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '1rem',
         }}
           onClick={() => {
             setShowTaskModal(false);
             setSelectedTask(null);
           }}
         >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '1.5rem',
-            maxWidth: '500px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            boxShadow: 'var(--shadow-lg)',
-          }}
+          <div
+            className="scroll-container"
+            style={{
+              backgroundColor: 'var(--bg-elevated)',
+              borderRadius: '16px 16px 0 0',
+              padding: '1.5rem',
+              paddingBottom: 'max(1.5rem, var(--safe-area-bottom))',
+              width: '100%',
+              maxWidth: '500px',
+              maxHeight: '90dvh',
+              overflowY: 'auto',
+              boxShadow: 'var(--shadow-lg)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Drag handle */}
+            <div style={{
+              width: '32px',
+              height: '4px',
+              backgroundColor: 'var(--neutral-300)',
+              borderRadius: '2px',
+              margin: '0 auto 1rem',
+            }} />
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               marginBottom: '1rem',
+              flexWrap: 'wrap',
+              gap: '0.5rem',
             }}>
               <h2 style={{
                 fontSize: 'var(--text-lg)',
@@ -282,35 +294,45 @@ export default function TasksCalendarPage() {
         </div>
       )}
 
-      {/* Create Task Modal */}
+      {/* Create Task Modal - Mobile-friendly bottom sheet */}
       {showCreateModal && user && (
         <div style={{
           position: 'fixed',
           inset: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'center',
           zIndex: 1000,
-          padding: '1rem',
         }}
           onClick={() => {
             setShowCreateModal(false);
             setSelectedDate(null);
           }}
         >
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-xl)',
-            padding: '1.5rem',
-            maxWidth: '500px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto',
-            boxShadow: 'var(--shadow-lg)',
-          }}
+          <div
+            className="scroll-container"
+            style={{
+              backgroundColor: 'var(--bg-elevated)',
+              borderRadius: '16px 16px 0 0',
+              padding: '1.5rem',
+              paddingBottom: 'max(1.5rem, var(--safe-area-bottom))',
+              width: '100%',
+              maxWidth: '500px',
+              maxHeight: '90dvh',
+              overflowY: 'auto',
+              boxShadow: 'var(--shadow-lg)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Drag handle */}
+            <div style={{
+              width: '32px',
+              height: '4px',
+              backgroundColor: 'var(--neutral-300)',
+              borderRadius: '2px',
+              margin: '0 auto 1rem',
+            }} />
             <h2 style={{
               fontSize: 'var(--text-lg)',
               fontWeight: '600',
@@ -327,8 +349,8 @@ export default function TasksCalendarPage() {
                   marginTop: '0.25rem',
                 }}>
                   Due: {selectedDate.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    month: 'long',
+                    weekday: 'short',
+                    month: 'short',
                     day: 'numeric',
                   })}
                 </span>

@@ -26,7 +26,6 @@ import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Select';
 import { JournalEntryForm } from '@/components/forms/JournalEntryForm';
 import toast from 'react-hot-toast';
-import Link from 'next/link';
 
 export default function JournalPage() {
   const router = useRouter();
@@ -111,7 +110,7 @@ export default function JournalPage() {
   }
 
   // Format date helper
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp: { toDate?: () => Date } | Date | string | null) => {
     if (!timestamp) return '';
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
     return date.toLocaleDateString('en-US', {
@@ -277,7 +276,7 @@ export default function JournalPage() {
           <div style={{ width: '180px', margin: 0 }}>
             <Select
               value={sortBy}
-              onChange={(value) => setSortBy(value as any)}
+              onChange={(value) => setSortBy(value as 'newest' | 'oldest' | 'updated-newest' | 'updated-oldest')}
               options={[
                 { value: 'newest', label: 'Last Written' },
                 { value: 'oldest', label: 'First Written' },

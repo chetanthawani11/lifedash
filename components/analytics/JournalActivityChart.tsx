@@ -45,13 +45,7 @@ export const JournalActivityChart: React.FC<JournalActivityChartProps> = ({ data
       </div>
 
       {/* Stats Row */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '1rem',
-        }}
-      >
+      <div className="stats-grid">
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#3b82f6', margin: 0 }}>
             {data.totalEntries}

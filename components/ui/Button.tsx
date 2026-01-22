@@ -1,5 +1,19 @@
-// Beautiful Button Component
-// Modern, clean, with smooth animations and loading states
+/**
+ * BUTTON COMPONENT (Touch-Friendly)
+ *
+ * Modern, clean button with smooth animations and loading states.
+ * Features:
+ * - Multiple variants: primary, secondary, ghost, danger
+ * - Multiple sizes: sm, md, lg
+ * - Loading state with spinner
+ * - Touch-friendly: minimum 44px height on touch devices
+ * - Hover and active states for both mouse and touch
+ *
+ * Touch-Friendly Design:
+ * - Uses CSS @media (pointer: coarse) to detect touch devices
+ * - Ensures minimum 44px tap target (Apple's recommendation)
+ * - Slightly larger padding on touch devices
+ */
 
 import React from 'react';
 
@@ -21,23 +35,27 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   ...props
 }) => {
+  // Size configurations - these ensure good touch targets
   const sizes = {
     sm: {
       padding: '0.5rem 1rem',
       fontSize: 'var(--text-sm)',
+      minHeight: '36px', // Will be overridden by CSS on touch devices
     },
     md: {
       padding: '0.75rem 1.5rem',
       fontSize: 'var(--text-base)',
+      minHeight: '44px', // Already touch-friendly
     },
     lg: {
       padding: '1rem 2rem',
       fontSize: 'var(--text-lg)',
+      minHeight: '52px', // Comfortable for all devices
     },
   };
 
   const getVariantStyles = () => {
-    const base = {
+    const base: React.CSSProperties = {
       borderRadius: 'var(--radius-lg)',
       fontWeight: '600',
       cursor: disabled || loading ? 'not-allowed' : 'pointer',
@@ -49,6 +67,13 @@ export const Button: React.FC<ButtonProps> = ({
       alignItems: 'center',
       justifyContent: 'center',
       gap: '0.5rem',
+      // Prevent text wrapping - keeps buttons compact
+      whiteSpace: 'nowrap',
+      // Prevent text selection on double-tap
+      WebkitUserSelect: 'none',
+      userSelect: 'none',
+      // Prevent touch callout (iOS)
+      WebkitTouchCallout: 'none',
       ...sizes[size],
     };
 
@@ -130,6 +155,19 @@ export const Button: React.FC<ButtonProps> = ({
     }
   };
 
+  // Handle touch feedback (active state)
+  const handleTouchStart = (e: React.TouchEvent<HTMLButtonElement>) => {
+    if (disabled || loading) return;
+    e.currentTarget.style.transform = 'scale(0.98)';
+    e.currentTarget.style.opacity = '0.9';
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLButtonElement>) => {
+    if (disabled || loading) return;
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.opacity = '1';
+  };
+
   return (
     <button
       style={{
@@ -140,6 +178,8 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled || loading}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       className={className}
       {...props}
     >

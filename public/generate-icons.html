@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generate PWA Icons for LifeDash</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #f26419;
+    }
+    .icon-container {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+    .icon-box {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    canvas {
+      border-radius: 22%;
+    }
+    button {
+      background: #f26419;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+    button:hover {
+      background: #e85d04;
+    }
+    .instructions {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-top: 2rem;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Generate PWA Icons for LifeDash</h1>
+  <p>Click the buttons below to download each icon size needed for your PWA.</p>
+
+  <div class="icon-container">
+    <div class="icon-box">
+      <h3>192x192</h3>
+      <canvas id="icon192" width="192" height="192"></canvas>
+      <br>
+      <button onclick="downloadIcon(192)">Download icon-192.png</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>512x512</h3>
+      <canvas id="icon512" width="512" height="512"></canvas>
+      <br>
+      <button onclick="downloadIcon(512)">Download icon-512.png</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>180x180 (Apple Touch)</h3>
+      <canvas id="icon180" width="180" height="180"></canvas>
+      <br>
+      <button onclick="downloadAppleIcon()">Download apple-touch-icon.png</button>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <h2>Instructions</h2>
+    <ol>
+      <li>Open this file in your browser: <code>open public/generate-icons.html</code></li>
+      <li>Click each download button to save the icons</li>
+      <li>Move the downloaded files to your <code>public/</code> folder</li>
+      <li>Make sure the files are named exactly:
+        <ul>
+          <li><code>icon-192.png</code></li>
+          <li><code>icon-512.png</code></li>
+          <li><code>apple-touch-icon.png</code></li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <script>
+    // Draw icon on canvas
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      const cornerRadius = size * 0.21; // iOS-style rounded corners
+
+      // Create gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#f26419');
+      gradient.addColorStop(1, '#e85d04');
+
+      // Draw rounded rectangle background
+      ctx.beginPath();
+      ctx.moveTo(cornerRadius, 0);
+      ctx.lineTo(size - cornerRadius, 0);
+      ctx.quadraticCurveTo(size, 0, size, cornerRadius);
+      ctx.lineTo(size, size - cornerRadius);
+      ctx.quadraticCurveTo(size, size, size - cornerRadius, size);
+      ctx.lineTo(cornerRadius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - cornerRadius);
+      ctx.lineTo(0, cornerRadius);
+      ctx.quadraticCurveTo(0, 0, cornerRadius, 0);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Draw the chart icon
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = size * 0.04;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      const scale = size / 24;
+      const offsetX = size * 0.18;
+      const offsetY = size * 0.25;
+
+      // Chart line path
+      ctx.beginPath();
+      ctx.moveTo(3 * scale + offsetX, 20 * scale + offsetY - size * 0.25);
+      ctx.lineTo(9 * scale + offsetX, 14 * scale + offsetY - size * 0.25);
+      ctx.lineTo(13 * scale + offsetX, 18 * scale + offsetY - size * 0.25);
+      ctx.lineTo(21 * scale + offsetX, 8 * scale + offsetY - size * 0.25);
+      ctx.stroke();
+
+      // Arrow head
+      ctx.beginPath();
+      ctx.moveTo(17 * scale + offsetX, 8 * scale + offsetY - size * 0.25);
+      ctx.lineTo(21 * scale + offsetX, 8 * scale + offsetY - size * 0.25);
+      ctx.lineTo(21 * scale + offsetX, 12 * scale + offsetY - size * 0.25);
+      ctx.stroke();
+    }
+
+    // Initialize all canvases
+    function init() {
+      drawIcon(document.getElementById('icon192'), 192);
+      drawIcon(document.getElementById('icon512'), 512);
+      drawIcon(document.getElementById('icon180'), 180);
+    }
+
+    // Download icon
+    function downloadIcon(size) {
+      const canvas = document.getElementById('icon' + size);
+      const link = document.createElement('a');
+      link.download = 'icon-' + size + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Download Apple icon
+    function downloadAppleIcon() {
+      const canvas = document.getElementById('icon180');
+      const link = document.createElement('a');
+      link.download = 'apple-touch-icon.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Run on load
+    init();
+  </script>
+</body>
+</html>

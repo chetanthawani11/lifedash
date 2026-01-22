@@ -122,7 +122,7 @@ export const GoalsSection: React.FC = () => {
             </p>
           </div>
           <Button onClick={() => setShowCreateModal(true)} size="sm">
-            + Add Goal
+            Add Goal
           </Button>
         </div>
 
@@ -162,7 +162,7 @@ export const GoalsSection: React.FC = () => {
             </Button>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+          <div className="responsive-grid">
             {goals.map((goal) => (
               <GoalProgressCard
                 key={goal.id}
@@ -174,7 +174,7 @@ export const GoalsSection: React.FC = () => {
           </div>
         )}
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Responsive layout */}
         {goals.length > 0 && (
           <div
             style={{
@@ -183,7 +183,8 @@ export const GoalsSection: React.FC = () => {
               borderTop: '1px solid var(--border-light)',
               display: 'flex',
               justifyContent: 'center',
-              gap: '2rem',
+              gap: '1.5rem',
+              flexWrap: 'wrap',
             }}
           >
             <div style={{ textAlign: 'center' }}>
