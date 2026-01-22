@@ -20,6 +20,8 @@
 import { Toaster } from 'react-hot-toast';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { Header } from '@/components/layout/Header';
+import { OfflineIndicator } from '@/components/ui/OfflineIndicator';
+import { OfflineProvider } from '@/lib/offline-context';
 
 export default function DashboardLayout({
   children,
@@ -28,35 +30,39 @@ export default function DashboardLayout({
 }) {
   return (
     <ProtectedRoute>
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
-        {/* Toast notifications - positioned for mobile */}
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            style: {
-              maxWidth: '90vw',
-              padding: '12px 16px',
-            },
-          }}
-        />
-        <Header />
-        {/* Main content area with responsive padding */}
-        <main
-          className="safe-area-padding safe-area-bottom"
-          style={{
-            maxWidth: '1200px',
-            width: '100%',
-            margin: '0 auto',
-            // Use CSS custom property for responsive padding
-            paddingTop: 'var(--spacing-responsive)',
-            paddingBottom: 'var(--spacing-responsive)',
-            // Prevent children from causing horizontal overflow
-            overflowX: 'hidden',
-          }}
-        >
-          {children}
-        </main>
-      </div>
+      <OfflineProvider>
+        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)' }}>
+          {/* Toast notifications - positioned for mobile */}
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                maxWidth: '90vw',
+                padding: '12px 16px',
+              },
+            }}
+          />
+          <Header />
+          {/* Offline indicator - shows below header when user loses internet */}
+          <OfflineIndicator />
+          {/* Main content area with responsive padding */}
+          <main
+            className="safe-area-padding safe-area-bottom"
+            style={{
+              maxWidth: '1200px',
+              width: '100%',
+              margin: '0 auto',
+              // Use CSS custom property for responsive padding
+              paddingTop: 'var(--spacing-responsive)',
+              paddingBottom: 'var(--spacing-responsive)',
+              // Prevent children from causing horizontal overflow
+              overflowX: 'hidden',
+            }}
+          >
+            {children}
+          </main>
+        </div>
+      </OfflineProvider>
     </ProtectedRoute>
   );
 }

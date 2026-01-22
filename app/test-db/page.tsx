@@ -82,9 +82,9 @@ function TestDBContent() {
 
       console.log('✅ Created journal:', journal);
       toast.success(`Journal "${journal.name}" created!`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to create journal');
+      toast.error(error instanceof Error ? error.message : 'Failed to create journal');
     } finally {
       setLoading(false);
     }
@@ -116,9 +116,9 @@ function TestDBContent() {
       // Reload entries to see the new one
       const updatedEntries = await getJournalEntries(user.uid, firstJournal.id);
       setEntries(updatedEntries);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to create entry');
+      toast.error(error instanceof Error ? error.message : 'Failed to create entry');
     } finally {
       setLoading(false);
     }
@@ -139,9 +139,9 @@ function TestDBContent() {
       setEntries(loadedEntries);
       console.log('✅ Loaded entries:', loadedEntries);
       toast.success(`Loaded ${loadedEntries.length} entries`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to load entries');
+      toast.error(error instanceof Error ? error.message : 'Failed to load entries');
     } finally {
       setLoading(false);
     }
@@ -157,9 +157,9 @@ function TestDBContent() {
       console.log('✅ Deleted journal:', firstJournal.name);
       toast.success('Journal deleted!');
       setEntries([]); // Clear entries since journal is gone
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to delete journal');
+      toast.error(error instanceof Error ? error.message : 'Failed to delete journal');
     } finally {
       setLoading(false);
     }
@@ -179,9 +179,9 @@ function TestDBContent() {
       setCategories(loadedCategories);
       console.log('✅ Created categories:', loadedCategories);
       toast.success(`Created ${loadedCategories.length} categories!`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to create categories');
+      toast.error(error instanceof Error ? error.message : 'Failed to create categories');
     } finally {
       setLoading(false);
     }
@@ -196,9 +196,9 @@ function TestDBContent() {
       setCategories(loadedCategories);
       console.log('✅ Loaded categories:', loadedCategories);
       toast.success(`Loaded ${loadedCategories.length} categories`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to load categories');
+      toast.error(error instanceof Error ? error.message : 'Failed to load categories');
     } finally {
       setLoading(false);
     }
@@ -235,9 +235,9 @@ function TestDBContent() {
       // Reload expenses
       const updatedExpenses = await getUserExpenses(user.uid);
       setExpenses(updatedExpenses);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to create expense');
+      toast.error(error instanceof Error ? error.message : 'Failed to create expense');
     } finally {
       setLoading(false);
     }
@@ -252,9 +252,9 @@ function TestDBContent() {
       setExpenses(loadedExpenses);
       console.log('✅ Loaded expenses:', loadedExpenses);
       toast.success(`Loaded ${loadedExpenses.length} expenses`);
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to load expenses');
+      toast.error(error instanceof Error ? error.message : 'Failed to load expenses');
     } finally {
       setLoading(false);
     }
@@ -281,9 +281,9 @@ function TestDBContent() {
           cat.budget ? `(${cat.percentageOfBudget?.toFixed(1)}% of budget)` : ''
         );
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('❌ Error:', error);
-      toast.error(error.message || 'Failed to load analytics');
+      toast.error(error instanceof Error ? error.message : 'Failed to load analytics');
     } finally {
       setLoading(false);
     }
@@ -443,7 +443,7 @@ function TestDBContent() {
           </h3>
           <ol style={{ paddingLeft: '1.5rem', fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: '1.8' }}>
             <li><strong>Open Browser Console</strong> (Press F12 or Right-click → Inspect → Console)</li>
-            <li><strong>Journal Test:</strong> Click "Create Journal", then "Add Entry", then "Load Entries"</li>
+            <li><strong>Journal Test:</strong> Click &quot;Create Journal&quot;, then &quot;Add Entry&quot;, then &quot;Load Entries&quot;</li>
             <li><strong>Watch Real-time Updates:</strong> Journals update automatically when you create/delete them!</li>
             <li><strong>Expense Test:</strong> Click "Create Default Categories", then "Add Random Expense" multiple times</li>
             <li><strong>See Analytics:</strong> Click "Show Analytics" to see spending breakdown in console</li>
