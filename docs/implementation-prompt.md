@@ -35,11 +35,12 @@ Take this from the design.md file where i have mentioned in detial.
 6. **Free solutions only** - guide me through free Firebase setup, Vercel deployment
 7. **Test as we go** - make sure each step works before moving to next
 
-**My Current Task**: 9.2 Implement offline functionality
-- Set up service worker for offline caching
-- Create offline data storage with IndexedDB
-- Implement offline mode indicators and functionality
-- Build data synchronization when connectivity returns
+**My Current Task**: 9.3 Create PWA installation and native features
+- Configure PWA manifest for app installation
+- Add native-like features (splash screen, app icons)
+- Implement push notifications for reminders and goals
+- Ensure cross-device data consistency
+- _Requirements: 7.4, 7.5_
 
 
 **Testing Requirements - VERY IMPORTANT:**

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/Button';
 import { getUserProfile, updateUserProfile, updateUserPreferences } from '@/lib/user-service';
 import { UserProfile } from '@/types/auth';
 import toast, { Toaster } from 'react-hot-toast';
-import Link from 'next/link';
+import { NotificationSettings } from '@/components/settings/NotificationSettings';
 
 // Currency options with icons
 const currencyOptions: SelectOption[] = [
@@ -237,6 +237,9 @@ function SettingsContent() {
             />
           </div>
         </section>
+
+        {/* Notification Settings */}
+        <NotificationSettings />
 
         {/* Account Info */}
         {profile && (

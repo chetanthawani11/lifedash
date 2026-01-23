@@ -22,6 +22,7 @@ import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { Header } from '@/components/layout/Header';
 import { OfflineIndicator } from '@/components/ui/OfflineIndicator';
 import { OfflineProvider } from '@/lib/offline-context';
+import { InstallPrompt } from '@/components/pwa/InstallPrompt';
 
 export default function DashboardLayout({
   children,
@@ -42,6 +43,8 @@ export default function DashboardLayout({
               },
             }}
           />
+          {/* PWA Install prompt - shows when app is installable */}
+          <InstallPrompt />
           <Header />
           {/* Offline indicator - shows below header when user loses internet */}
           <OfflineIndicator />

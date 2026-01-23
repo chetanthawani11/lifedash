@@ -12,25 +12,24 @@ const nextConfig: NextConfig = {
 };
 
 /**
- * PWA Configuration (Optional)
+ * PWA Configuration
  *
- * Only enabled when next-pwa is installed.
  * Provides offline functionality:
  * - Caches app files so pages load without internet
  * - Only active in production (not during development)
  */
-let finalConfig = nextConfig;
+let finalConfig: NextConfig = nextConfig;
 
 try {
-  // Try to load next-pwa - if not installed, skip PWA setup
+  // Load next-pwa
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const withPWAInit = require("next-pwa").default;
+  const withPWA = require("next-pwa");
 
-  const withPWA = withPWAInit({
+  finalConfig = withPWA({
     dest: "public", // Where to put the generated service worker files
     register: true, // Automatically register the service worker
     skipWaiting: true, // Activate new service worker immediately
-    disable: process.env.NODE_ENV === "development", // Disable in dev mode
+    disable: process.env.NODE_ENV === "development", // Disable in dev mode (no service worker in dev)
     // Cache strategies for different types of files
     runtimeCaching: [
       {
@@ -69,26 +68,13 @@ try {
           },
         },
       },
-      {
-        // Cache API responses (except Firebase)
-        urlPattern: /^https:\/\/(?!.*firestore|.*firebase).*/i,
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "api-cache",
-          expiration: {
-            maxEntries: 32,
-            maxAgeSeconds: 24 * 60 * 60, // 1 day
-          },
-          networkTimeoutSeconds: 10, // Fall back to cache after 10s
-        },
-      },
     ],
-  });
+  })(nextConfig);
 
-  finalConfig = withPWA(nextConfig);
-} catch {
-  // next-pwa not installed - PWA features disabled
-  console.log("Note: next-pwa not installed. Run 'npm install next-pwa' for offline support.");
+  console.log("✓ PWA support enabled");
+} catch (error) {
+  // next-pwa not installed or error occurred
+  console.log("Note: PWA features disabled.", error instanceof Error ? error.message : "");
 }
 
 export default finalConfig;
