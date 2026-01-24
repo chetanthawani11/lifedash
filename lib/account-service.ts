@@ -273,21 +273,46 @@ export async function reauthenticateUser(password?: string): Promise<boolean> {
   try {
     // Check if user signed in with email/password or Google
     const providerData = user.providerData || [];
-    const providers = providerData.map((p) => p.providerId);
+    const providers = providerData.map((p) => p?.providerId).filter(Boolean);
 
-    if (providers.includes('google.com')) {
+    console.log('Auth providers found:', providers); // Debug log
+
+    // Check for Google auth (handles various Google provider IDs)
+    const isGoogleUser = providers.some(
+      (p) => p === 'google.com' || p?.includes('google')
+    );
+
+    // Check for email/password auth
+    const isPasswordUser = providers.some(
+      (p) => p === 'password' || p === 'firebase'
+    );
+
+    if (isGoogleUser) {
       // Re-authenticate with Google popup
       const provider = new GoogleAuthProvider();
       await reauthenticateWithPopup(user, provider);
       return true;
-    } else if (providers.includes('password') && password && user.email) {
+    } else if (isPasswordUser && password && user.email) {
       // Re-authenticate with email/password
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential);
       return true;
+    } else if (user.email && password) {
+      // Fallback: try email/password if we have both
+      const credential = EmailAuthProvider.credential(user.email, password);
+      await reauthenticateWithCredential(user, credential);
+      return true;
+    } else if (user.email && !password) {
+      // User has email but no password provided - might be Google user
+      // Try Google re-auth as fallback
+      const provider = new GoogleAuthProvider();
+      await reauthenticateWithPopup(user, provider);
+      return true;
     }
 
-    throw new Error('Unable to determine authentication method');
+    throw new Error(
+      `Unable to determine authentication method. Providers: ${providers.join(', ') || 'none'}`
+    );
   } catch (error) {
     console.error('Re-authentication failed:', error);
     throw error;

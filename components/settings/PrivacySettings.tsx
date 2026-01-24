@@ -47,7 +47,22 @@ export const PrivacySettings: React.FC = () => {
 
   // Check auth provider
   const providerData = user?.providerData || [];
-  const isPasswordUser = providerData.some((p) => p.providerId === 'password');
+  const providers = providerData.map((p) => p?.providerId).filter(Boolean);
+
+  // Debug: log providers to console
+  useEffect(() => {
+    if (user && providerData.length > 0) {
+      console.log('User auth providers:', providers);
+    }
+  }, [user, providers]);
+
+  // Check if user is a Google user
+  const isGoogleUser = providers.some(
+    (p) => p === 'google.com' || p?.includes('google')
+  );
+
+  // If not clearly Google, assume email/password (needs password for re-auth)
+  const isPasswordUser = !isGoogleUser;
 
   // Load settings
   useEffect(() => {
