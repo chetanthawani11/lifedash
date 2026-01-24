@@ -22,17 +22,22 @@ service cloud.firestore {
         allow read, write: if isOwner(userId);
       }
 
-      // Flashcard folders subcollection - users can read/write their own folders
+      // Flashcard folders subcollection
       match /flashcard_folders/{folderId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Flashcard decks subcollection - users can read/write their own decks
+      // Flashcard decks subcollection
       match /flashcard_decks/{deckId} {
         allow read, write: if isOwner(userId);
+
+        // Flashcards within decks (nested structure)
+        match /flashcards/{cardId} {
+          allow read, write: if isOwner(userId);
+        }
       }
 
-      // Flashcards subcollection - users can read/write their own flashcards
+      // Legacy: Flashcards at top level
       match /flashcards/{cardId} {
         allow read, write: if isOwner(userId);
       }
@@ -40,9 +45,14 @@ service cloud.firestore {
       // Journals subcollection
       match /journals/{journalId} {
         allow read, write: if isOwner(userId);
+
+        // Journal entries within journals (nested structure)
+        match /entries/{entryId} {
+          allow read, write: if isOwner(userId);
+        }
       }
 
-      // Journal entries subcollection
+      // Journal entries at top level (for backward compatibility)
       match /journal_entries/{entryId} {
         allow read, write: if isOwner(userId);
       }
@@ -57,12 +67,12 @@ service cloud.firestore {
         allow read, write: if isOwner(userId);
       }
 
-      // Note folders subcollection - users can read/write their own note folders
+      // Note folders subcollection
       match /note_folders/{folderId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Notes subcollection - users can read/write their own notes
+      // Notes subcollection
       match /notes/{noteId} {
         allow read, write: if isOwner(userId);
       }

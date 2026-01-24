@@ -14,6 +14,7 @@ import { getUserProfile, updateUserProfile, updateUserPreferences } from '@/lib/
 import { UserProfile } from '@/types/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import { NotificationSettings } from '@/components/settings/NotificationSettings';
+import Link from 'next/link';
 
 // Currency options with icons
 const currencyOptions: SelectOption[] = [
@@ -240,6 +241,61 @@ function SettingsContent() {
 
         {/* Notification Settings */}
         <NotificationSettings />
+
+        {/* Data Export Section */}
+        <section style={{
+          backgroundColor: 'var(--bg-elevated)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '1.5rem',
+          border: '1px solid var(--border-light)',
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}>
+            <div>
+              <h2 style={{
+                fontSize: 'var(--text-lg)',
+                fontWeight: '600',
+                color: 'var(--text-primary)',
+                marginBottom: '0.25rem',
+              }}>
+                Export Data
+              </h2>
+              <p style={{
+                fontSize: 'var(--text-xs)',
+                color: 'var(--text-tertiary)',
+              }}>
+                Download your data in JSON, CSV, or Markdown format
+              </p>
+            </div>
+            <Link
+              href="/settings/export"
+              style={{
+                backgroundColor: 'var(--bg-secondary)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-medium)',
+                padding: '0.5rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                fontSize: 'var(--text-sm)',
+                fontWeight: '500',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              Export
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </Link>
+          </div>
+        </section>
 
         {/* Account Info */}
         {profile && (
