@@ -1,114 +1,243 @@
 rules_version = '2';
 
+/**
+ * LIFEDASH FIRESTORE SECURITY RULES
+ *
+ * These rules protect your data by ensuring:
+ * 1. Users can only access their own data
+ * 2. Data follows the expected structure
+ * 3. Required fields are present
+ * 4. No unauthorized access is possible
+ */
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check if user is authenticated
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    // Check if the user is logged in
     function isAuthenticated() {
       return request.auth != null;
     }
 
-    // Helper function to check if the user owns the document
+    // Check if the user owns this data
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    // User documents - users can read/write their own data
-    match /users/{userId} {
-      allow read, write: if isOwner(userId);
+    // Check if a field exists in the request data
+    function hasField(field) {
+      return field in request.resource.data;
+    }
 
-      // User preferences subcollection
+    // Check if data is a non-empty string
+    function isNonEmptyString(value) {
+      return value is string && value.size() > 0;
+    }
+
+    // Check string length is within limit
+    function isWithinLength(value, maxLength) {
+      return value is string && value.size() <= maxLength;
+    }
+
+    // Check if a number is positive
+    function isPositiveNumber(value) {
+      return value is number && value >= 0;
+    }
+
+    // Validate timestamp is not in the future (with 5 min buffer)
+    function isValidTimestamp(value) {
+      return value is timestamp && value <= request.time + duration.value(5, 'm');
+    }
+
+    // ============================================
+    // USER DATA RULES
+    // ============================================
+
+    match /users/{userId} {
+      // Users can read/write their own profile
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if isOwner(userId);
+
+      // User preferences
       match /preferences/{docId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Flashcard folders subcollection
-      match /flashcard_folders/{folderId} {
+      // Privacy settings
+      match /privacy_settings/{docId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Flashcard decks subcollection
-      match /flashcard_decks/{deckId} {
-        allow read, write: if isOwner(userId);
+      // ============================================
+      // FLASHCARDS
+      // ============================================
 
-        // Flashcards within decks (nested structure)
+      match /flashcard_folders/{folderId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('name')
+          && isNonEmptyString(request.resource.data.name)
+          && isWithinLength(request.resource.data.name, 100);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+      }
+
+      match /flashcard_decks/{deckId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('name')
+          && isNonEmptyString(request.resource.data.name)
+          && isWithinLength(request.resource.data.name, 200);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+
+        // Nested flashcards
         match /flashcards/{cardId} {
           allow read, write: if isOwner(userId);
         }
       }
 
-      // Legacy: Flashcards at top level
+      // Top-level flashcards
       match /flashcards/{cardId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('front')
+          && hasField('back')
+          && isNonEmptyString(request.resource.data.front)
+          && isNonEmptyString(request.resource.data.back);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Journals subcollection
-      match /journals/{journalId} {
-        allow read, write: if isOwner(userId);
+      // ============================================
+      // JOURNALS
+      // ============================================
 
-        // Journal entries within journals (nested structure)
+      match /journals/{journalId} {
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('name')
+          && isNonEmptyString(request.resource.data.name)
+          && isWithinLength(request.resource.data.name, 100);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
+
+        // Nested entries
         match /entries/{entryId} {
           allow read, write: if isOwner(userId);
         }
       }
 
-      // Journal entries at top level (for backward compatibility)
+      // Top-level journal entries
       match /journal_entries/{entryId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('journalId')
+          && hasField('title')
+          && hasField('content');
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Expense categories subcollection
+      // ============================================
+      // EXPENSES
+      // ============================================
+
       match /expense_categories/{categoryId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('name')
+          && isNonEmptyString(request.resource.data.name)
+          && isWithinLength(request.resource.data.name, 50);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Expenses subcollection
       match /expenses/{expenseId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('amount')
+          && hasField('categoryId')
+          && isPositiveNumber(request.resource.data.amount);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Note folders subcollection
+      // ============================================
+      // NOTES
+      // ============================================
+
       match /note_folders/{folderId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('name')
+          && isNonEmptyString(request.resource.data.name);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Notes subcollection
       match /notes/{noteId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('title')
+          && hasField('content');
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Tasks subcollection
+      // ============================================
+      // TASKS
+      // ============================================
+
       match /tasks/{taskId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('title')
+          && isNonEmptyString(request.resource.data.title)
+          && isWithinLength(request.resource.data.title, 500);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Recurring task series subcollection
       match /recurring_series/{seriesId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Dashboard settings subcollection
+      // ============================================
+      // DASHBOARD & GOALS
+      // ============================================
+
       match /dashboard_settings/{docId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Goals subcollection
       match /goals/{goalId} {
-        allow read, write: if isOwner(userId);
+        allow read: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && hasField('title')
+          && isNonEmptyString(request.resource.data.title);
+        allow update: if isOwner(userId);
+        allow delete: if isOwner(userId);
       }
 
-      // Goal progress history subcollection
       match /goal_progress/{progressId} {
         allow read, write: if isOwner(userId);
       }
 
-      // Achievements subcollection
       match /achievements/{achievementId} {
         allow read, write: if isOwner(userId);
       }
     }
 
-    // Default deny all other access
+    // ============================================
+    // DEFAULT: DENY ALL OTHER ACCESS
+    // ============================================
+
     match /{document=**} {
       allow read, write: if false;
     }

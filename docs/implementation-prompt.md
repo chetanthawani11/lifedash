@@ -35,12 +35,11 @@ Take this from the design.md file where i have mentioned in detial.
 6. **Free solutions only** - guide me through free Firebase setup, Vercel deployment
 7. **Test as we go** - make sure each step works before moving to next
 
-**My Current Task**: Data Export and Security Features
-- [ ] 10.1 Implement data export functionality
-    - Create export interface for all user data types
-    - Build export in multiple formats (JSON, CSV, Markdown)
-    - Add selective export by date range or category
-    - Implement data backup and restore functionality
+**My Current Task**: 10.2 Add security and privacy features
+- Implement Firestore security rules for data protection
+- Add data encryption for sensitive information
+- Create user data deletion and account closure functionality
+- Build privacy settings and data sharing controls
 
 
 **Testing Requirements - VERY IMPORTANT:**

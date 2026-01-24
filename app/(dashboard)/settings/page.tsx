@@ -14,6 +14,7 @@ import { getUserProfile, updateUserProfile, updateUserPreferences } from '@/lib/
 import { UserProfile } from '@/types/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import { NotificationSettings } from '@/components/settings/NotificationSettings';
+import { PrivacySettings } from '@/components/settings/PrivacySettings';
 import Link from 'next/link';
 
 // Currency options with icons
@@ -331,6 +332,9 @@ function SettingsContent() {
             </div>
           </section>
         )}
+
+        {/* Privacy Settings */}
+        <PrivacySettings />
       </div>
 
       {/* Sticky Save Bar */}
