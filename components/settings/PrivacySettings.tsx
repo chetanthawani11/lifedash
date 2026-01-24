@@ -27,7 +27,6 @@ export const PrivacySettings: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [settings, setSettings] = useState<PrivacySettingsType>({
     autoDeleteAfterDays: null,
-    keepDeletedItemsDays: 30,
     allowAnalytics: true,
     allowCrashReports: true,
     includeMetadataInExport: true,
@@ -248,61 +247,6 @@ export const PrivacySettings: React.FC = () => {
           disabled={saving}
         />
 
-        {/* Data Retention */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
-          <div style={{ flex: 1, minWidth: '200px' }}>
-            <p
-              style={{
-                margin: '0 0 0.1rem',
-                fontWeight: '500',
-                color: 'var(--text-primary)',
-                fontSize: 'var(--text-sm)',
-              }}
-            >
-              Keep Deleted Items
-            </p>
-            <p
-              style={{
-                margin: 0,
-                color: 'var(--text-tertiary)',
-                fontSize: 'var(--text-xs)',
-              }}
-            >
-              How long to keep deleted items before permanent removal
-            </p>
-          </div>
-          <select
-            value={settings.keepDeletedItemsDays}
-            onChange={(e) => updateSetting('keepDeletedItemsDays', parseInt(e.target.value))}
-            disabled={saving}
-            style={{
-              padding: '0.5rem 0.75rem',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-medium)',
-              backgroundColor: 'var(--bg-primary)',
-              color: 'var(--text-primary)',
-              fontSize: 'var(--text-sm)',
-              minWidth: '140px',
-            }}
-          >
-            <option value={7}>7 days</option>
-            <option value={14}>14 days</option>
-            <option value={30}>30 days</option>
-            <option value={60}>60 days</option>
-            <option value={90}>90 days</option>
-          </select>
-        </div>
-
-        <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '1rem' }} />
-
         {/* Delete Account */}
         {!showDeleteConfirm ? (
           <div
@@ -517,12 +461,12 @@ const ToggleRow: React.FC<ToggleRowProps> = ({
   <div
     style={{
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       gap: '1rem',
     }}
   >
-    <div style={{ flex: 1 }}>
+    <div style={{ flex: 1, minWidth: 0 }}>
       <p
         style={{
           margin: '0 0 0.1rem',
@@ -550,7 +494,10 @@ const ToggleRow: React.FC<ToggleRowProps> = ({
       aria-checked={checked}
       style={{
         width: '44px',
+        minWidth: '44px',
         height: '24px',
+        minHeight: '24px',
+        maxHeight: '24px',
         borderRadius: '12px',
         backgroundColor: checked ? 'var(--primary-500)' : 'var(--neutral-200)',
         border: 'none',
@@ -559,6 +506,7 @@ const ToggleRow: React.FC<ToggleRowProps> = ({
         transition: 'background-color 0.2s ease',
         flexShrink: 0,
         opacity: disabled ? 0.6 : 1,
+        marginTop: '2px',
       }}
     >
       <span

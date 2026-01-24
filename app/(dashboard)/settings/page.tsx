@@ -28,20 +28,12 @@ const currencyOptions: SelectOption[] = [
   { value: 'AUD', label: 'Australian Dollar ($)', icon: '🇦🇺' },
 ];
 
-// Theme options
-const themeOptions: SelectOption[] = [
-  { value: 'light', label: 'Light', icon: '☀️' },
-  { value: 'dark', label: 'Dark', icon: '🌙' },
-  { value: 'system', label: 'System', icon: '💻' },
-];
-
 function SettingsContent() {
   const { user, refreshPreferences } = useAuth();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('system');
   const [currency, setCurrency] = useState('USD');
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -61,7 +53,6 @@ function SettingsContent() {
         setProfile(userProfile);
         setDisplayName(userProfile.displayName);
         setBio(userProfile.bio || '');
-        setTheme(userProfile.preferences.theme);
         setCurrency(userProfile.preferences.currency);
         setHasChanges(false);
       }
@@ -78,11 +69,10 @@ function SettingsContent() {
     const changed =
       displayName !== profile.displayName ||
       bio !== (profile.bio || '') ||
-      theme !== profile.preferences.theme ||
       currency !== profile.preferences.currency;
 
     setHasChanges(changed);
-  }, [displayName, bio, theme, currency, profile]);
+  }, [displayName, bio, currency, profile]);
 
   const handleSaveAll = async () => {
     if (!user) return;
@@ -95,7 +85,6 @@ function SettingsContent() {
       });
 
       await updateUserPreferences(user.uid, {
-        theme,
         currency,
       });
 
@@ -117,7 +106,6 @@ function SettingsContent() {
 
     setDisplayName(profile.displayName);
     setBio(profile.bio || '');
-    setTheme(profile.preferences.theme);
     setCurrency(profile.preferences.currency);
     setHasChanges(false);
     toast.success('Changes discarded');
@@ -224,13 +212,6 @@ function SettingsContent() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <Select
-              label="Theme"
-              value={theme}
-              onChange={(value) => setTheme(value as 'light' | 'dark' | 'system')}
-              options={themeOptions}
-            />
-
             <Select
               label="Currency"
               value={currency}

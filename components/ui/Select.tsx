@@ -187,78 +187,91 @@ export const Select: React.FC<SelectProps> = ({
             border: '1.5px solid var(--border-light)',
             boxShadow: 'var(--shadow-xl)',
             maxHeight: '240px',
-            overflowY: 'auto',
+            // Important: overflow hidden clips child backgrounds to border radius
+            overflow: 'hidden',
             animation: 'selectSlideDown 0.2s ease-out',
           }}
         >
-          {options.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              role="option"
-              aria-selected={option.value === value}
-              onClick={() => handleSelect(option.value)}
-              style={{
-                width: '100%',
-                textAlign: 'left',
-                padding: '0.75rem 1rem',
-                fontSize: '16px',
-                color: option.value === value ? 'var(--primary-600)' : 'var(--text-primary)',
-                backgroundColor: option.value === value ? 'var(--primary-50)' : 'transparent',
-                fontWeight: option.value === value ? '600' : '400',
-                cursor: 'pointer',
-                border: 'none',
-                transition: 'all var(--transition-fast)',
-                // Touch-friendly minimum height
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-              onMouseEnter={(e) => {
-                if (option.value !== value) {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (option.value !== value) {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                }
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                flex: 1,
-                minWidth: 0,
-              }}>
-                {option.icon && <span style={{ flexShrink: 0 }}>{option.icon}</span>}
-                <span style={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}>
-                  {option.label}
-                </span>
-                {option.value === value && (
-                  <svg
-                    style={{
-                      width: '1rem',
-                      height: '1rem',
-                      color: 'var(--primary-600)',
-                      marginLeft: 'auto',
-                      flexShrink: 0,
-                    }}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </div>
-            </button>
-          ))}
+          {/* Scrollable container inside */}
+          <div style={{
+            maxHeight: '240px',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+          }}>
+            {options.map((option) => {
+              const isSelected = option.value === value;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => handleSelect(option.value)}
+                  style={{
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    textAlign: 'left',
+                    padding: '0.75rem 1rem',
+                    fontSize: '16px',
+                    color: isSelected ? 'var(--primary-600)' : 'var(--text-primary)',
+                    backgroundColor: isSelected ? 'var(--primary-50)' : 'transparent',
+                    fontWeight: isSelected ? '600' : '400',
+                    cursor: 'pointer',
+                    border: 'none',
+                    transition: 'background-color var(--transition-fast)',
+                    // Touch-friendly minimum height
+                    minHeight: '44px',
+                    display: 'block',
+                    // Ensure full width on all devices
+                    margin: 0,
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    width: '100%',
+                    minWidth: 0,
+                  }}>
+                    {option.icon && <span style={{ flexShrink: 0 }}>{option.icon}</span>}
+                    <span style={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flex: 1,
+                    }}>
+                      {option.label}
+                    </span>
+                    {isSelected && (
+                      <svg
+                        style={{
+                          width: '1rem',
+                          height: '1rem',
+                          color: 'var(--primary-600)',
+                          flexShrink: 0,
+                        }}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 

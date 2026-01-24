@@ -6,6 +6,7 @@
  * Persistent navigation header for all authenticated pages.
  * Features:
  * - Logo with link to dashboard
+ * - Contextual back button on sub-pages
  * - Desktop: Horizontal navigation with active state
  * - Mobile: Hamburger menu with slide-out panel
  * - Settings and logout actions
@@ -16,7 +17,7 @@
  * - CSS classes 'desktop-only' and 'mobile-only' handle visibility
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
@@ -25,6 +26,23 @@ import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 import { AppIcon } from '@/components/ui/AppIcon';
 import { MobileNav } from './MobileNav';
 import toast from 'react-hot-toast';
+
+// Back arrow icon component
+const BackArrowIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 12H5" />
+    <path d="M12 19l-7-7 7-7" />
+  </svg>
+);
 
 interface NavItem {
   label: string;
@@ -48,10 +66,11 @@ export const Header: React.FC = () => {
   const [loggingOut, setLoggingOut] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if we're on mobile (screen width < 768px)
+  // Check if we're on mobile/tablet (screen width < 1024px)
+  // Tablets get the mobile menu for better UX
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1024);
     };
 
     // Check on mount
@@ -63,6 +82,85 @@ export const Header: React.FC = () => {
     // Cleanup listener on unmount
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Determine if we should show a back button
+  // Shows on sub-pages like /notes/123, /expenses/analytics, /journals/123/entries
+  const backNavigation = useMemo(() => {
+    if (!pathname) return null;
+
+    // Main sections that don't need a back button
+    const mainPages = [
+      '/dashboard',
+      '/journals',
+      '/expenses',
+      '/flashcards',
+      '/tasks',
+      '/notes',
+      '/settings',
+    ];
+
+    // If we're on a main page, no back button needed
+    if (mainPages.includes(pathname)) return null;
+
+    // Section labels for display
+    const sectionLabels: Record<string, string> = {
+      journals: 'Journals',
+      expenses: 'Expenses',
+      flashcards: 'Flashcards',
+      tasks: 'Tasks',
+      notes: 'Notes',
+      settings: 'Settings',
+    };
+
+    // Define specific route patterns and where they should go back to
+    // Format: [pattern regex, back destination, label]
+    const routePatterns: [RegExp, string, string][] = [
+      // Settings
+      [/^\/settings\//, '/settings', 'Settings'],
+
+      // Notes
+      [/^\/notes\/folder\/[^/]+$/, '/notes', 'Notes'], // /notes/folder/123 -> /notes
+      [/^\/notes\/[^/]+$/, '/notes', 'Notes'], // /notes/123 -> /notes
+
+      // Flashcards
+      [/^\/flashcards\/deck\/[^/]+\/study$/, '/flashcards', 'Flashcards'], // /flashcards/deck/123/study -> /flashcards
+      [/^\/flashcards\/deck\/[^/]+$/, '/flashcards', 'Flashcards'], // /flashcards/deck/123 -> /flashcards
+      [/^\/flashcards\/folder\/[^/]+$/, '/flashcards', 'Flashcards'], // /flashcards/folder/123 -> /flashcards
+
+      // Journals
+      [/^\/journals\/[^/]+\/entries\/[^/]+$/, '/journals', 'Journals'], // /journals/123/entries/456 -> /journals (entry page)
+      [/^\/journals\/[^/]+$/, '/journals', 'Journals'], // /journals/123 -> /journals
+
+      // Expenses
+      [/^\/expenses\/analytics$/, '/expenses', 'Expenses'],
+      [/^\/expenses\/categories$/, '/expenses', 'Expenses'],
+      [/^\/expenses\/[^/]+$/, '/expenses', 'Expenses'],
+
+      // Tasks
+      [/^\/tasks\/calendar$/, '/tasks', 'Tasks'],
+      [/^\/tasks\/recurring$/, '/tasks', 'Tasks'],
+      [/^\/tasks\/[^/]+$/, '/tasks', 'Tasks'],
+    ];
+
+    // Check each pattern
+    for (const [pattern, destination, label] of routePatterns) {
+      if (pattern.test(pathname)) {
+        return { href: destination, label };
+      }
+    }
+
+    // Fallback: parse path and go to section root
+    const segments = pathname.split('/').filter(Boolean);
+    if (segments.length >= 2) {
+      const section = segments[0];
+      return {
+        href: `/${section}`,
+        label: sectionLabels[section] || 'Back',
+      };
+    }
+
+    return null;
+  }, [pathname]);
 
   const handleSignOut = async () => {
     setLoggingOut(true);
@@ -98,28 +196,71 @@ export const Header: React.FC = () => {
         style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          // Responsive padding: smaller on mobile, larger on desktop
           padding: '0.75rem var(--container-padding)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
       >
-        {/* Logo - clicks go to dashboard */}
-        <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <AppIcon size={28} color="var(--primary-500)" />
+        {/* Left side: Back button + Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {/* Back Button - shows on sub-pages */}
+          {backNavigation && (
+            <button
+              onClick={() => router.push(backNavigation.href)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.5rem',
+                borderRadius: 'var(--radius-md)',
+                border: 'none',
+                backgroundColor: 'transparent',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                marginRight: '0.25rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = 'var(--text-secondary)';
+              }}
+              aria-label={`Go back to ${backNavigation.label}`}
+            >
+              <BackArrowIcon size={18} />
+            </button>
+          )}
+
+          {/* Logo - clicks go to dashboard */}
+          <Link
+            href="/dashboard"
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              lineHeight: 1,
+            }}
+          >
+            <AppIcon size={isMobile ? 24 : 28} color="var(--primary-500)" />
             <span
               style={{
-                fontSize: '1.125rem',
+                fontSize: isMobile ? '0.95rem' : '1.125rem',
                 fontWeight: '700',
                 color: 'var(--text-primary)',
+                lineHeight: 1,
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
               LifeDash
             </span>
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         {/* Desktop Navigation - Hidden on mobile */}
         <nav

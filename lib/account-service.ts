@@ -37,7 +37,6 @@ import { clearEncryptionSalt } from './encryption-service';
 export interface PrivacySettings {
   // Data retention preferences
   autoDeleteAfterDays: number | null; // null = never auto-delete
-  keepDeletedItemsDays: number; // How long to keep deleted items in trash
 
   // Analytics preferences
   allowAnalytics: boolean; // Allow usage analytics
@@ -61,7 +60,6 @@ export interface DeletionProgress {
 // Default privacy settings
 const DEFAULT_PRIVACY_SETTINGS: PrivacySettings = {
   autoDeleteAfterDays: null,
-  keepDeletedItemsDays: 30,
   allowAnalytics: true,
   allowCrashReports: true,
   includeMetadataInExport: true,

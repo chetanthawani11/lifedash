@@ -15,6 +15,7 @@
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { Select } from '@/components/ui/Select';
 import { MarkdownEditor } from '@/components/notes/MarkdownEditor';
 import { createNote, updateNote, getUserNoteFolders, getUserNotes } from '@/lib/note-service';
 import { getUserFlashcardDecks } from '@/lib/flashcard-service';
@@ -142,41 +143,20 @@ export function NoteForm({
         />
 
         {/* Folder Selection */}
-        <div>
-          <label style={{
-            display: 'block',
-            marginBottom: '0.375rem',
-            fontSize: 'var(--text-sm)',
-            fontWeight: '500',
-            color: 'var(--text-secondary)',
-          }}>
-            Folder (Optional)
-          </label>
-          <select
-            value={folderId || ''}
-            onChange={(e) => setFolderId(e.target.value || null)}
-            disabled={loading}
-            style={{
-              width: '100%',
-              padding: '0.75rem',
-              fontSize: 'var(--text-base)',
-              color: 'var(--text-primary)',
-              backgroundColor: 'var(--bg-elevated)',
-              border: '1px solid var(--border-light)',
-              borderRadius: 'var(--radius-md)',
-              outline: 'none',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.5 : 1,
-            }}
-          >
-            <option value="">No Folder (Root Level)</option>
-            {folders.map((folder) => (
-              <option key={folder.id} value={folder.id}>
-                {folder.icon} {folder.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Select
+          label="Folder (Optional)"
+          value={folderId || ''}
+          onChange={(value) => setFolderId(value || null)}
+          disabled={loading}
+          placeholder="No Folder (Root Level)"
+          options={[
+            { value: '', label: 'No Folder (Root Level)' },
+            ...folders.map((folder) => ({
+              value: folder.id,
+              label: `${folder.icon} ${folder.name}`,
+            })),
+          ]}
+        />
 
         {/* Tags */}
         <Input

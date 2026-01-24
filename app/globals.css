@@ -54,14 +54,23 @@ body {
   --touch-target-min: 44px;
 }
 
-/* On larger screens, increase spacing */
+/* Tablet screens - moderate spacing */
 @media (min-width: 640px) {
+  :root {
+    --spacing-responsive: 1.25rem;
+    --container-padding: 1.25rem;
+  }
+}
+
+/* Larger tablets */
+@media (min-width: 768px) {
   :root {
     --spacing-responsive: 1.5rem;
     --container-padding: 1.5rem;
   }
 }
 
+/* Desktop screens - full spacing */
 @media (min-width: 1024px) {
   :root {
     --spacing-responsive: 2rem;
@@ -119,26 +128,53 @@ body {
 
 /* ===================================
    HIDE/SHOW UTILITIES
+
+   Breakpoints:
+   - Mobile: 0 - 767px
+   - Tablet: 768px - 1023px
+   - Desktop: 1024px+
    =================================== */
 
-/* Hide on mobile, show on desktop */
+/* Hide on mobile/tablet, show on desktop only (1024px+) */
 .desktop-only {
   display: none !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .desktop-only {
     display: flex !important;
   }
 }
 
-/* Show on mobile, hide on desktop */
+/* Show on mobile/tablet, hide on desktop */
 .mobile-only {
   display: flex !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .mobile-only {
+    display: none !important;
+  }
+}
+
+/* Tablet-specific: show only on tablets (768px - 1023px) */
+.tablet-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-only {
+    display: flex !important;
+  }
+}
+
+/* Hide on tablets only */
+.hide-tablet {
+  display: flex !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hide-tablet {
     display: none !important;
   }
 }
@@ -147,16 +183,50 @@ body {
    RESPONSIVE GRID UTILITIES
    =================================== */
 
-/* A responsive grid that stacks on mobile and shows 2 columns on larger screens */
+/* A responsive grid that adapts to screen size */
 .responsive-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-responsive);
 }
 
+/* Tablet: 2 columns */
 @media (min-width: 768px) {
   .responsive-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 2-3 columns depending on content */
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Auto-fit grid that works well on all screen sizes */
+.auto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-responsive);
+}
+
+/* Tablet optimized grid - 2 columns on tablet */
+.tablet-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-responsive);
+}
+
+@media (min-width: 640px) {
+  .tablet-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tablet-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -181,13 +251,42 @@ body {
 }
 
 /* ===================================
-   MOBILE MODAL ADJUSTMENTS
+   MODAL ADJUSTMENTS
    =================================== */
 
+/* Mobile: full-width modals */
 @media (max-width: 639px) {
-  /* Make modals full-width on mobile with proper padding */
   [role="dialog"] {
     padding: 0.5rem !important;
+  }
+}
+
+/* Tablet: centered modals with good width */
+@media (min-width: 640px) and (max-width: 1023px) {
+  [role="dialog"] {
+    max-width: 90vw !important;
+    margin: 0 auto;
+  }
+}
+
+/* ===================================
+   TABLET-SPECIFIC LAYOUT FIXES
+   =================================== */
+
+/* Ensure cards don't get too wide on tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .card-container {
+    max-width: 100%;
+  }
+
+  /* Better form layouts on tablet */
+  form {
+    max-width: 100%;
+  }
+
+  /* Ensure buttons don't stretch too much, but exclude dropdown options */
+  button:not(.full-width):not([role="option"]) {
+    max-width: fit-content;
   }
 }
 

@@ -199,7 +199,14 @@ export default function ExpensesPage() {
             Expenses
           </h1>
 
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div style={{
+            display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+            marginLeft: 'auto',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+          }}>
             <Button
               onClick={() => router.push('/expenses/analytics')}
               variant="ghost"

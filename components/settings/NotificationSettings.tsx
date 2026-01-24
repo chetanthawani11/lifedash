@@ -264,12 +264,12 @@ const ToggleRow: React.FC<ToggleRowProps> = ({ label, description, checked, onCh
   <div
     style={{
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       gap: '1rem',
     }}
   >
-    <div style={{ flex: 1 }}>
+    <div style={{ flex: 1, minWidth: 0 }}>
       <p
         style={{
           margin: '0 0 0.1rem',
@@ -296,7 +296,10 @@ const ToggleRow: React.FC<ToggleRowProps> = ({ label, description, checked, onCh
       aria-checked={checked}
       style={{
         width: '44px',
+        minWidth: '44px',
         height: '24px',
+        minHeight: '24px',
+        maxHeight: '24px',
         borderRadius: '12px',
         backgroundColor: checked ? 'var(--primary-500)' : 'var(--neutral-200)',
         border: 'none',
@@ -304,6 +307,7 @@ const ToggleRow: React.FC<ToggleRowProps> = ({ label, description, checked, onCh
         position: 'relative',
         transition: 'background-color 0.2s ease',
         flexShrink: 0,
+        marginTop: '2px',
       }}
     >
       <span

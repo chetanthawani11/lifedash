@@ -27,6 +27,7 @@ import {
   getWidgetMetadata,
 } from '@/types';
 import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
+import { Select } from '@/components/ui/Select';
 
 interface DashboardCustomizerProps {
   isOpen: boolean;
@@ -267,40 +268,31 @@ export const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({
 
                     {/* Size Selector */}
                     {widget.isVisible && (
-                      <select
-                        value={widget.size}
-                        onChange={(e) => handleSizeChange(widget.id, e.target.value as WidgetSize)}
-                        disabled={saving}
-                        style={{
-                          padding: '0.375rem 0.75rem',
-                          backgroundColor: 'var(--bg-primary)',
-                          border: '1px solid var(--border-light)',
-                          borderRadius: 'var(--radius-md)',
-                          fontSize: 'var(--text-xs)',
-                          color: 'var(--text-secondary)',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {sizeOptions
-                          .filter((opt) => {
-                            if (!metadata) return true;
-                            const sizeOrder: Record<WidgetSize, number> = {
-                              small: 0,
-                              medium: 1,
-                              large: 2,
-                              full: 3,
-                            };
-                            return (
-                              sizeOrder[opt.value] >= sizeOrder[metadata.minSize] &&
-                              sizeOrder[opt.value] <= sizeOrder[metadata.maxSize]
-                            );
-                          })
-                          .map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                              {opt.label}
-                            </option>
-                          ))}
-                      </select>
+                      <div style={{ minWidth: '120px' }}>
+                        <Select
+                          value={widget.size}
+                          onChange={(value) => handleSizeChange(widget.id, value as WidgetSize)}
+                          disabled={saving}
+                          options={sizeOptions
+                            .filter((opt) => {
+                              if (!metadata) return true;
+                              const sizeOrder: Record<WidgetSize, number> = {
+                                small: 0,
+                                medium: 1,
+                                large: 2,
+                                full: 3,
+                              };
+                              return (
+                                sizeOrder[opt.value] >= sizeOrder[metadata.minSize] &&
+                                sizeOrder[opt.value] <= sizeOrder[metadata.maxSize]
+                              );
+                            })
+                            .map((opt) => ({
+                              value: opt.value,
+                              label: opt.label,
+                            }))}
+                        />
+                      </div>
                     )}
 
                     {/* Toggle Switch */}

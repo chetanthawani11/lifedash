@@ -1,28 +1,27 @@
 'use client';
 
 /**
- * MOBILE NAVIGATION COMPONENT
+ * MOBILE & TABLET NAVIGATION COMPONENT
  *
- * This component provides mobile-friendly navigation:
+ * This component provides mobile and tablet-friendly navigation:
  * - Hamburger button (three lines) that opens the menu
  * - Slide-out panel with all navigation links
  * - Touch-friendly buttons that are easy to tap
  * - Smooth animations for opening/closing
+ * - Responsive width (wider on tablets)
  *
  * How it works:
- * 1. On mobile screens, the hamburger icon is visible
- * 2. Tapping it opens a full-screen navigation panel
+ * 1. On mobile/tablet screens (<1024px), the hamburger icon is visible
+ * 2. Tapping it opens a navigation panel
  * 3. Users can tap any link to navigate
  * 4. The menu closes automatically after navigation
  */
 
 import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/lib/auth-context';
 import { Button } from '@/components/ui/Button';
 import { AppIcon } from '@/components/ui/AppIcon';
-import toast from 'react-hot-toast';
 
 interface NavItem {
   label: string;
@@ -115,7 +114,18 @@ interface MobileNavProps {
 
 export const MobileNav: React.FC<MobileNavProps> = ({ onLogout, loggingOut }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const pathname = usePathname();
+
+  // Check if we're on a tablet (768px - 1023px)
+  useEffect(() => {
+    const checkTablet = () => {
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
+    checkTablet();
+    window.addEventListener('resize', checkTablet);
+    return () => window.removeEventListener('resize', checkTablet);
+  }, []);
 
   // Close menu when route changes (user navigated somewhere)
   useEffect(() => {
@@ -235,7 +245,8 @@ export const MobileNav: React.FC<MobileNavProps> = ({ onLogout, loggingOut }) =>
           top: 0,
           right: 0,
           bottom: 0,
-          width: 'min(300px, 80vw)',
+          // Wider panel on tablets (360px vs 300px on phones)
+          width: isTablet ? 'min(360px, 50vw)' : 'min(300px, 80vw)',
           backgroundColor: 'var(--bg-elevated)',
           zIndex: 999,
           transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
