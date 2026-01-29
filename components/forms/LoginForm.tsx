@@ -37,7 +37,7 @@ export const LoginForm = () => {
     try {
       // Sign in with Firebase
       await signInWithEmailAndPassword(auth, data.email, data.password);
-      toast.success('Welcome back! 🎉');
+      toast.success('Welcome back');
       router.push('/dashboard');
     } catch (error: any) {
       // Handle different error types

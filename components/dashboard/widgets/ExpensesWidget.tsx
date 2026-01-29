@@ -67,20 +67,6 @@ export const ExpensesWidget: React.FC<ExpensesWidgetProps> = ({ size }) => {
     }).format(amount);
   };
 
-  const getCategoryIcon = (category: string) => {
-    const icons: Record<string, string> = {
-      food: '🍔',
-      transport: '🚗',
-      entertainment: '🎬',
-      shopping: '🛍️',
-      utilities: '💡',
-      health: '🏥',
-      education: '📚',
-      other: '📦',
-    };
-    return icons[category] || '📦';
-  };
-
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -174,7 +160,6 @@ export const ExpensesWidget: React.FC<ExpensesWidgetProps> = ({ size }) => {
                 transition: 'all var(--transition-fast)',
               }}
             >
-              <span style={{ fontSize: '1.25rem' }}>{getCategoryIcon(expense.category)}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p
                   style={{

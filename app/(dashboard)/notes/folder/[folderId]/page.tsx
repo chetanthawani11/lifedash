@@ -179,7 +179,7 @@ export default function FolderDetailPage() {
           {folderPath.map((f, index) => (
             <span key={f.id}>
               {index > 0 && <span style={{ margin: '0 0.25rem' }}>/</span>}
-              <span>{f.icon} {f.name}</span>
+              <span>{f.name}</span>
             </span>
           ))}
         </div>
@@ -195,20 +195,8 @@ export default function FolderDetailPage() {
         backgroundColor: 'var(--bg-elevated)',
         borderRadius: 'var(--radius-xl)',
         border: '1px solid var(--border-light)',
+        borderLeft: `4px solid ${folder.color}`,
       }}>
-        <div style={{
-          fontSize: '1.5rem',
-          width: '48px',
-          height: '48px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: `${folder.color}20`,
-          borderRadius: 'var(--radius-md)',
-        }}>
-          {folder.icon}
-        </div>
-
         <div style={{ flex: 1 }}>
           <h1 style={{
             fontSize: 'var(--text-2xl)',

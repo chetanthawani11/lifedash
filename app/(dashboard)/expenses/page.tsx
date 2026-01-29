@@ -144,11 +144,10 @@ export default function ExpensesPage() {
 
   // Category filter options
   const categoryFilterOptions: SelectOption[] = [
-    { value: 'all', label: 'All Categories', icon: '📊' },
+    { value: 'all', label: 'All Categories' },
     ...categories.map(cat => ({
       value: cat.id,
       label: cat.name,
-      icon: cat.icon,
     })),
   ];
 
@@ -354,21 +353,14 @@ export default function ExpensesPage() {
                     alignItems: 'center',
                     gap: '1rem',
                   }}>
-                    {/* Category Icon */}
+                    {/* Color indicator */}
                     <div style={{
-                      width: '44px',
+                      width: '4px',
                       height: '44px',
-                      borderRadius: 'var(--radius-md)',
-                      backgroundColor: `${expense.category.color}20`,
-                      border: `2px solid ${expense.category.color}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '1.25rem',
+                      borderRadius: 'var(--radius-full)',
+                      backgroundColor: expense.category.color,
                       flexShrink: 0,
-                    }}>
-                      {expense.category.icon}
-                    </div>
+                    }} />
 
                     {/* Details */}
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -449,21 +441,14 @@ export default function ExpensesPage() {
                       alignItems: 'flex-start',
                       gap: '0.75rem',
                     }}>
-                      {/* Category Icon */}
+                      {/* Color indicator */}
                       <div style={{
-                        width: '40px',
+                        width: '4px',
                         height: '40px',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: `${expense.category.color}20`,
-                        border: `2px solid ${expense.category.color}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1.25rem',
+                        borderRadius: 'var(--radius-full)',
+                        backgroundColor: expense.category.color,
                         flexShrink: 0,
-                      }}>
-                        {expense.category.icon}
-                      </div>
+                      }} />
 
                       {/* Details */}
                       <div style={{ flex: 1, minWidth: 0 }}>

@@ -464,52 +464,33 @@ export default function NoteDetailPage() {
                         backgroundColor: 'var(--bg-elevated)',
                         borderRadius: 'var(--radius-lg)',
                         padding: '1rem',
-                        border: `2px solid ${deck.color}40`,
+                        border: '1px solid var(--border-light)',
+                        borderLeft: `4px solid ${deck.color}`,
                         cursor: 'pointer',
                         transition: 'all var(--transition-base)',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.borderColor = deck.color;
+                        e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.borderColor = `${deck.color}40`;
+                        e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                       }}
                     >
                       <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.75rem',
+                        fontSize: 'var(--text-base)',
+                        fontWeight: '600',
+                        color: 'var(--text-primary)',
+                        marginBottom: '0.25rem',
                       }}>
-                        <div style={{
-                          fontSize: '1.5rem',
-                          width: '2.5rem',
-                          height: '2.5rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          backgroundColor: `${deck.color}20`,
-                          borderRadius: 'var(--radius-md)',
-                        }}>
-                          {deck.icon}
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{
-                            fontSize: 'var(--text-base)',
-                            fontWeight: '600',
-                            color: 'var(--text-primary)',
-                            marginBottom: '0.25rem',
-                          }}>
-                            {deck.name}
-                          </div>
-                          <div style={{
-                            fontSize: 'var(--text-sm)',
-                            color: 'var(--text-tertiary)',
-                          }}>
-                            {deck.cardCount} cards
-                          </div>
-                        </div>
+                        {deck.name}
+                      </div>
+                      <div style={{
+                        fontSize: 'var(--text-sm)',
+                        color: 'var(--text-tertiary)',
+                      }}>
+                        {deck.cardCount} cards
                       </div>
                     </div>
                   ))}

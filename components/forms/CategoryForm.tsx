@@ -7,7 +7,6 @@
  * Features:
  * - Name input
  * - Color picker
- * - Icon selector (emoji)
  * - Budget input (optional)
  * - Validation with Zod
  * - Success/error handling
@@ -40,13 +39,6 @@ const COLOR_OPTIONS = [
   { name: 'Gray', value: '#78716c' },
 ];
 
-// Predefined icon options
-const ICON_OPTIONS = [
-  '🍔', '🚗', '🛍️', '🎮', '💡', '🏥', '📚', '📦',
-  '🏠', '✈️', '🎬', '💪', '🐕', '☕', '🍕', '🎵',
-  '💼', '🎨', '⚽', '📱', '💰', '🎁', '🔧', '🌟',
-];
-
 export const CategoryForm: React.FC<CategoryFormProps> = ({
   userId,
   category,
@@ -58,7 +50,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   // Form state
   const [name, setName] = useState(category?.name || '');
   const [color, setColor] = useState(category?.color || '#3b82f6');
-  const [icon, setIcon] = useState(category?.icon || '📦');
   const [budgetDollars, setBudgetDollars] = useState(
     category?.budget ? centsToDollars(category.budget).toString() : ''
   );
@@ -75,7 +66,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       const input: CreateExpenseCategoryInput = {
         name: name.trim(),
         color,
-        icon,
         budget: budgetDollars.trim() ? dollarsToCents(parseFloat(budgetDollars)) : undefined,
       };
 
@@ -171,9 +161,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           Color *
         </label>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
+          display: 'flex',
           gap: '0.5rem',
+          flexWrap: 'wrap',
         }}>
           {COLOR_OPTIONS.map((colorOption) => (
             <button
@@ -181,88 +171,16 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
               type="button"
               onClick={() => setColor(colorOption.value)}
               style={{
-                width: '100%',
-                aspectRatio: '1',
-                borderRadius: 'var(--radius-sm)',
+                width: '28px',
+                height: '28px',
+                borderRadius: 'var(--radius-full)',
                 backgroundColor: colorOption.value,
-                border: color === colorOption.value ? `2px solid var(--text-primary)` : '1px solid transparent',
+                border: color === colorOption.value ? '2.5px solid var(--text-primary)' : '2px solid transparent',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
-                position: 'relative',
+                flexShrink: 0,
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
-              {color === colorOption.value && (
-                <span style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  fontSize: '1rem',
-                  color: 'white',
-                }}>
-                  ✓
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Icon Picker */}
-      <div style={{ marginBottom: '0.75rem' }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '0.375rem',
-          fontSize: 'var(--text-sm)',
-          fontWeight: '500',
-          color: 'var(--text-secondary)',
-        }}>
-          Icon *
-        </label>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(8, 1fr)',
-          gap: '0.5rem',
-        }}>
-          {ICON_OPTIONS.map((iconOption) => (
-            <button
-              key={iconOption}
-              type="button"
-              onClick={() => setIcon(iconOption)}
-              style={{
-                width: '100%',
-                aspectRatio: '1',
-                borderRadius: 'var(--radius-sm)',
-                backgroundColor: icon === iconOption ? `${color}20` : 'var(--bg-secondary)',
-                border: icon === iconOption ? `2px solid ${color}` : '1px solid transparent',
-                cursor: 'pointer',
-                fontSize: '1.125rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all var(--transition-base)',
-              }}
-              onMouseEnter={(e) => {
-                if (icon !== iconOption) {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                }
-                e.currentTarget.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                if (icon !== iconOption) {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                }
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
-              {iconOption}
-            </button>
+            />
           ))}
         </div>
       </div>
@@ -333,63 +251,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             {errors.budget}
           </p>
         )}
-      </div>
-
-      {/* Preview */}
-      <div style={{
-        marginBottom: '0.75rem',
-        padding: '0.75rem',
-        borderRadius: 'var(--radius-md)',
-        backgroundColor: 'var(--bg-secondary)',
-        border: '1px solid var(--border-light)',
-      }}>
-        <p style={{
-          fontSize: '10px',
-          fontWeight: '500',
-          color: 'var(--text-tertiary)',
-          marginBottom: '0.375rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-        }}>
-          Preview
-        </p>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-        }}>
-          <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: `${color}20`,
-            border: `2px solid ${color}`,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.125rem',
-          }}>
-            {icon}
-          </div>
-          <div>
-            <div style={{
-              fontSize: 'var(--text-sm)',
-              fontWeight: '600',
-              color: 'var(--text-primary)',
-              marginBottom: '0.125rem',
-            }}>
-              {name || 'Category Name'}
-            </div>
-            {budgetDollars && (
-              <div style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--text-secondary)',
-              }}>
-                Budget: ${parseFloat(budgetDollars || '0').toFixed(2)}/month
-              </div>
-            )}
-          </div>
-        </div>
       </div>
 
       {/* Action Buttons */}

@@ -7,7 +7,6 @@
  * Features:
  * - Name and description fields
  * - Color picker for journal color
- * - Icon/emoji picker
  * - Validation with helpful error messages
  * - Loading states
  */
@@ -32,13 +31,6 @@ const COLOR_OPTIONS = [
   { name: 'Red', value: '#ef476f' },
 ];
 
-// Predefined icon/emoji options
-const ICON_OPTIONS = [
-  '📔', '📓', '📕', '📗', '📘', '📙',
-  '📖', '📚', '✍️', '📝', '🖊️', '✏️',
-  '💭', '💡', '🎨', '🌟', '✨', '🔥',
-];
-
 interface JournalFormProps {
   userId: string;
   journal?: Journal | null; // If provided, we're editing; otherwise creating
@@ -54,7 +46,6 @@ export const JournalForm = ({
 }: JournalFormProps) => {
   const [loading, setLoading] = useState(false);
   const [selectedColor, setSelectedColor] = useState(journal?.color || COLOR_OPTIONS[0].value);
-  const [selectedIcon, setSelectedIcon] = useState(journal?.icon || ICON_OPTIONS[0]);
 
   const {
     register,
@@ -66,18 +57,13 @@ export const JournalForm = ({
       name: journal?.name || '',
       description: journal?.description || '',
       color: journal?.color || COLOR_OPTIONS[0].value,
-      icon: journal?.icon || ICON_OPTIONS[0],
     },
   });
 
-  // Update form values when color/icon selection changes
+  // Update form values when color selection changes
   useEffect(() => {
     setValue('color', selectedColor);
   }, [selectedColor, setValue]);
-
-  useEffect(() => {
-    setValue('icon', selectedIcon);
-  }, [selectedIcon, setValue]);
 
   const onSubmit = async (data: CreateJournalInput) => {
     setLoading(true);
@@ -89,18 +75,16 @@ export const JournalForm = ({
           name: data.name,
           description: data.description || null,
           color: selectedColor,
-          icon: selectedIcon,
         });
-        toast.success(`"${data.name}" updated successfully! ✅`);
+        toast.success(`"${data.name}" updated successfully`);
       } else {
         // CREATE new journal
         await createJournal(userId, {
           name: data.name,
           description: data.description || null,
           color: selectedColor,
-          icon: selectedIcon,
         });
-        toast.success(`"${data.name}" created successfully! 🎉`);
+        toast.success(`"${data.name}" created successfully`);
       }
 
       onSuccess();
@@ -206,9 +190,9 @@ export const JournalForm = ({
           Color Theme
         </label>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(36px, 1fr))',
+          display: 'flex',
           gap: '0.5rem',
+          flexWrap: 'wrap',
         }}>
           {COLOR_OPTIONS.map((color) => (
             <button
@@ -216,32 +200,19 @@ export const JournalForm = ({
               type="button"
               onClick={() => setSelectedColor(color.value)}
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: 'var(--radius-sm)',
+                width: '28px',
+                height: '28px',
+                borderRadius: 'var(--radius-full)',
                 backgroundColor: color.value,
                 border: selectedColor === color.value
-                  ? '2px solid var(--text-primary)'
-                  : '1px solid var(--border-light)',
+                  ? '2.5px solid var(--text-primary)'
+                  : '2px solid transparent',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
-                position: 'relative',
+                flexShrink: 0,
               }}
               title={color.name}
-            >
-              {selectedColor === color.value && (
-                <div style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  fontSize: '1rem',
-                  color: 'white',
-                }}>
-                  ✓
-                </div>
-              )}
-            </button>
+            />
           ))}
         </div>
         <p style={{
@@ -252,60 +223,6 @@ export const JournalForm = ({
           lineHeight: '1.5',
         }}>
           Pick a color to identify this journal
-        </p>
-      </div>
-
-      {/* Icon Picker */}
-      <div>
-        <label style={{
-          display: 'block',
-          marginBottom: '0.375rem',
-          fontSize: 'var(--text-sm)',
-          fontWeight: '500',
-          color: 'var(--text-secondary)',
-        }}>
-          Icon
-        </label>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(36px, 1fr))',
-          gap: '0.5rem',
-        }}>
-          {ICON_OPTIONS.map((icon) => (
-            <button
-              key={icon}
-              type="button"
-              onClick={() => setSelectedIcon(icon)}
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: 'var(--radius-sm)',
-                backgroundColor: selectedIcon === icon
-                  ? `${selectedColor}30`
-                  : 'var(--bg-secondary)',
-                border: selectedIcon === icon
-                  ? `2px solid ${selectedColor}`
-                  : '1px solid var(--border-light)',
-                cursor: 'pointer',
-                fontSize: '1.125rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'all var(--transition-base)',
-              }}
-            >
-              {icon}
-            </button>
-          ))}
-        </div>
-        <p style={{
-          marginTop: '0.5rem',
-          fontSize: 'var(--text-xs)',
-          color: 'var(--text-tertiary)',
-          paddingLeft: '0.25rem',
-          lineHeight: '1.5',
-        }}>
-          Choose an icon for this journal
         </p>
       </div>
 

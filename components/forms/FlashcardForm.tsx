@@ -74,7 +74,7 @@ export function FlashcardForm({ userId, deckId, flashcard, onSuccess, onCancel }
         }
 
         await updateFlashcard(userId, flashcard.id, updateData);
-        toast.success('Flashcard updated successfully!');
+        toast.success('Flashcard updated successfully');
       } else {
         // Create new flashcard
         const createData: any = {
@@ -90,7 +90,7 @@ export function FlashcardForm({ userId, deckId, flashcard, onSuccess, onCancel }
         }
 
         await createFlashcard(userId, createData);
-        toast.success('Flashcard created successfully!');
+        toast.success('Flashcard created successfully');
       }
 
       onSuccess();
@@ -219,63 +219,6 @@ export function FlashcardForm({ userId, deckId, flashcard, onSuccess, onCancel }
               ))}
             </div>
           )}
-        </div>
-
-        {/* Preview */}
-        <div style={{
-          padding: '0.75rem',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-light)',
-        }}>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-tertiary)',
-            marginBottom: '0.375rem',
-          }}>
-            Preview:
-          </p>
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '0.75rem',
-            marginBottom: '0.375rem',
-          }}>
-            <div style={{
-              fontSize: '10px',
-              color: 'var(--text-tertiary)',
-              marginBottom: '0.125rem',
-            }}>
-              FRONT
-            </div>
-            <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-primary)',
-              whiteSpace: 'pre-wrap',
-            }}>
-              {front || 'Question will appear here...'}
-            </div>
-          </div>
-          <div style={{
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '0.75rem',
-          }}>
-            <div style={{
-              fontSize: '10px',
-              color: 'var(--text-tertiary)',
-              marginBottom: '0.125rem',
-            }}>
-              BACK
-            </div>
-            <div style={{
-              fontSize: 'var(--text-sm)',
-              color: 'var(--text-primary)',
-              whiteSpace: 'pre-wrap',
-            }}>
-              {back || 'Answer will appear here...'}
-            </div>
-          </div>
         </div>
 
         {/* Action Buttons */}

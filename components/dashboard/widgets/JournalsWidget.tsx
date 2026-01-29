@@ -55,17 +55,6 @@ export const JournalsWidget: React.FC<JournalsWidgetProps> = ({ size }) => {
     });
   };
 
-  const getMoodEmoji = (mood?: string) => {
-    switch (mood) {
-      case 'great': return '😊';
-      case 'good': return '🙂';
-      case 'okay': return '😐';
-      case 'bad': return '😔';
-      case 'terrible': return '😢';
-      default: return '📝';
-    }
-  };
-
   const truncateContent = (content: string | undefined | null, maxLength: number) => {
     if (!content) return '';
     if (content.length <= maxLength) return content;
@@ -145,7 +134,6 @@ export const JournalsWidget: React.FC<JournalsWidgetProps> = ({ size }) => {
                 <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
                   {formatDate(journal.createdAt)}
                 </span>
-                <span style={{ fontSize: '1rem' }}>{getMoodEmoji(journal.mood)}</span>
               </div>
               <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
                 {journal.title}

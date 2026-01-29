@@ -24,13 +24,13 @@ import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
 
 // Data type options with labels and icons
-const dataTypeOptions: { value: DataType; label: string; description: string; icon: string }[] = [
-  { value: 'journals', label: 'Journals', description: 'All journals and entries', icon: '📔' },
-  { value: 'expenses', label: 'Expenses', description: 'Expenses and categories', icon: '💰' },
-  { value: 'tasks', label: 'Tasks', description: 'All tasks and their status', icon: '✓' },
-  { value: 'flashcards', label: 'Flashcards', description: 'Decks and flashcards', icon: '🎴' },
-  { value: 'notes', label: 'Notes', description: 'Quick notes', icon: '📝' },
-  { value: 'goals', label: 'Goals', description: 'Goals and progress', icon: '🎯' },
+const dataTypeOptions: { value: DataType; label: string; description: string }[] = [
+  { value: 'journals', label: 'Journals', description: 'All journals and entries' },
+  { value: 'expenses', label: 'Expenses', description: 'Expenses and categories' },
+  { value: 'tasks', label: 'Tasks', description: 'All tasks and their status' },
+  { value: 'flashcards', label: 'Flashcards', description: 'Decks and flashcards' },
+  { value: 'notes', label: 'Notes', description: 'Quick notes' },
+  { value: 'goals', label: 'Goals', description: 'Goals and progress' },
 ];
 
 // Format options
@@ -105,7 +105,7 @@ function ExportContent() {
           : undefined,
       });
 
-      toast.success('Export downloaded successfully!');
+      toast.success('Export downloaded successfully');
     } catch (error) {
       console.error('Export failed:', error);
       toast.error('Failed to export data. Please try again.');
@@ -125,7 +125,7 @@ function ExportContent() {
 
     try {
       await createBackup(user.uid);
-      toast.success('Backup downloaded successfully!');
+      toast.success('Backup downloaded successfully');
     } catch (error) {
       console.error('Backup failed:', error);
       toast.error('Failed to create backup. Please try again.');
@@ -311,7 +311,6 @@ function ExportContent() {
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  <span style={{ fontSize: '1.25rem' }}>{option.icon}</span>
                   <div style={{ flex: 1 }}>
                     <p
                       style={{

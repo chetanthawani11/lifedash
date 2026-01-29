@@ -267,33 +267,17 @@ export default function FlashcardsPage() {
                         padding: '1rem',
                         transition: 'all var(--transition-base)',
                         border: '1px solid var(--border-light)',
+                        borderLeft: `4px solid ${folder.color}`,
                         cursor: 'pointer',
                       }}
                       onClick={() => router.push(`/flashcards/folder/${folder.id}`)}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = folder.color;
                         e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = 'var(--border-light)';
                         e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                       }}
                     >
-                      {/* Folder Icon & Color */}
-                      <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: `${folder.color}20`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1.25rem',
-                        marginBottom: '0.75rem',
-                      }}>
-                        {folder.icon}
-                      </div>
-
                       {/* Folder Name */}
                       <h3 style={{
                         fontSize: 'var(--text-base)',
@@ -386,33 +370,17 @@ export default function FlashcardsPage() {
                         padding: '1rem',
                         transition: 'all var(--transition-base)',
                         border: '1px solid var(--border-light)',
+                        borderLeft: `4px solid ${deck.color}`,
                         cursor: 'pointer',
                       }}
                       onClick={() => router.push(`/flashcards/deck/${deck.id}`)}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = deck.color;
                         e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = 'var(--border-light)';
                         e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
                       }}
                     >
-                      {/* Deck Icon & Color */}
-                      <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: 'var(--radius-md)',
-                        backgroundColor: `${deck.color}20`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '1.25rem',
-                        marginBottom: '0.75rem',
-                      }}>
-                        {deck.icon}
-                      </div>
-
                       {/* Deck Name */}
                       <h3 style={{
                         fontSize: 'var(--text-base)',

@@ -229,34 +229,21 @@ export default function NotesPage() {
             padding: '1rem',
             backgroundColor: 'var(--bg-elevated)',
             borderRadius: 'var(--radius-lg)',
-            border: `2px solid ${folder.color}40`,
+            border: '1px solid var(--border-light)',
+            borderLeft: `4px solid ${folder.color}`,
             marginBottom: '0.75rem',
             transition: 'all var(--transition-base)',
             cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateX(4px)';
-            e.currentTarget.style.borderColor = folder.color;
+            e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateX(0)';
-            e.currentTarget.style.borderColor = `${folder.color}40`;
+            e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
           }}
         >
-          {/* Icon */}
-          <div style={{
-            fontSize: '2rem',
-            width: '3rem',
-            height: '3rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: `${folder.color}20`,
-            borderRadius: 'var(--radius-md)',
-          }}>
-            {folder.icon}
-          </div>
-
           {/* Folder Info */}
           <div style={{ flex: 1 }}>
             <div style={{

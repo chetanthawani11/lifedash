@@ -27,26 +27,6 @@ const DEFAULT_DECK_COLORS = [
   '#f97316', // Orange
 ];
 
-// Default icons for decks (using Unicode escapes to avoid encoding issues)
-const DEFAULT_DECK_ICONS = [
-  '\uD83C\uDFB4', // flower playing card
-  '\uD83D\uDCDA', // books
-  '\uD83D\uDCD6', // open book
-  '\uD83D\uDCDD', // memo
-  '\uD83C\uDFAF', // target
-  '\uD83E\uDDE0', // brain
-  '\uD83D\uDCA1', // lightbulb
-  '\uD83C\uDF93', // graduation cap
-  '\uD83D\uDCCB', // clipboard
-  '\uD83D\uDD2C', // microscope
-  '\uD83C\uDFA8', // palette
-  '\uD83C\uDFB5', // music
-  '\uD83C\uDF0D', // globe
-  '\uD83D\uDCBB', // laptop
-  '\uD83C\uDFC3', // runner
-  '\u2B50', // star
-];
-
 interface DeckFormProps {
   userId: string;
   deck?: FlashcardDeck | null;
@@ -58,7 +38,6 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
   const [name, setName] = useState(deck?.name || '');
   const [description, setDescription] = useState(deck?.description || '');
   const [color, setColor] = useState(deck?.color || DEFAULT_DECK_COLORS[0]);
-  const [icon, setIcon] = useState(deck?.icon || DEFAULT_DECK_ICONS[0]);
   const [folderId, setFolderId] = useState<string | null>(deck?.folderId || null);
   const [loading, setLoading] = useState(false);
   const [folders, setFolders] = useState<FlashcardFolder[]>([]);
@@ -79,11 +58,10 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
 
   // Folder options
   const folderOptions: SelectOption[] = [
-    { value: 'root', label: 'No Folder (Root)', icon: '\uD83D\uDCC1' },
+    { value: 'root', label: 'No Folder (Root)' },
     ...folders.map(f => ({
       value: f.id,
       label: f.name,
-      icon: f.icon,
     })),
   ];
 
@@ -103,19 +81,17 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
           name: name.trim(),
           description: description.trim() || undefined,
           color,
-          icon,
           folderId: folderId === 'root' ? null : folderId,
         });
-        toast.success('Deck updated successfully!');
+        toast.success('Deck updated successfully');
       } else {
         await createFlashcardDeck(userId, {
           name: name.trim(),
           description: description.trim() || undefined,
           color,
-          icon,
           folderId: folderId === 'root' ? null : folderId,
         });
-        toast.success('Deck created successfully!');
+        toast.success('Deck created successfully');
       }
 
       onSuccess();
@@ -160,59 +136,6 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
           disabled={loading}
         />
 
-        {/* Icon Selection */}
-        <div>
-          <label style={{
-            display: 'block',
-            marginBottom: '0.375rem',
-            fontSize: 'var(--text-sm)',
-            fontWeight: '500',
-            color: 'var(--text-secondary)',
-          }}>
-            Icon
-          </label>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(8, 1fr)',
-            gap: '0.5rem',
-          }}>
-            {DEFAULT_DECK_ICONS.map((ic) => (
-              <button
-                key={ic}
-                type="button"
-                onClick={() => setIcon(ic)}
-                disabled={loading}
-                style={{
-                  width: '2rem',
-                  height: '2rem',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: icon === ic ? 'var(--primary-100)' : 'var(--bg-secondary)',
-                  border: icon === ic ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  fontSize: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all var(--transition-base)',
-                  opacity: loading ? 0.5 : 1,
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading && icon !== ic) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (icon !== ic) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                  }
-                }}
-              >
-                {ic}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Color Selection */}
         <div>
           <label style={{
@@ -225,9 +148,9 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
             Color
           </label>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(8, 1fr)',
+            display: 'flex',
             gap: '0.5rem',
+            flexWrap: 'wrap',
           }}>
             {DEFAULT_DECK_COLORS.map((c) => (
               <button
@@ -236,75 +159,18 @@ export function DeckForm({ userId, deck, onSuccess, onCancel }: DeckFormProps) {
                 onClick={() => setColor(c)}
                 disabled={loading}
                 style={{
-                  width: '2rem',
-                  height: '2rem',
-                  borderRadius: 'var(--radius-sm)',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: 'var(--radius-full)',
                   backgroundColor: c,
-                  border: color === c ? '2px solid var(--text-primary)' : '1px solid var(--border-light)',
+                  border: color === c ? '2.5px solid var(--text-primary)' : '2px solid transparent',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
                   opacity: loading ? 0.5 : 1,
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) e.currentTarget.style.transform = 'scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
+                  flexShrink: 0,
                 }}
               />
             ))}
-          </div>
-        </div>
-
-        {/* Preview */}
-        <div style={{
-          padding: '0.75rem',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-light)',
-        }}>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-tertiary)',
-            marginBottom: '0.375rem',
-          }}>
-            Preview:
-          </p>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-          }}>
-            <div style={{
-              width: '2.25rem',
-              height: '2.25rem',
-              borderRadius: 'var(--radius-sm)',
-              backgroundColor: `${color}20`,
-              border: `2px solid ${color}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.125rem',
-            }}>
-              {icon}
-            </div>
-            <div>
-              <div style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-              }}>
-                {name || 'Deck Name'}
-              </div>
-              {description && (
-                <div style={{
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {description}
-                </div>
-              )}
-            </div>
           </div>
         </div>
 

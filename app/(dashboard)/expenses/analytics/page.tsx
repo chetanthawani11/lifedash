@@ -385,9 +385,14 @@ export default function AnalyticsPage() {
                           <div style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '0.625rem',
+                            gap: '0.5rem',
                           }}>
-                            <span style={{ fontSize: '1.25rem' }}>{category.icon}</span>
+                            <div style={{
+                              width: '4px',
+                              height: '24px',
+                              backgroundColor: category.color,
+                              borderRadius: 'var(--radius-full)',
+                            }} />
                             <div>
                               <span style={{
                                 fontSize: 'var(--text-sm)',

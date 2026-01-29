@@ -91,7 +91,7 @@ function SettingsContent() {
       // Refresh preferences in auth context and localStorage
       await refreshPreferences();
 
-      toast.success('Changes saved successfully! ✨');
+      toast.success('Changes saved successfully');
       await loadProfile();
     } catch (error) {
       console.error('Error saving changes:', error);

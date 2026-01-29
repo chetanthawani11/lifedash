@@ -151,14 +151,12 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({
   const categoryOptions: SelectOption[] = categories.map(cat => ({
     value: cat.id,
     label: cat.name,
-    icon: cat.icon,
   }));
 
   // Payment method options
   const paymentOptions: SelectOption[] = PAYMENT_METHOD_OPTIONS.map(pm => ({
     value: pm.value,
     label: pm.label,
-    icon: pm.icon,
   }));
 
   if (loadingCategories) {

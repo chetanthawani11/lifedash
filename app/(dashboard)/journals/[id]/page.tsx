@@ -187,19 +187,13 @@ export default function JournalPage() {
           gap: '0.75rem',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Journal Icon */}
+            {/* Color indicator */}
             <div style={{
-              width: '40px',
+              width: '4px',
               height: '40px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: `${journal.color}20`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.25rem',
-            }}>
-              {journal.icon}
-            </div>
+              borderRadius: 'var(--radius-full)',
+              backgroundColor: journal.color,
+            }} />
 
             {/* Journal Name & Description */}
             <div>
@@ -407,7 +401,6 @@ export default function JournalPage() {
                       color: 'var(--text-tertiary)',
                     }}>
                       <span>{formatDate(entry.createdAt)}</span>
-                      {entry.mood && <span>{MOOD_EMOJIS[entry.mood]}</span>}
                       {entry.isFavorite && <span>⭐</span>}
                     </div>
                   </div>
@@ -540,7 +533,6 @@ export default function JournalPage() {
                   color: 'var(--text-tertiary)',
                 }}>
                   <span>{formatDate(selectedEntry.createdAt)}</span>
-                  {selectedEntry.mood && <span>{MOOD_EMOJIS[selectedEntry.mood]}</span>}
                   {selectedEntry.isFavorite && <span>⭐</span>}
                 </div>
               </div>
@@ -761,11 +753,3 @@ export default function JournalPage() {
   );
 }
 
-// Mood emoji mapping
-const MOOD_EMOJIS = {
-  great: '😄',
-  good: '🙂',
-  okay: '😐',
-  bad: '😟',
-  terrible: '😢',
-};

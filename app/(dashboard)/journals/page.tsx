@@ -184,6 +184,7 @@ export default function JournalsPage() {
                   cursor: 'pointer',
                   transition: 'all var(--transition-base)',
                   border: '1px solid var(--border-light)',
+                  borderLeft: `4px solid ${journal.color}`,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = journal.color;
@@ -195,21 +196,6 @@ export default function JournalsPage() {
                 }}
                 onClick={() => router.push(`/journals/${journal.id}`)}
               >
-                {/* Journal Icon & Color */}
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: 'var(--radius-md)',
-                  backgroundColor: `${journal.color}20`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '1.25rem',
-                  marginBottom: '0.75rem',
-                }}>
-                  {journal.icon}
-                </div>
-
                 {/* Journal Name */}
                 <h3 style={{
                   fontSize: 'var(--text-xl)',

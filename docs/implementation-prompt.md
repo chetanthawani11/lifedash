@@ -35,11 +35,11 @@ Take this from the design.md file where i have mentioned in detial.
 6. **Free solutions only** - guide me through free Firebase setup, Vercel deployment
 7. **Test as we go** - make sure each step works before moving to next
 
-**My Current Task**: 11.2 Implement integration and end-to-end tests
-- Create integration tests for API routes and database operations
-- Build end-to-end tests for critical user flows
-- Add performance testing for large datasets
-- Implement accessibility testing and WCAG compliance
+**My Current Task**:
+-[] Remove the moode selction of feeling from the journal entries completely.
+-[] Remove the icons anywhere being used throughout the app it should look professional and decent.
+-[] make the color selection in categories and other places small and decent it looks huge now.
+-[] remove the preview card format while adding or editing in any section.
 
 
 **Testing Requirements - VERY IMPORTANT:**

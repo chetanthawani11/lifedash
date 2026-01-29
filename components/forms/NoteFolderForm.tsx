@@ -31,14 +31,10 @@ const FOLDER_COLORS = [
   { name: 'Indigo', value: '#6366f1' },
 ];
 
-// Common folder icons
-const FOLDER_ICONS = ['📁', '📂', '📚', '📖', '📓', '📔', '📕', '📗', '📘', '📙', '🗂️', '🗃️'];
-
 export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }: NoteFolderFormProps) {
   const [name, setName] = useState(folder?.name || '');
   const [description, setDescription] = useState(folder?.description || '');
   const [color, setColor] = useState(folder?.color || '#3b82f6');
-  const [icon, setIcon] = useState(folder?.icon || '📁');
   const [loading, setLoading] = useState(false);
 
   // Handle form submission
@@ -59,19 +55,17 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
           name: name.trim(),
           description: description.trim() || null,
           color,
-          icon,
         });
-        toast.success('Folder updated successfully!');
+        toast.success('Folder updated successfully');
       } else {
         // Create new folder
         await createNoteFolder(userId, {
           name: name.trim(),
           description: description.trim() || null,
           color,
-          icon,
           parentId: parentId || null,
         });
-        toast.success('Folder created successfully!');
+        toast.success('Folder created successfully');
       }
 
       onSuccess();
@@ -107,44 +101,6 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
           disabled={loading}
         />
 
-        {/* Icon Picker */}
-        <div>
-          <label style={{
-            display: 'block',
-            marginBottom: '0.375rem',
-            fontSize: 'var(--text-sm)',
-            fontWeight: '500',
-            color: 'var(--text-secondary)',
-          }}>
-            Icon
-          </label>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(3rem, 1fr))',
-            gap: '0.5rem',
-          }}>
-            {FOLDER_ICONS.map((iconOption) => (
-              <button
-                key={iconOption}
-                type="button"
-                onClick={() => setIcon(iconOption)}
-                disabled={loading}
-                style={{
-                  padding: '0.5rem',
-                  fontSize: '1.125rem',
-                  border: icon === iconOption ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: icon === iconOption ? 'var(--primary-100)' : 'var(--bg-elevated)',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  transition: 'all var(--transition-base)',
-                }}
-              >
-                {iconOption}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Color Picker */}
         <div>
           <label style={{
@@ -157,9 +113,9 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
             Color
           </label>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(5rem, 1fr))',
+            display: 'flex',
             gap: '0.5rem',
+            flexWrap: 'wrap',
           }}>
             {FOLDER_COLORS.map((colorOption) => (
               <button
@@ -168,84 +124,17 @@ export function NoteFolderForm({ userId, folder, parentId, onSuccess, onCancel }
                 onClick={() => setColor(colorOption.value)}
                 disabled={loading}
                 style={{
-                  padding: '0.5rem',
-                  border: color === colorOption.value ? '2px solid var(--text-primary)' : '1px solid var(--border-light)',
-                  borderRadius: 'var(--radius-sm)',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: 'var(--radius-full)',
                   backgroundColor: colorOption.value,
+                  border: color === colorOption.value ? '2.5px solid var(--text-primary)' : '2px solid transparent',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '0.125rem',
+                  flexShrink: 0,
                 }}
-              >
-                <span style={{
-                  fontSize: '10px',
-                  fontWeight: '500',
-                  color: 'white',
-                  textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-                }}>
-                  {colorOption.name}
-                </span>
-              </button>
+              />
             ))}
-          </div>
-        </div>
-
-        {/* Preview */}
-        <div style={{
-          padding: '0.75rem',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-light)',
-        }}>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-tertiary)',
-            marginBottom: '0.375rem',
-          }}>
-            Preview:
-          </p>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.5rem',
-            backgroundColor: 'var(--bg-elevated)',
-            borderRadius: 'var(--radius-sm)',
-            border: `2px solid ${color}`,
-          }}>
-            <div style={{
-              fontSize: '1.25rem',
-              width: '2.25rem',
-              height: '2.25rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: `${color}20`,
-              borderRadius: 'var(--radius-sm)',
-            }}>
-              {icon}
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-                marginBottom: '0.125rem',
-              }}>
-                {name || 'Folder Name'}
-              </div>
-              {description && (
-                <div style={{
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {description}
-                </div>
-              )}
-            </div>
           </div>
         </div>
 

@@ -2,15 +2,13 @@
 
 // Folder Form - Create or edit flashcard folders
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/Input';
 import { Textarea } from '@/components/ui/Textarea';
 import { Button } from '@/components/ui/Button';
-import { Select, SelectOption } from '@/components/ui/Select';
 import {
   createFlashcardFolder,
   updateFlashcardFolder,
-  getUserFlashcardFolders,
 } from '@/lib/flashcard-service';
 import { FlashcardFolder } from '@/types';
 import toast from 'react-hot-toast';
@@ -27,26 +25,6 @@ const DEFAULT_FOLDER_COLORS = [
   '#f97316', // Orange
 ];
 
-// Default icons for folders (using Unicode escapes to avoid encoding issues)
-const DEFAULT_FOLDER_ICONS = [
-  '\uD83D\uDCC1', // folder
-  '\uD83D\uDCC2', // open folder
-  '\uD83D\uDCDA', // books
-  '\uD83D\uDCD6', // open book
-  '\uD83D\uDCDD', // memo
-  '\uD83C\uDFAF', // target
-  '\uD83E\uDDE0', // brain
-  '\uD83D\uDCA1', // lightbulb
-  '\uD83C\uDF93', // graduation cap
-  '\uD83D\uDCCB', // clipboard
-  '\uD83D\uDD2C', // microscope
-  '\uD83C\uDFA8', // palette
-  '\uD83C\uDFB5', // music
-  '\uD83C\uDF0D', // globe
-  '\uD83D\uDCBB', // laptop
-  '\uD83C\uDFC3', // runner
-];
-
 interface FolderFormProps {
   userId: string;
   folder?: FlashcardFolder | null;
@@ -58,7 +36,6 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
   const [name, setName] = useState(folder?.name || '');
   const [description, setDescription] = useState(folder?.description || '');
   const [color, setColor] = useState(folder?.color || DEFAULT_FOLDER_COLORS[0]);
-  const [icon, setIcon] = useState(folder?.icon || DEFAULT_FOLDER_ICONS[0]);
   const [loading, setLoading] = useState(false);
 
   // Handle form submission
@@ -79,18 +56,16 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
           name: name.trim(),
           description: description.trim() || undefined,
           color,
-          icon,
         });
-        toast.success('Folder updated successfully!');
+        toast.success('Folder updated successfully');
       } else {
         // Create new folder
         await createFlashcardFolder(userId, {
           name: name.trim(),
           description: description.trim() || undefined,
           color,
-          icon,
         });
-        toast.success('Folder created successfully!');
+        toast.success('Folder created successfully');
       }
 
       onSuccess();
@@ -126,59 +101,6 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
           disabled={loading}
         />
 
-        {/* Icon Selection */}
-        <div>
-          <label style={{
-            display: 'block',
-            marginBottom: '0.375rem',
-            fontSize: 'var(--text-sm)',
-            fontWeight: '500',
-            color: 'var(--text-secondary)',
-          }}>
-            Icon
-          </label>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(8, 1fr)',
-            gap: '0.5rem',
-          }}>
-            {DEFAULT_FOLDER_ICONS.map((ic) => (
-              <button
-                key={ic}
-                type="button"
-                onClick={() => setIcon(ic)}
-                disabled={loading}
-                style={{
-                  width: '2rem',
-                  height: '2rem',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: icon === ic ? 'var(--primary-100)' : 'var(--bg-secondary)',
-                  border: icon === ic ? '2px solid var(--primary-500)' : '1px solid var(--border-light)',
-                  cursor: loading ? 'not-allowed' : 'pointer',
-                  fontSize: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all var(--transition-base)',
-                  opacity: loading ? 0.5 : 1,
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading && icon !== ic) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-tertiary)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (icon !== ic) {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
-                  }
-                }}
-              >
-                {ic}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Color Selection */}
         <div>
           <label style={{
@@ -191,9 +113,9 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
             Color
           </label>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(8, 1fr)',
+            display: 'flex',
             gap: '0.5rem',
+            flexWrap: 'wrap',
           }}>
             {DEFAULT_FOLDER_COLORS.map((c) => (
               <button
@@ -202,75 +124,18 @@ export function FolderForm({ userId, folder, onSuccess, onCancel }: FolderFormPr
                 onClick={() => setColor(c)}
                 disabled={loading}
                 style={{
-                  width: '2rem',
-                  height: '2rem',
-                  borderRadius: 'var(--radius-sm)',
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: 'var(--radius-full)',
                   backgroundColor: c,
-                  border: color === c ? '2px solid var(--text-primary)' : '1px solid var(--border-light)',
+                  border: color === c ? '2.5px solid var(--text-primary)' : '2px solid transparent',
                   cursor: loading ? 'not-allowed' : 'pointer',
                   transition: 'all var(--transition-base)',
                   opacity: loading ? 0.5 : 1,
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) e.currentTarget.style.transform = 'scale(1.1)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)';
+                  flexShrink: 0,
                 }}
               />
             ))}
-          </div>
-        </div>
-
-        {/* Preview */}
-        <div style={{
-          padding: '0.75rem',
-          backgroundColor: 'var(--bg-secondary)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-light)',
-        }}>
-          <p style={{
-            fontSize: 'var(--text-xs)',
-            color: 'var(--text-tertiary)',
-            marginBottom: '0.375rem',
-          }}>
-            Preview:
-          </p>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-          }}>
-            <div style={{
-              width: '2.25rem',
-              height: '2.25rem',
-              borderRadius: 'var(--radius-sm)',
-              backgroundColor: `${color}20`,
-              border: `2px solid ${color}`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.125rem',
-            }}>
-              {icon}
-            </div>
-            <div>
-              <div style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-              }}>
-                {name || 'Folder Name'}
-              </div>
-              {description && (
-                <div style={{
-                  fontSize: 'var(--text-xs)',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {description}
-                </div>
-              )}
-            </div>
           </div>
         </div>
 

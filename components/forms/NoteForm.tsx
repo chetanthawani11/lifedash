@@ -153,7 +153,7 @@ export function NoteForm({
             { value: '', label: 'No Folder (Root Level)' },
             ...folders.map((folder) => ({
               value: folder.id,
-              label: `${folder.icon} ${folder.name}`,
+              label: folder.name,
             })),
           ]}
         />
@@ -230,7 +230,7 @@ export function NoteForm({
                     style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
                   />
                   <span style={{ fontSize: 'var(--text-base)' }}>
-                    {deck.icon} {deck.name}
+                    {deck.name}
                   </span>
                   <span style={{
                     marginLeft: 'auto',

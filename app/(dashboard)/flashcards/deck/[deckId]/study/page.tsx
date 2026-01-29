@@ -76,7 +76,7 @@ export default function StudyPage({ params }: StudyPageProps) {
         const dueCards = getDueCards(cardsData);
 
         if (dueCards.length === 0) {
-          toast.success('No cards due for review! Great job! 🎉');
+          toast.success('No cards due for review. Great job');
           setSessionComplete(true);
           setLoading(false);
           return;
@@ -120,7 +120,7 @@ export default function StudyPage({ params }: StudyPageProps) {
         // Session complete!
         await updateDeckMasteredCount(user.uid, deckId);
         setSessionComplete(true);
-        toast.success(`Study session complete! You reviewed ${studyQueue.length} cards! 🎉`);
+        toast.success(`Study session complete. You reviewed ${studyQueue.length} cards`);
       }
     } catch (error) {
       console.error('Error recording review:', error);

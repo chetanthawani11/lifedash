@@ -16,18 +16,9 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/Button';
-import { CreateJournalEntryInput, JournalEntry, Mood } from '@/types';
+import { CreateJournalEntryInput, JournalEntry } from '@/types';
 import { createJournalEntry, updateJournalEntry } from '@/lib/journal-service';
 import toast from 'react-hot-toast';
-
-// Mood options
-const MOOD_OPTIONS: { value: Mood; label: string; emoji: string }[] = [
-  { value: 'great', label: 'Great', emoji: '😄' },
-  { value: 'good', label: 'Good', emoji: '🙂' },
-  { value: 'okay', label: 'Okay', emoji: '😐' },
-  { value: 'bad', label: 'Bad', emoji: '😟' },
-  { value: 'terrible', label: 'Terrible', emoji: '😢' },
-];
 
 interface JournalEntryFormProps {
   userId: string;
@@ -45,7 +36,6 @@ export const JournalEntryForm = ({
   onCancel,
 }: JournalEntryFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [selectedMood, setSelectedMood] = useState<Mood | null>(entry?.mood || null);
   const [isFavorite, setIsFavorite] = useState(entry?.isFavorite || false);
   const [tags, setTags] = useState<string[]>(entry?.tags || []);
   const [tagInput, setTagInput] = useState('');
@@ -60,7 +50,6 @@ export const JournalEntryForm = ({
       journalId,
       title: entry?.title || '',
       content: entry?.content || '',
-      mood: entry?.mood || null,
       tags: entry?.tags || [],
       isFavorite: entry?.isFavorite || false,
     },
@@ -95,22 +84,20 @@ export const JournalEntryForm = ({
         await updateJournalEntry(userId, entry.id, {
           title: data.title,
           content: data.content,
-          mood: selectedMood,
           tags,
           isFavorite,
         });
-        toast.success('Entry updated! ✅');
+        toast.success('Entry updated!');
       } else {
         // Create
         await createJournalEntry(userId, {
           journalId,
           title: data.title,
           content: data.content,
-          mood: selectedMood,
           tags,
           isFavorite,
         });
-        toast.success('Entry created! 🎉');
+        toast.success('Entry created!');
       }
 
       onSuccess();
@@ -164,59 +151,6 @@ export const JournalEntryForm = ({
             {errors.title.message}
           </p>
         )}
-      </div>
-
-      {/* Mood Selector */}
-      <div>
-        <label style={{
-          display: 'block',
-          marginBottom: '0.375rem',
-          fontSize: 'var(--text-sm)',
-          fontWeight: '500',
-          color: 'var(--text-secondary)',
-        }}>
-          How are you feeling?
-        </label>
-        <div style={{
-          display: 'flex',
-          gap: '0.5rem',
-          flexWrap: 'wrap',
-        }}>
-          {MOOD_OPTIONS.map((mood) => (
-            <button
-              key={mood.value}
-              type="button"
-              onClick={() => setSelectedMood(selectedMood === mood.value ? null : mood.value)}
-              style={{
-                flex: '1 1 calc(20% - 0.5rem)',
-                minWidth: '60px',
-                padding: '0.5rem',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: selectedMood === mood.value
-                  ? 'var(--primary-500)'
-                  : 'var(--bg-secondary)',
-                border: selectedMood === mood.value
-                  ? '2px solid var(--primary-400)'
-                  : '1px solid var(--border-light)',
-                cursor: 'pointer',
-                transition: 'all var(--transition-base)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.125rem',
-              }}
-            >
-              <span style={{ fontSize: '1.25rem' }}>{mood.emoji}</span>
-              <span style={{
-                fontSize: 'var(--text-xs)',
-                fontWeight: '500',
-                color: selectedMood === mood.value ? '#ffffff' : 'var(--text-secondary)',
-              }}>
-                {mood.label}
-              </span>
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Content - Simple Textarea */}

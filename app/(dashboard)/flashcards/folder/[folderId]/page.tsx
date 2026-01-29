@@ -127,34 +127,23 @@ export default function FolderDetailPage() {
           flexWrap: 'wrap',
           gap: '0.75rem',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: `${folder.color}20`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.25rem',
+          <div style={{
+            paddingLeft: '1rem',
+            borderLeft: `4px solid ${folder.color}`,
+          }}>
+            <h1 style={{
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
             }}>
-              {folder.icon}
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: 'var(--text-2xl)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
-              }}>
-                {folder.name}
-              </h1>
-              <p style={{
-                fontSize: 'var(--text-sm)',
-                color: 'var(--text-tertiary)',
-              }}>
-                {decks.length} {decks.length === 1 ? 'deck' : 'decks'}
-              </p>
-            </div>
+              {folder.name}
+            </h1>
+            <p style={{
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+            }}>
+              {decks.length} {decks.length === 1 ? 'deck' : 'decks'}
+            </p>
           </div>
 
           <Button
@@ -232,31 +221,15 @@ export default function FolderDetailPage() {
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 border: '1px solid var(--border-light)',
+                borderLeft: `4px solid ${deck.color}`,
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = deck.color;
                 e.currentTarget.style.backgroundColor = 'var(--bg-secondary)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border-light)';
                 e.currentTarget.style.backgroundColor = 'var(--bg-elevated)';
               }}
             >
-              {/* Deck Icon & Color */}
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: 'var(--radius-md)',
-                backgroundColor: `${deck.color}20`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.25rem',
-                marginBottom: '0.75rem',
-              }}>
-                {deck.icon}
-              </div>
-
               {/* Deck Name */}
               <h3 style={{
                 fontSize: 'var(--text-base)',

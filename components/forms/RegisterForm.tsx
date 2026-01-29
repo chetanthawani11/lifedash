@@ -79,7 +79,7 @@ export const RegisterForm = () => {
         data.displayName || data.email.split('@')[0]
       );
 
-      toast.success('Account created successfully! 🎉');
+      toast.success('Account created successfully');
       router.push('/dashboard');
     } catch (error: any) {
       let errorMessage = 'Registration failed. Please try again.';

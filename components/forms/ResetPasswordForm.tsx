@@ -40,7 +40,7 @@ export const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
     try {
       await sendPasswordResetEmail(auth, data.email);
       setEmailSent(true);
-      toast.success('Password reset email sent! 📧');
+      toast.success('Password reset email sent');
     } catch (error: any) {
       let errorMessage = 'Failed to send reset email.';
 

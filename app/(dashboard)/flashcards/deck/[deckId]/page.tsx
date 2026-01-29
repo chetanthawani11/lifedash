@@ -272,36 +272,25 @@ export default function DeckViewPage() {
           marginBottom: '0.5rem',
           flexWrap: 'wrap',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: 'var(--radius-md)',
-              backgroundColor: `${deck.color}20`,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '1.25rem',
+          <div style={{
+            paddingLeft: '1rem',
+            borderLeft: `4px solid ${deck.color}`,
+          }}>
+            <h1 style={{
+              fontSize: 'var(--text-2xl)',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
             }}>
-              {deck.icon}
-            </div>
-            <div>
-              <h1 style={{
-                fontSize: 'var(--text-2xl)',
-                fontWeight: '600',
-                color: 'var(--text-primary)',
+              {deck.name}
+            </h1>
+            {deck.description && (
+              <p style={{
+                fontSize: 'var(--text-sm)',
+                color: 'var(--text-secondary)',
               }}>
-                {deck.name}
-              </h1>
-              {deck.description && (
-                <p style={{
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--text-secondary)',
-                }}>
-                  {deck.description}
-                </p>
-              )}
-            </div>
+                {deck.description}
+              </p>
+            )}
           </div>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
