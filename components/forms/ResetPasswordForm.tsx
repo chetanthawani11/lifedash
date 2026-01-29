@@ -70,42 +70,42 @@ export const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
       <div style={{ textAlign: 'center' }}>
         {/* Success Icon */}
         <div style={{
-          width: '80px',
-          height: '80px',
-          margin: '0 auto 1.5rem',
+          width: '56px',
+          height: '56px',
+          margin: '0 auto 1rem',
           background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 10px 30px rgba(16, 185, 129, 0.3)',
+          boxShadow: '0 8px 20px rgba(16, 185, 129, 0.25)',
         }}>
-          <svg style={{ width: '40px', height: '40px', color: 'white' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg style={{ width: '28px', height: '28px', color: 'white' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
 
         {/* Success Message */}
         <h2 style={{
-          fontSize: 'var(--text-2xl)',
+          fontSize: '1.25rem',
           fontWeight: '700',
           color: 'var(--text-primary)',
-          marginBottom: '0.75rem',
+          marginBottom: '0.5rem',
         }}>
           Email Sent!
         </h2>
         <p style={{
-          fontSize: 'var(--text-base)',
+          fontSize: '0.875rem',
           color: 'var(--text-secondary)',
-          marginBottom: '2rem',
-          lineHeight: '1.6',
+          marginBottom: '1.5rem',
+          lineHeight: '1.5',
         }}>
-          We've sent a password reset link to<br />
+          Check your inbox at<br />
           <strong style={{ color: 'var(--text-primary)' }}>{getValues('email')}</strong>
         </p>
 
         {/* Back Button */}
-        <Button onClick={onBack} variant="primary" fullWidth size="lg">
+        <Button onClick={onBack} variant="primary" fullWidth size="md">
           Back to Login
         </Button>
       </div>
@@ -114,25 +114,16 @@ export const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
 
   // Reset form
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       {/* Header */}
-      <div style={{ marginBottom: '0.5rem' }}>
-        <h2 style={{
-          fontSize: 'var(--text-2xl)',
-          fontWeight: '700',
-          color: 'var(--text-primary)',
-          marginBottom: '0.75rem',
-        }}>
-          Reset Your Password
-        </h2>
-        <p style={{
-          fontSize: 'var(--text-base)',
-          color: 'var(--text-secondary)',
-          lineHeight: '1.6',
-        }}>
-          Enter your email address and we'll send you a link to reset your password.
-        </p>
-      </div>
+      <p style={{
+        fontSize: '0.875rem',
+        color: 'var(--text-secondary)',
+        lineHeight: '1.5',
+        marginBottom: '0.25rem',
+      }}>
+        Enter your email and we'll send you a reset link.
+      </p>
 
       {/* Email Input */}
       <Input
@@ -155,7 +146,7 @@ export const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
         loading={loading}
         fullWidth
         variant="primary"
-        size="lg"
+        size="md"
       >
         {loading ? 'Sending...' : 'Send Reset Email'}
       </Button>
@@ -166,7 +157,7 @@ export const ResetPasswordForm = ({ onBack }: { onBack: () => void }) => {
         onClick={onBack}
         variant="ghost"
         fullWidth
-        size="lg"
+        size="md"
       >
         Back to Login
       </Button>

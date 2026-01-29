@@ -108,14 +108,13 @@ export const RegisterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       {/* Display Name */}
       <Input
-        label="Display Name (Optional)"
+        label="Name (Optional)"
         type="text"
         placeholder="John Doe"
         error={errors.displayName?.message}
-        helperText="This is how you'll appear in the app"
         {...register('displayName')}
       />
 
@@ -141,7 +140,6 @@ export const RegisterForm = () => {
           type="password"
           placeholder="••••••••"
           error={errors.password?.message}
-          helperText="At least 6 characters"
           {...register('password', {
             required: 'Password is required',
             minLength: {
@@ -151,42 +149,33 @@ export const RegisterForm = () => {
           })}
         />
 
-        {/* Password Strength Indicator */}
+        {/* Password Strength Indicator - Compact */}
         {password && password.length > 0 && (
-          <div style={{ marginTop: '0.75rem' }}>
+          <div style={{ marginTop: '0.5rem' }}>
             <div style={{
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '0.5rem',
+              gap: '4px',
+              marginBottom: '4px',
             }}>
-              <span style={{
-                fontSize: 'var(--text-xs)',
-                fontWeight: '500',
-                color: passwordStrength.color,
-              }}>
-                Strength: {passwordStrength.label}
-              </span>
-              <span style={{
-                fontSize: 'var(--text-xs)',
-                color: 'var(--text-tertiary)',
-              }}>
-                {passwordStrength.score}/5
-              </span>
+              {[1, 2, 3, 4, 5].map((level) => (
+                <div
+                  key={level}
+                  style={{
+                    flex: 1,
+                    height: '3px',
+                    borderRadius: '2px',
+                    backgroundColor: level <= passwordStrength.score ? passwordStrength.color : 'var(--bg-secondary)',
+                    transition: 'all 0.2s ease',
+                  }}
+                />
+              ))}
             </div>
-            <div style={{
-              height: '4px',
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--radius-full)',
-              overflow: 'hidden',
+            <span style={{
+              fontSize: '0.6875rem',
+              color: passwordStrength.color,
             }}>
-              <div style={{
-                height: '100%',
-                width: `${(passwordStrength.score / 5) * 100}%`,
-                backgroundColor: passwordStrength.color,
-                transition: 'all var(--transition-base)',
-              }} />
-            </div>
+              {passwordStrength.label}
+            </span>
           </div>
         )}
       </div>

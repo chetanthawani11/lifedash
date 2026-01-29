@@ -1,0 +1,422 @@
+/**
+ * Landing Page Specific Styles
+ *
+ * Performance & Accessibility Optimized
+ */
+
+/* ===================================
+   LANDING PAGE ROOT VARIABLES
+   =================================== */
+
+:root {
+  /* Landing Page Gradient Colors - Brand Orange */
+  --landing-gradient-start: #f26419;
+  --landing-gradient-mid: #e3470f;
+  --landing-gradient-end: #bc310f;
+
+  /* Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  /* Glow Effects */
+  --glow-primary: 0 0 40px rgba(242, 100, 25, 0.3);
+  --glow-secondary: 0 0 40px rgba(227, 71, 15, 0.3);
+
+  /* Feature Gradients */
+  --gradient-journal: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-expense: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --gradient-tasks: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+  --gradient-flashcards: linear-gradient(135deg, #7f00ff 0%, #e100ff 100%);
+  --gradient-notes: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+  --gradient-goals: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+}
+
+/* Dark Mode Glass Morphism */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-bg: rgba(30, 30, 40, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ===================================
+   PERFORMANCE: GPU ACCELERATION
+   =================================== */
+
+/* Use will-change sparingly on elements that animate frequently */
+.landing-page .animate-on-scroll {
+  will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.landing-page .animation-complete {
+  will-change: auto;
+}
+
+/* Force GPU layer for smooth animations */
+.landing-page .gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ===================================
+   LANDING PAGE TYPOGRAPHY
+   =================================== */
+
+.landing-page h1,
+.landing-page h2,
+.landing-page h3 {
+  letter-spacing: -0.02em;
+}
+
+/* Override global heading size restrictions for landing page */
+.landing-page h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem) !important;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.landing-page h2 {
+  font-size: clamp(2rem, 5vw, 3rem) !important;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.landing-page h3 {
+  font-size: clamp(1.25rem, 3vw, 1.5rem) !important;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* ===================================
+   LANDING PAGE LAYOUT
+   =================================== */
+
+.landing-page {
+  background: transparent;
+  min-height: 100vh;
+  /* Contain paint to improve performance */
+  contain: layout style;
+}
+
+.landing-main {
+  position: relative;
+  z-index: 0;
+}
+
+/* ===================================
+   ACCESSIBILITY: REDUCED MOTION
+   =================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  .landing-page *,
+  .landing-page *::before,
+  .landing-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Remove parallax effects */
+  .landing-page [data-parallax],
+  .landing-page .parallax-element {
+    transform: none !important;
+  }
+
+  /* Simplify hover effects */
+  .landing-page button:hover,
+  .landing-page a:hover,
+  .landing-page [role="button"]:hover {
+    transform: none !important;
+  }
+
+  /* Keep content visible without animation */
+  .landing-page [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ===================================
+   ACCESSIBILITY: FOCUS STYLES
+   =================================== */
+
+.landing-page a:focus-visible,
+.landing-page button:focus-visible,
+.landing-page [role="button"]:focus-visible,
+.landing-page input:focus-visible,
+.landing-page select:focus-visible,
+.landing-page textarea:focus-visible {
+  outline: 2px solid var(--landing-gradient-start);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link for keyboard users */
+.landing-page .skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background: var(--landing-gradient-start);
+  color: white;
+  text-decoration: none;
+  border-radius: 0 0 8px 8px;
+  z-index: 10000;
+  transition: top 0.2s ease;
+}
+
+.landing-page .skip-link:focus {
+  top: 0;
+}
+
+/* ===================================
+   ACCESSIBILITY: HIGH CONTRAST
+   =================================== */
+
+@media (prefers-contrast: high) {
+  .landing-page {
+    --glass-bg: var(--bg-primary);
+    --glass-border: var(--border-primary);
+  }
+
+  .landing-page button,
+  .landing-page a {
+    border: 2px solid currentColor !important;
+  }
+}
+
+/* ===================================
+   ANIMATION UTILITIES
+   =================================== */
+
+/* Pulse animation for CTAs */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(242, 100, 25, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(242, 100, 25, 0.6);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Gradient shift animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Skeleton pulse */
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton-pulse {
+  animation: skeleton-pulse 2s ease-in-out infinite;
+}
+
+/* ===================================
+   SELECTION STYLING
+   =================================== */
+
+.landing-page ::selection {
+  background: rgba(242, 100, 25, 0.3);
+  color: inherit;
+}
+
+.landing-page ::-moz-selection {
+  background: rgba(242, 100, 25, 0.3);
+  color: inherit;
+}
+
+/* ===================================
+   MOBILE OPTIMIZATIONS
+   =================================== */
+
+@media (max-width: 768px) {
+  /* Reduce motion complexity on mobile for performance */
+  .landing-page .parallax-element {
+    transform: none !important;
+  }
+
+  /* Simplify floating elements on mobile */
+  .landing-page .floating-element {
+    animation: none !important;
+  }
+
+  /* Adjust section padding on mobile */
+  .landing-page section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Ensure touch targets are large enough */
+  .landing-page button,
+  .landing-page a,
+  .landing-page [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ===================================
+   PERFORMANCE: CONTENT VISIBILITY
+   =================================== */
+
+/* Use content-visibility for below-fold sections */
+.landing-page section:not(:first-of-type):not(:nth-of-type(2)) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* ===================================
+   LOADING STATES
+   =================================== */
+
+.landing-page .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-tertiary);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================================
+   PRINT STYLES
+   =================================== */
+
+@media print {
+  .landing-page {
+    background: white !important;
+  }
+
+  .landing-page nav,
+  .landing-page .floating-element,
+  .landing-page .parallax-element,
+  .landing-page footer {
+    display: none !important;
+  }
+
+  .landing-page section {
+    page-break-inside: avoid;
+    padding: 20px 0;
+  }
+
+  .landing-page h1,
+  .landing-page h2,
+  .landing-page h3 {
+    color: black !important;
+  }
+
+  .landing-page p {
+    color: #333 !important;
+  }
+}
+
+/* ===================================
+   DARK MODE ENHANCEMENTS
+   =================================== */
+
+@media (prefers-color-scheme: dark) {
+  .landing-page {
+    color-scheme: dark;
+  }
+
+  /* Reduce glow intensity in dark mode */
+  .landing-page .glow-effect {
+    opacity: 0.5;
+  }
+
+  /* Improve contrast for text on gradients */
+  .landing-page .gradient-section {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ===================================
+   SCROLL BEHAVIOR
+   =================================== */
+
+/* Smooth scrolling with offset for fixed navbar */
+.landing-page html {
+  scroll-padding-top: 80px;
+}
+
+/* Scroll snap for section-based navigation (optional) */
+/*
+.landing-main {
+  scroll-snap-type: y proximity;
+}
+
+.landing-main > section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+*/
+
+/* ===================================
+   IMAGE OPTIMIZATIONS
+   =================================== */
+
+.landing-page img {
+  /* Prevent layout shift */
+  height: auto;
+  max-width: 100%;
+
+  /* Optimize rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Lazy loaded images */
+.landing-page img[loading="lazy"] {
+  /* Placeholder background while loading */
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
