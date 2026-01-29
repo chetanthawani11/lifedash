@@ -265,6 +265,7 @@ export function FAQ() {
 
         {/* FAQ Accordion */}
         <div
+          className="faq-accordion"
           style={{
             backgroundColor: 'var(--bg-primary)',
             borderRadius: '20px',
@@ -274,14 +275,15 @@ export function FAQ() {
           }}
         >
           {faqItems.map((item, index) => (
-            <FAQAccordionItem
-              key={item.id}
-              item={item}
-              isOpen={openId === item.id}
-              onToggle={() => handleToggle(item.id)}
-              index={index}
-              inView={inView}
-            />
+            <div key={item.id} className="faq-item">
+              <FAQAccordionItem
+                item={item}
+                isOpen={openId === item.id}
+                onToggle={() => handleToggle(item.id)}
+                index={index}
+                inView={inView}
+              />
+            </div>
           ))}
         </div>
 
@@ -357,8 +359,12 @@ export function FAQ() {
           #faq {
             padding: 80px 16px !important;
           }
-          #faq > div > div:last-of-type {
+          .faq-accordion {
             padding: 8px 20px !important;
+          }
+          /* Show only first 4 FAQ items on mobile */
+          .faq-item:nth-child(n+5) {
+            display: none !important;
           }
         }
       `}</style>

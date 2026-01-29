@@ -362,12 +362,13 @@ export function Testimonials() {
           }}
         >
           {testimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={testimonial.id}
-              testimonial={testimonial}
-              index={index}
-              inView={inView}
-            />
+            <div key={testimonial.id} className="testimonial-item">
+              <TestimonialCard
+                testimonial={testimonial}
+                index={index}
+                inView={inView}
+              />
+            </div>
           ))}
         </div>
 
@@ -457,6 +458,10 @@ export function Testimonials() {
           .testimonials-grid {
             grid-template-columns: 1fr !important;
             gap: 16px !important;
+          }
+          /* Show only first 3 testimonials on mobile */
+          .testimonial-item:nth-child(n+4) {
+            display: none !important;
           }
         }
       `}</style>

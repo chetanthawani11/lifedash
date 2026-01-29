@@ -263,12 +263,11 @@ function ConnectingLine({ inView }: { inView: boolean }) {
       </svg>
 
       <style jsx global>{`
-        @media (max-width: 768px) {
-          .connecting-line-desktop {
-            display: none !important;
-          }
+        /* Hide connecting lines on tablet and mobile */
+        @media (max-width: 1024px) {
+          .connecting-line-desktop,
           .connecting-line-mobile {
-            display: block !important;
+            display: none !important;
           }
         }
       `}</style>
@@ -454,13 +453,24 @@ export function HowItWorks() {
           grid-template-columns: repeat(3, 1fr);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .steps-grid {
             grid-template-columns: 1fr !important;
-            gap: 64px !important;
+            gap: 48px !important;
+            max-width: 400px !important;
+            margin: 0 auto !important;
           }
           #how-it-works {
             padding: 80px 24px !important;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .steps-grid {
+            gap: 40px !important;
+          }
+          #how-it-works {
+            padding: 60px 20px !important;
           }
         }
       `}</style>

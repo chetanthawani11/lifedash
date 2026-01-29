@@ -271,11 +271,13 @@ export function Hero() {
           {/* CTA Buttons */}
           <motion.div
             variants={itemVariants}
+            className="hero-cta-buttons"
             style={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: '16px',
+              gap: '12px',
               marginBottom: '32px',
+              justifyContent: 'center',
             }}
           >
             <Link href="/auth" style={{ textDecoration: 'none' }}>
@@ -345,9 +347,11 @@ export function Hero() {
           {/* Social Proof */}
           <motion.div
             variants={itemVariants}
+            className="hero-social-proof"
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '12px',
             }}
           >
@@ -773,12 +777,13 @@ export function Hero() {
           #hero {
             min-height: auto !important;
             padding-top: 80px !important;
-            padding-bottom: 60px !important;
+            padding-bottom: 48px !important;
           }
           .hero-grid {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 32px !important;
             text-align: center !important;
+            padding: 0 16px !important;
           }
           .hero-content {
             max-width: 100% !important;
@@ -786,9 +791,16 @@ export function Hero() {
             flex-direction: column !important;
             align-items: center !important;
           }
+          .hero-content h1 {
+            font-size: 2rem !important;
+          }
+          .hero-content p {
+            font-size: 1rem !important;
+          }
           .hero-mockup {
             max-width: 100% !important;
             padding: 0 !important;
+            display: none !important;
           }
           .floating-card-1,
           .floating-card-2 {
@@ -797,8 +809,7 @@ export function Hero() {
           .hero-float-1,
           .hero-float-2,
           .hero-float-3 {
-            width: 150px !important;
-            height: 150px !important;
+            display: none !important;
           }
         }
       `}</style>

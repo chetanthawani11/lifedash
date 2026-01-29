@@ -162,6 +162,7 @@ export default function AuthPage() {
         {/* Tab Navigation */}
         {view !== 'reset' && (
           <div
+            className="auth-tabs"
             style={{
               display: 'flex',
               gap: '4px',
@@ -169,12 +170,15 @@ export default function AuthPage() {
               backgroundColor: 'var(--bg-secondary)',
               borderRadius: 'var(--radius-md)',
               marginBottom: '1.25rem',
+              width: '100%',
             }}
           >
             <button
               onClick={() => setView('login')}
+              className="auth-tab"
               style={{
-                flex: 1,
+                flex: '1 1 50%',
+                minWidth: 0,
                 padding: '10px',
                 fontSize: '0.875rem',
                 fontWeight: 600,
@@ -191,8 +195,10 @@ export default function AuthPage() {
             </button>
             <button
               onClick={() => setView('register')}
+              className="auth-tab"
               style={{
-                flex: 1,
+                flex: '1 1 50%',
+                minWidth: 0,
                 padding: '10px',
                 fontSize: '0.875rem',
                 fontWeight: 600,
@@ -300,6 +306,37 @@ export default function AuthPage() {
           }
           .auth-bg-dark {
             display: block;
+          }
+        }
+
+        /* Ensure tabs are always 50/50 on all devices */
+        .auth-tabs {
+          display: flex !important;
+          flex-direction: row !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        .auth-tab {
+          flex: 1 1 0% !important;
+          min-width: 0 !important;
+          max-width: none !important;
+          width: auto !important;
+          text-align: center !important;
+          box-sizing: border-box !important;
+        }
+
+        /* Tablet specific fix (768px - 1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .auth-tabs {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            width: 100% !important;
+          }
+          .auth-tab {
+            flex: 1 1 0% !important;
+            min-width: 0 !important;
+            width: 50% !important;
           }
         }
       `}</style>
