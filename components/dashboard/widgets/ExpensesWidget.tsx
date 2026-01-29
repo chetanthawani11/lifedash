@@ -15,19 +15,21 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { subscribeToExpenses, getExpenseStats } from '@/lib/expense-service';
 import { Expense, ExpenseStats } from '@/types';
+import { getCurrencySymbol } from '@/lib/currency-utils';
 
 interface ExpensesWidgetProps {
   size: 'small' | 'medium' | 'large' | 'full';
 }
 
 export const ExpensesWidget: React.FC<ExpensesWidgetProps> = ({ size }) => {
-  const { user } = useAuth();
+  const { user, userPreferences } = useAuth();
   const router = useRouter();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [stats, setStats] = useState<ExpenseStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   const maxEntries = size === 'small' ? 2 : size === 'medium' ? 3 : 5;
+  const currencySymbol = getCurrencySymbol(userPreferences?.currency || 'USD');
 
   useEffect(() => {
     if (!user) return;
@@ -59,12 +61,11 @@ export const ExpensesWidget: React.FC<ExpensesWidgetProps> = ({ size }) => {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    const formatted = new Intl.NumberFormat('en-IN', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
+    return `${currencySymbol}${formatted}`;
   };
 
   if (loading) {

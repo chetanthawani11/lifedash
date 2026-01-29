@@ -11,25 +11,26 @@
  */
 
 import { ExpenseAnalytics } from '@/lib/analytics-service';
+import { useAuth } from '@/lib/auth-context';
+import { getCurrencySymbol } from '@/lib/currency-utils';
 
 interface ExpenseChartProps {
   data: ExpenseAnalytics;
 }
 
 export const ExpenseChart: React.FC<ExpenseChartProps> = ({ data }) => {
+  const { userPreferences } = useAuth();
+  const currency = userPreferences?.currency || 'USD';
+  const currencySymbol = getCurrencySymbol(currency);
+
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    // Format number with commas and append currency symbol
+    const formatted = new Intl.NumberFormat('en-IN', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
+    return `${currencySymbol}${formatted}`;
   };
-
-  // Calculate month-over-month change
-  const monthChange = data.lastMonth > 0
-    ? Math.round(((data.thisMonth - data.lastMonth) / data.lastMonth) * 100)
-    : 0;
 
   return (
     <div
@@ -82,14 +83,14 @@ export const ExpenseChart: React.FC<ExpenseChartProps> = ({ data }) => {
             style={{
               fontSize: '1.5rem',
               fontWeight: '700',
-              color: monthChange > 0 ? '#ef4444' : monthChange < 0 ? '#22c55e' : 'var(--text-primary)',
+              color: 'var(--text-primary)',
               margin: 0,
             }}
           >
-            {monthChange > 0 ? '+' : ''}{monthChange}%
+            {formatCurrency(data.lastMonth)}
           </p>
           <p style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', margin: 0 }}>
-            vs Last Month
+            Last Month
           </p>
         </div>
       </div>

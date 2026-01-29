@@ -323,6 +323,7 @@ export default function DeckViewPage() {
           gap: '1rem',
           marginBottom: '1rem',
           flexWrap: 'wrap',
+          alignItems: 'center',
         }}>
           <div style={{
             backgroundColor: 'var(--bg-elevated)',
@@ -394,13 +395,15 @@ export default function DeckViewPage() {
           </div>
           {/* Study Now Button */}
           {flashcards.length > 0 && (
-            <Button
-              onClick={() => router.push(`/flashcards/deck/${deckId}/study`)}
-              variant="primary"
-              size="sm"
-            >
-              Study Now
-            </Button>
+            <div style={{ alignSelf: 'center' }}>
+              <Button
+                onClick={() => router.push(`/flashcards/deck/${deckId}/study`)}
+                variant="primary"
+                size="sm"
+              >
+                Study Now
+              </Button>
+            </div>
           )}
         </div>
 

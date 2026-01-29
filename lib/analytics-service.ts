@@ -10,7 +10,7 @@
  */
 
 import { getDocuments, where, orderBy } from './db-utils';
-import { Journal, JournalEntry, Expense, Deck, Flashcard, Task } from '@/types';
+import { Journal, JournalEntry, Expense, Deck, Flashcard, Task, centsToDollars } from '@/types';
 
 // Collection names (must match the service files)
 const JOURNALS_COLLECTION = 'journals';
@@ -270,7 +270,7 @@ export const getExpenseAnalytics = async (userId: string): Promise<ExpenseAnalyt
   const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
 
-  // Calculate totals
+  // Calculate totals (convert from cents to dollars/base currency)
   let totalSpent = 0;
   let thisMonth = 0;
   let lastMonth = 0;
@@ -278,7 +278,7 @@ export const getExpenseAnalytics = async (userId: string): Promise<ExpenseAnalyt
 
   expenses.forEach(expense => {
     const date = toDate(expense.date);
-    const amount = expense.amount;
+    const amount = centsToDollars(expense.amount); // Convert from cents
 
     totalSpent += amount;
 
@@ -319,7 +319,7 @@ export const getExpenseAnalytics = async (userId: string): Promise<ExpenseAnalyt
     const total = expenses.reduce((sum, e) => {
       const date = toDate(e.date);
       if (date >= dayStart && date < dayEnd) {
-        return sum + e.amount;
+        return sum + centsToDollars(e.amount); // Convert from cents
       }
       return sum;
     }, 0);
