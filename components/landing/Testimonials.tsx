@@ -288,7 +288,7 @@ export function Testimonials() {
           width: '350px',
           height: '350px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(242, 100, 25, 0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(13, 148, 136, 0.06) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -320,7 +320,7 @@ export function Testimonials() {
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 color: 'var(--brand-primary)',
-                backgroundColor: 'rgba(242, 100, 25, 0.1)',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
                 borderRadius: '100px',
                 marginBottom: '16px',
               }}

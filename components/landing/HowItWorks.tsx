@@ -187,7 +187,7 @@ function ConnectingLine({ inView }: { inView: boolean }) {
           <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#667eea" />
             <stop offset="50%" stopColor="#764ba2" />
-            <stop offset="100%" stopColor="#f26419" />
+            <stop offset="100%" stopColor="#0d9488" />
           </linearGradient>
         </defs>
         {/* Background line */}
@@ -234,7 +234,7 @@ function ConnectingLine({ inView }: { inView: boolean }) {
           <linearGradient id="lineGradientVertical" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#667eea" />
             <stop offset="50%" stopColor="#764ba2" />
-            <stop offset="100%" stopColor="#f26419" />
+            <stop offset="100%" stopColor="#0d9488" />
           </linearGradient>
         </defs>
         {/* Background line */}
@@ -334,7 +334,7 @@ export function HowItWorks() {
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 color: 'var(--brand-primary)',
-                backgroundColor: 'rgba(242, 100, 25, 0.1)',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
                 borderRadius: '100px',
                 marginBottom: '16px',
               }}

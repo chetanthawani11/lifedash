@@ -14,7 +14,7 @@ html {
 
 body {
   color: var(--text-primary);
-  background: linear-gradient(135deg, #fffcf8 0%, #fff5ed 50%, #fffcf8 100%);
+  background: linear-gradient(135deg, #f8fffe 0%, #f0fdfb 50%, #f8fffe 100%);
   background-attachment: fixed; /* Keep gradient fixed during scroll */
   font-family: var(--font-sans);
   font-size: var(--text-base);

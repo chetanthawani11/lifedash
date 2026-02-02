@@ -1,25 +1,25 @@
-/* LifeDash Design System - Beautiful, Cozy, Modern */
+/* LifeDash Design System - Beautiful, Calm, Elegant */
 
 :root {
   /* ===================================
-     BRAND COLORS - Primary Identity
+     BRAND COLORS - Primary Identity (Teal)
      =================================== */
-  --brand-primary: #f26419;
-  --brand-primary-hover: #e3470f;
-  --brand-primary-light: #fde9d4;
-  --brand-primary-dark: #bc310f;
+  --brand-primary: #0d9488;
+  --brand-primary-hover: #0f766e;
+  --brand-primary-light: #ccfbf1;
+  --brand-primary-dark: #115e59;
 
-  /* Brand Color Scale */
-  --primary-50: #fef6ee;
-  --primary-100: #fde9d4;
-  --primary-200: #fbd0a8;
-  --primary-300: #f8af70;
-  --primary-400: #f58537;
-  --primary-500: #f26419;
-  --primary-600: #e3470f;
-  --primary-700: #bc310f;
-  --primary-800: #962814;
-  --primary-900: #792414;
+  /* Brand Color Scale (Teal) */
+  --primary-50: #f0fdfa;
+  --primary-100: #ccfbf1;
+  --primary-200: #99f6e4;
+  --primary-300: #5eead4;
+  --primary-400: #2dd4bf;
+  --primary-500: #14b8a6;
+  --primary-600: #0d9488;
+  --primary-700: #0f766e;
+  --primary-800: #115e59;
+  --primary-900: #134e4a;
 
   /* ===================================
      NEUTRAL COLORS
@@ -58,11 +58,11 @@
   --info-light: #dbeafe;
 
   /* ===================================
-     BACKGROUNDS
+     BACKGROUNDS (Subtle Teal Tints)
      =================================== */
-  --bg-primary: #fffaf5;
-  --bg-secondary: #fff8f3;
-  --bg-tertiary: #fff0e6;
+  --bg-primary: #f8fffe;
+  --bg-secondary: #f0fdfb;
+  --bg-tertiary: #e6faf6;
   --bg-elevated: #ffffff;
   --bg-muted: #f5f5f4;
 
@@ -97,9 +97,9 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 
-  /* Brand shadows */
-  --shadow-brand: 0 4px 14px rgba(242, 100, 25, 0.25);
-  --shadow-brand-lg: 0 8px 25px rgba(242, 100, 25, 0.3);
+  /* Brand shadows (Teal) */
+  --shadow-brand: 0 4px 14px rgba(13, 148, 136, 0.25);
+  --shadow-brand-lg: 0 8px 25px rgba(13, 148, 136, 0.3);
 
   /* ===================================
      BORDER RADIUS
@@ -149,11 +149,11 @@
   --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* ===================================
-     LANDING PAGE SPECIFIC
+     LANDING PAGE SPECIFIC (Teal)
      =================================== */
-  --landing-gradient-primary: linear-gradient(135deg, #f26419 0%, #e3470f 100%);
+  --landing-gradient-primary: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
   --landing-gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --landing-gradient-cta: linear-gradient(135deg, #f26419 0%, #f58537 100%);
+  --landing-gradient-cta: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
 }
 
 /* ===================================

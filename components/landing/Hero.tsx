@@ -75,7 +75,7 @@ export function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(135deg, #fffaf5 0%, #fff0e6 50%, #fde9d4 100%)',
+          background: 'linear-gradient(135deg, #f8fffe 0%, #f0fdfb 50%, #e6faf6 100%)',
           zIndex: 0,
         }}
         className="hero-bg-light"
@@ -100,9 +100,9 @@ export function Hero() {
         }}
         animate={{
           background: [
-            'radial-gradient(circle at 20% 50%, rgba(242, 100, 25, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(227, 71, 15, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 30% 60%, rgba(242, 100, 25, 0.2) 0%, transparent 50%), radial-gradient(circle at 70% 40%, rgba(227, 71, 15, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 50%, rgba(242, 100, 25, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(227, 71, 15, 0.2) 0%, transparent 50%)',
+            'radial-gradient(circle at 20% 50%, rgba(13, 148, 136, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(15, 118, 110, 0.15) 0%, transparent 50%)',
+            'radial-gradient(circle at 30% 60%, rgba(13, 148, 136, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 40%, rgba(15, 118, 110, 0.15) 0%, transparent 50%)',
+            'radial-gradient(circle at 20% 50%, rgba(13, 148, 136, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(15, 118, 110, 0.15) 0%, transparent 50%)',
           ],
         }}
         transition={{
@@ -117,7 +117,7 @@ export function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f26419' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d9488' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           zIndex: 1,
         }}
       />
@@ -135,7 +135,7 @@ export function Hero() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, rgba(242, 100, 25, 0.15) 0%, rgba(227, 71, 15, 0.1) 100%)',
+          background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.12) 0%, rgba(15, 118, 110, 0.08) 100%)',
           filter: 'blur(60px)',
           zIndex: 1,
         }}
@@ -155,7 +155,7 @@ export function Hero() {
           width: '250px',
           height: '250px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, rgba(245, 133, 55, 0.15) 0%, rgba(188, 49, 15, 0.1) 100%)',
+          background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.12) 0%, rgba(17, 94, 89, 0.08) 100%)',
           filter: 'blur(50px)',
           zIndex: 1,
         }}
@@ -175,7 +175,7 @@ export function Hero() {
           width: '200px',
           height: '200px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, rgba(253, 233, 212, 0.3) 0%, rgba(242, 100, 25, 0.1) 100%)',
+          background: 'linear-gradient(135deg, rgba(204, 251, 241, 0.25) 0%, rgba(13, 148, 136, 0.08) 100%)',
           filter: 'blur(40px)',
           zIndex: 1,
         }}
@@ -245,7 +245,7 @@ export function Hero() {
           >
             Your Life,{' '}
             <GradientText
-              colors={['#f26419', '#e3470f', '#f58537', '#f26419']}
+              colors={['#0d9488', '#0f766e', '#14b8a6', '#0d9488']}
               animationDuration={4}
             >
               Beautifully
@@ -296,14 +296,14 @@ export function Hero() {
                   border: 'none',
                   borderRadius: '12px',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 14px rgba(242, 100, 25, 0.3)',
+                  boxShadow: '0 4px 14px rgba(13, 148, 136, 0.3)',
                   transition: 'box-shadow 0.2s ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(242, 100, 25, 0.4)';
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(13, 148, 136, 0.4)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(242, 100, 25, 0.3)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(13, 148, 136, 0.3)';
                 }}
               >
                 Start Free Today
@@ -440,7 +440,7 @@ export function Hero() {
                     transform: 'translate(-50%, -50%)',
                     width: '80%',
                     height: '80%',
-                    background: 'linear-gradient(135deg, rgba(242, 100, 25, 0.2) 0%, rgba(227, 71, 15, 0.2) 100%)',
+                    background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.15) 0%, rgba(15, 118, 110, 0.15) 100%)',
                     filter: 'blur(60px)',
                     borderRadius: '20px',
                     zIndex: -1,

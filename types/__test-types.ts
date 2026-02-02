@@ -50,7 +50,7 @@ console.log('Testing Journal types...');
 const newJournal: CreateJournalInput = {
   name: 'My Test Journal',
   description: 'This is a test',
-  color: '#f26419',
+  color: '#0d9488',
   icon: '📔',
 };
 
@@ -192,7 +192,7 @@ const apiResponse: ApiResponse<Journal> = {
     userId: 'user-123',
     name: 'Test Journal',
     description: null,
-    color: '#f26419',
+    color: '#0d9488',
     icon: '📔',
     entryCount: 0,
     createdAt: Timestamp.now(),

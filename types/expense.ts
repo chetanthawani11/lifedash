@@ -88,7 +88,7 @@ export const createExpenseCategorySchema = z.object({
     .trim(),
   color: z.string()
     .regex(/^#[0-9A-F]{6}$/i, 'Must be a valid hex color')
-    .default('#f26419'),
+    .default('#0d9488'),
   icon: z.string()
     .min(1, 'Icon is required')
     .max(10, 'Icon must be a single emoji or short text')

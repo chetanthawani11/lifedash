@@ -75,7 +75,7 @@ export function Footer() {
                   marginBottom: '12px',
                 }}
               >
-                <AppIcon size={28} color="#f26419" />
+                <AppIcon size={28} color="#0d9488" />
                 <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white' }}>
                   LifeDash
                 </span>
@@ -174,7 +174,7 @@ export function Footer() {
               marginBottom: '16px',
             }}
           >
-            <AppIcon size={24} color="#f26419" />
+            <AppIcon size={24} color="#0d9488" />
             <span style={{ fontSize: '1.125rem', fontWeight: 700, color: 'white' }}>
               LifeDash
             </span>

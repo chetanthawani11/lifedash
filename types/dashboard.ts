@@ -107,7 +107,7 @@ export const WIDGET_METADATA: WidgetMetadata[] = [
     defaultSize: 'medium',
     minSize: 'small',
     maxSize: 'large',
-    color: '#f26419', // Orange (primary)
+    color: '#0d9488', // Teal (primary)
   },
   {
     type: 'quick-actions',

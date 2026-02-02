@@ -26,7 +26,7 @@
  * - Estimated Time: How long you think it will take
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Task,
   CreateTaskInput,
@@ -89,6 +89,16 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   // Loading and error states
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Mobile detection for responsive layout
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 480);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -222,15 +232,17 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   }));
 
   // Common input styles
-  const inputStyle = {
+  const inputStyle: React.CSSProperties = {
     width: '100%',
+    maxWidth: '100%',
     padding: '0.75rem 1rem',
     borderRadius: 'var(--radius-lg)',
     border: '2px solid var(--border-light)',
     backgroundColor: 'var(--bg-primary)',
     color: 'var(--text-primary)',
-    fontSize: 'var(--text-base)',
+    fontSize: '16px', // Prevents iOS zoom
     transition: 'border-color var(--transition-base)',
+    boxSizing: 'border-box',
   };
 
   const inputFocusStyle = (hasError: boolean) => ({
@@ -305,8 +317,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       {/* Due Date and Priority Row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? '0.75rem' : '1rem',
         marginBottom: '0.75rem',
       }}>
         {/* Due Date */}
@@ -337,8 +349,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       {/* Status and Category Row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1rem',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? '0.75rem' : '1rem',
         marginBottom: '0.75rem',
       }}>
         {/* Status */}
@@ -566,8 +578,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               {/* Pattern and Interval Row */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '1rem',
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                gap: isMobile ? '0.75rem' : '1rem',
                 marginBottom: '0.75rem',
               }}>
                 {/* Pattern Selection */}
@@ -681,8 +693,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               {/* End Date and Max Occurrences */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '1rem',
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                gap: isMobile ? '0.75rem' : '1rem',
               }}>
                 <div>
                   <label style={labelStyle}>
@@ -789,7 +801,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
       {/* Action Buttons */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
         gap: '0.75rem',
       }}>
         <Button

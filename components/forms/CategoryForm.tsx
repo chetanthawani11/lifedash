@@ -173,12 +173,20 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
               style={{
                 width: '28px',
                 height: '28px',
-                borderRadius: 'var(--radius-full)',
+                minWidth: '28px',
+                minHeight: '28px',
+                maxWidth: '28px',
+                maxHeight: '28px',
+                borderRadius: '50%',
                 backgroundColor: colorOption.value,
                 border: color === colorOption.value ? '2.5px solid var(--text-primary)' : '2px solid transparent',
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 flexShrink: 0,
+                flexGrow: 0,
+                padding: 0,
+                boxSizing: 'border-box',
+                aspectRatio: '1 / 1',
               }}
             />
           ))}

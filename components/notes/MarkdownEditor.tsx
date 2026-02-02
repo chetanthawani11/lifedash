@@ -78,7 +78,7 @@ export function MarkdownEditor({
             transition: 'all var(--transition-base)',
           }}
         >
-          ✏️ Write
+          Write
         </button>
         <button
           type="button"
@@ -97,7 +97,7 @@ export function MarkdownEditor({
             transition: 'all var(--transition-base)',
           }}
         >
-          👁️ Preview
+          Preview
         </button>
       </div>
 

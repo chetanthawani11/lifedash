@@ -286,7 +286,7 @@ export const TaskCalendar: React.FC<TaskCalendarProps> = ({
                 backgroundColor: selected
                   ? 'var(--primary-50)'
                   : today
-                    ? 'rgba(242, 100, 25, 0.05)'
+                    ? 'rgba(13, 148, 136, 0.05)'
                     : 'var(--bg-primary)',
                 borderRight: (index + 1) % 7 !== 0 ? '1px solid var(--border-light)' : 'none',
                 borderBottom: '1px solid var(--border-light)',

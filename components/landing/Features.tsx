@@ -321,7 +321,7 @@ export function Features() {
           width: '400px',
           height: '400px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, rgba(242, 100, 25, 0.08) 0%, rgba(227, 71, 15, 0.04) 100%)',
+          background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, rgba(15, 118, 110, 0.03) 100%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
@@ -334,7 +334,7 @@ export function Features() {
           width: '400px',
           height: '400px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, rgba(245, 133, 55, 0.08) 0%, rgba(253, 233, 212, 0.1) 100%)',
+          background: 'linear-gradient(135deg, rgba(20, 184, 166, 0.06) 0%, rgba(204, 251, 241, 0.08) 100%)',
           filter: 'blur(80px)',
           pointerEvents: 'none',
         }}
@@ -367,7 +367,7 @@ export function Features() {
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 color: 'var(--brand-primary)',
-                backgroundColor: 'rgba(242, 100, 25, 0.1)',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
                 borderRadius: '100px',
                 marginBottom: '16px',
               }}

@@ -17,7 +17,7 @@ export interface Journal {
   userId: string;                // Who owns this journal
   name: string;                  // Journal name (e.g., "Personal Journal")
   description: string | null;    // Optional description
-  color: string;                 // Color for visual organization (e.g., "#f26419")
+  color: string;                 // Color for visual organization (e.g., "#0d9488")
   icon: string;                  // Emoji or icon (e.g., "📔")
   entryCount: number;            // How many entries in this journal
   createdAt: Timestamp;          // When was this journal created
@@ -74,8 +74,8 @@ export const createJournalSchema = z.object({
     .nullable()
     .optional(),
   color: z.string()
-    .regex(/^#[0-9A-F]{6}$/i, 'Must be a valid hex color (e.g., #f26419)')
-    .default('#f26419'),
+    .regex(/^#[0-9A-F]{6}$/i, 'Must be a valid hex color (e.g., #0d9488)')
+    .default('#0d9488'),
   icon: z.string()
     .min(1, 'Icon is required')
     .max(10, 'Icon must be a single emoji or short text')

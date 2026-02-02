@@ -134,7 +134,7 @@ export const InstallPrompt: React.FC = () => {
             width: '40px',
             height: '40px',
             borderRadius: '10px',
-            background: 'linear-gradient(135deg, #f26419 0%, #e85d04 100%)',
+            background: 'linear-gradient(135deg, #0d9488 0%, #0f766e 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

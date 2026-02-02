@@ -9,19 +9,19 @@
    =================================== */
 
 :root {
-  /* Landing Page Gradient Colors - Brand Orange */
-  --landing-gradient-start: #f26419;
-  --landing-gradient-mid: #e3470f;
-  --landing-gradient-end: #bc310f;
+  /* Landing Page Gradient Colors - Brand Teal */
+  --landing-gradient-start: #0d9488;
+  --landing-gradient-mid: #0f766e;
+  --landing-gradient-end: #115e59;
 
   /* Glass Morphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.3);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
-  /* Glow Effects */
-  --glow-primary: 0 0 40px rgba(242, 100, 25, 0.3);
-  --glow-secondary: 0 0 40px rgba(227, 71, 15, 0.3);
+  /* Glow Effects (Teal) */
+  --glow-primary: 0 0 40px rgba(13, 148, 136, 0.3);
+  --glow-secondary: 0 0 40px rgba(15, 118, 110, 0.3);
 
   /* Feature Gradients */
   --gradient-journal: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -195,13 +195,13 @@
    ANIMATION UTILITIES
    =================================== */
 
-/* Pulse animation for CTAs */
+/* Pulse animation for CTAs (Teal) */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(242, 100, 25, 0.4);
+    box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
   }
   50% {
-    box-shadow: 0 0 40px rgba(242, 100, 25, 0.6);
+    box-shadow: 0 0 40px rgba(13, 148, 136, 0.6);
   }
 }
 
@@ -260,12 +260,12 @@
    =================================== */
 
 .landing-page ::selection {
-  background: rgba(242, 100, 25, 0.3);
+  background: rgba(13, 148, 136, 0.3);
   color: inherit;
 }
 
 .landing-page ::-moz-selection {
-  background: rgba(242, 100, 25, 0.3);
+  background: rgba(13, 148, 136, 0.3);
   color: inherit;
 }
 

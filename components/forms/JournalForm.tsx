@@ -21,13 +21,13 @@ import toast from 'react-hot-toast';
 
 // Predefined color options for journals
 const COLOR_OPTIONS = [
-  { name: 'Orange', value: '#f26419' },
+  { name: 'Teal', value: '#0d9488' },
   { name: 'Purple', value: '#7209b7' },
   { name: 'Blue', value: '#4361ee' },
   { name: 'Green', value: '#52b788' },
   { name: 'Pink', value: '#ff006e' },
-  { name: 'Yellow', value: '#fb8500' },
-  { name: 'Teal', value: '#06aed5' },
+  { name: 'Orange', value: '#fb8500' },
+  { name: 'Cyan', value: '#06aed5' },
   { name: 'Red', value: '#ef476f' },
 ];
 
@@ -202,7 +202,11 @@ export const JournalForm = ({
               style={{
                 width: '28px',
                 height: '28px',
-                borderRadius: 'var(--radius-full)',
+                minWidth: '28px',
+                minHeight: '28px',
+                maxWidth: '28px',
+                maxHeight: '28px',
+                borderRadius: '50%',
                 backgroundColor: color.value,
                 border: selectedColor === color.value
                   ? '2.5px solid var(--text-primary)'
@@ -210,6 +214,10 @@ export const JournalForm = ({
                 cursor: 'pointer',
                 transition: 'all var(--transition-base)',
                 flexShrink: 0,
+                flexGrow: 0,
+                padding: 0,
+                boxSizing: 'border-box',
+                aspectRatio: '1 / 1',
               }}
               title={color.name}
             />

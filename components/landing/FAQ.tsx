@@ -114,7 +114,7 @@ function FAQAccordionItem({
             width: '32px',
             height: '32px',
             borderRadius: '8px',
-            backgroundColor: isOpen ? 'rgba(242, 100, 25, 0.1)' : 'var(--bg-secondary)',
+            backgroundColor: isOpen ? 'rgba(13, 148, 136, 0.1)' : 'var(--bg-secondary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -199,7 +199,7 @@ export function FAQ() {
           width: '800px',
           height: '800px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(242, 100, 25, 0.03) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(13, 148, 136, 0.03) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
@@ -231,7 +231,7 @@ export function FAQ() {
                 fontSize: '0.875rem',
                 fontWeight: 600,
                 color: 'var(--brand-primary)',
-                backgroundColor: 'rgba(242, 100, 25, 0.1)',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
                 borderRadius: '100px',
                 marginBottom: '16px',
               }}
@@ -320,19 +320,19 @@ export function FAQ() {
               fontSize: '0.95rem',
               fontWeight: 600,
               color: 'var(--brand-primary)',
-              backgroundColor: 'rgba(242, 100, 25, 0.1)',
-              border: '1px solid rgba(242, 100, 25, 0.2)',
+              backgroundColor: 'rgba(13, 148, 136, 0.1)',
+              border: '1px solid rgba(13, 148, 136, 0.2)',
               borderRadius: '10px',
               textDecoration: 'none',
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(242, 100, 25, 0.15)';
-              e.currentTarget.style.borderColor = 'rgba(242, 100, 25, 0.3)';
+              e.currentTarget.style.backgroundColor = 'rgba(13, 148, 136, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(13, 148, 136, 0.3)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(242, 100, 25, 0.1)';
-              e.currentTarget.style.borderColor = 'rgba(242, 100, 25, 0.2)';
+              e.currentTarget.style.backgroundColor = 'rgba(13, 148, 136, 0.1)';
+              e.currentTarget.style.borderColor = 'rgba(13, 148, 136, 0.2)';
             }}
           >
             <svg
