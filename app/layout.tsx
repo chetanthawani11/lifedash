@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
+import { ServiceWorkerRegistration } from "@/components/pwa/ServiceWorkerRegistration";
 
 /**
  * VIEWPORT CONFIGURATION
@@ -65,6 +66,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
+        <ServiceWorkerRegistration />
         <AuthProvider>
           {children}
         </AuthProvider>

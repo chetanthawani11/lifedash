@@ -63,26 +63,72 @@
 
   <div class="icon-container">
     <div class="icon-box">
+      <h3>72x72</h3>
+      <canvas id="icon72" width="72" height="72"></canvas>
+      <br>
+      <button onclick="downloadIcon(72)">Download</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>96x96</h3>
+      <canvas id="icon96" width="96" height="96"></canvas>
+      <br>
+      <button onclick="downloadIcon(96)">Download</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>128x128</h3>
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <br>
+      <button onclick="downloadIcon(128)">Download</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>144x144</h3>
+      <canvas id="icon144" width="144" height="144"></canvas>
+      <br>
+      <button onclick="downloadIcon(144)">Download</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>152x152</h3>
+      <canvas id="icon152" width="152" height="152"></canvas>
+      <br>
+      <button onclick="downloadIcon(152)">Download</button>
+    </div>
+
+    <div class="icon-box">
       <h3>192x192</h3>
       <canvas id="icon192" width="192" height="192"></canvas>
       <br>
-      <button onclick="downloadIcon(192)">Download icon-192.png</button>
+      <button onclick="downloadIcon(192)">Download</button>
+    </div>
+
+    <div class="icon-box">
+      <h3>384x384</h3>
+      <canvas id="icon384" width="384" height="384"></canvas>
+      <br>
+      <button onclick="downloadIcon(384)">Download</button>
     </div>
 
     <div class="icon-box">
       <h3>512x512</h3>
       <canvas id="icon512" width="512" height="512"></canvas>
       <br>
-      <button onclick="downloadIcon(512)">Download icon-512.png</button>
+      <button onclick="downloadIcon(512)">Download</button>
     </div>
 
     <div class="icon-box">
-      <h3>180x180 (Apple Touch)</h3>
+      <h3>180x180 (Apple)</h3>
       <canvas id="icon180" width="180" height="180"></canvas>
       <br>
-      <button onclick="downloadAppleIcon()">Download apple-touch-icon.png</button>
+      <button onclick="downloadAppleIcon()">Download</button>
     </div>
   </div>
+
+  <button onclick="downloadAll()" style="margin: 1rem 0; padding: 1rem 2rem; font-size: 1.1rem;">
+    Download All Icons
+  </button>
 
   <div class="instructions">
     <h2>Instructions</h2>
@@ -152,11 +198,13 @@
       ctx.stroke();
     }
 
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512, 180];
+
     // Initialize all canvases
     function init() {
-      drawIcon(document.getElementById('icon192'), 192);
-      drawIcon(document.getElementById('icon512'), 512);
-      drawIcon(document.getElementById('icon180'), 180);
+      sizes.forEach(size => {
+        drawIcon(document.getElementById('icon' + size), size);
+      });
     }
 
     // Download icon
@@ -175,6 +223,14 @@
       link.download = 'apple-touch-icon.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
+    }
+
+    // Download all icons
+    function downloadAll() {
+      [72, 96, 128, 144, 152, 192, 384, 512].forEach((size, i) => {
+        setTimeout(() => downloadIcon(size), i * 200);
+      });
+      setTimeout(() => downloadAppleIcon(), 1800);
     }
 
     // Run on load
